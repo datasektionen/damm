@@ -1,0 +1,154 @@
+body {
+  background: #eee;
+}
+
+.Tags {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.Tags li {
+  float: left;
+  margin: 0;
+  padding: 0;
+}
+.Tags li a {
+  display: inline-block;
+  padding: 5px;
+  margin: 5px 5px 0 0;
+  background: #fff;
+  color: #222;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+}
+.Tags li a:hover {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+
+
+
+.Header {
+  width: 100%;
+  min-height: 300px;
+  background: #e83d84;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.Header h1, .Header h2 {
+  margin: 0;
+  padding: 0;
+  font-weight: 300;
+}
+.Header h2 {
+  margin: 10px 0 0;
+  font-weight: 900;
+}
+.Header .Logo {
+  max-width: 100px;
+  max-height: 100px;
+  margin: 20px;
+}
+
+
+
+
+.Timeline > ul > li {
+  list-style-type: none;
+  position: relative;
+  width: 6px;
+  margin: 0 auto;
+  background: #e83d84;
+}
+
+.Timeline > ul > li.Year {
+  background: none;
+  padding: 0;
+}
+ 
+.Timeline > ul > li::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid #e83d84;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+.Timeline > ul > li.Big::after {
+  width: 40px;
+  height: 40px;
+}
+
+.Timeline > ul > li > div {
+  position: relative;
+  bottom: 0;
+  width: 400px;
+  padding: 30px;
+  background: #fff;
+  border: 0px solid #e83d84;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+.Timeline > ul > li.Year > div {
+  left: -100px !important;
+  background: none !important;
+  border: none !important;
+  box-shadow: none;
+  text-align: center;
+  width: 200px;
+  font-size: 3em;
+  padding: 20px 0 40px;
+}
+ 
+.Timeline > ul > li > div h2 {
+  margin: 0;
+}
+.Timeline > ul > li > div time {
+  float: right;
+  color: #555;
+  font-size: 0.8em;
+}
+.Timeline > ul > li.Year > div time {
+  float: none;
+  color: #333;
+  font-size: 1em;
+}
+.Timeline > ul > li > div p {
+  margin-top: 10px;
+}
+
+.Timeline > ul > li > div::before {
+  content: '';
+  position: absolute;
+  bottom: 8px;
+  border-bottom: 2px solid #e83d84;
+  background: none;
+  width: 45px;
+}
+.Timeline > ul > li.Year > div::before {
+  display: none;
+}
+
+.Timeline > ul > li:nth-child(odd) > div {
+  left: 45px;
+}
+ 
+.Timeline > ul > li:nth-child(odd) > div::before {
+  left: -45px;
+}
+
+.Timeline > ul > li:nth-child(even) > div {
+  left: -439px;
+}
+ 
+.Timeline > ul > li:nth-child(even) > div::before {
+  right: -45px;
+}

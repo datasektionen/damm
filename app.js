@@ -8,7 +8,7 @@ const sm = require('./adapters/sm')
 const database = require('./adapters/database')
 
 const dataGenerator = require('./generator')([
-	//dfunkt,
+	dfunkt,
 	sm,
   database
 ])

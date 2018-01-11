@@ -1,0 +1,67 @@
+.ScrollLegend {
+	position: fixed;
+	width: 50px;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	background: rgba(255, 255, 255, 0.5);
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+	z-index: 100000;
+}
+
+.ScrollLegend .Year {
+	position: fixed;
+	color: rgba(0, 0, 0, 0.5);
+	width: 50px;
+	text-align: center;
+	font-size: 0.75em;
+	cursor: pointer;
+	z-index: 3;
+}
+
+.ScrollLegend .ShowYear {
+	transition: all 0s;
+	right: 0;
+	position: fixed;
+	color: rgba(0, 0, 0, 0.5);
+	width: 90px;
+	text-align: center;
+	font-size: 1.25em;
+	cursor: move;
+	z-index: 5;
+	background: #fff;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+	border-radius: 2px;
+	padding: 0 20px 0 10px;
+	height: 50px;
+	line-height: 50px;
+}
+@media screen and (max-width: 900px) {
+	.ScrollLegend .ShowYear {
+		width: 70px;
+		font-size: 1em;
+		padding: 0 10px;
+	}
+}
+@media screen and (max-width: 600px) {
+	body {
+		font-size: 14px;
+	}
+	.ScrollLegend .Year {
+		display: none;
+	}
+	.ScrollLegend {
+		width: 0;
+	}
+	.ScrollLegend .ShowYear {
+		width: 40px;
+		height: 40px;
+		line-height: 40px;
+		text-align: left;
+		right: -10px;
+		font-size: 0.75em;
+		font-weight: 900;
+		padding: 0 5px;
+		border-radius: 30px;
+	}
+}

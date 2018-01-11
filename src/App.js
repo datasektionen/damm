@@ -1,89 +1,69 @@
-import React, { Component } from 'react';
-import './App.css';
-import logo from './skold.png';
-import years from './data.js'
+import React, { Component } from 'react'
+import moment from 'moment'
+import './App.css'
+import logo from './skold.png'
+import ScrollLegend from './ScrollLegend'
+import General from './cards/General'
+import DFunkt from './cards/DFunkt'
+import SM from './cards/SM'
+import Methone from 'methone'
 
 class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      years: years.years
+      events: [],
+      years: []
     }
   }
 
   componentDidMount() {
-    let mandates = []
-    fetch('https://dfunkt.datasektionen.se/api/roles')
-      .then(res => res.json())
-      .then(roles => {
-        let promises = []
-        for (let i = 0; i < roles.length; i++) {
-          let role = roles[i];
-          promises.push(fetch('https://dfunkt.datasektionen.se/api/role/' + role.identifier)
-            .then(res => res.json())
-            .then(role => {
-              console.log('-> Got role')
-              role.mandates.forEach(mandate => {
-                if (!mandates[mandate.start]) {
-                  mandates[mandate.start] = []
-                }
-                mandates[mandate.start].push({
-                  user: mandate.User,
-                  role: role
-                })  
-              })
-            }))
+    const eventsPerYear = events => {
+      const years = []
+      let year = null
+      events.forEach(event => {
+        if (year === null || year.year !== event.date.year()) {
+          if (year !== null) {
+            years.push(year)
+          }
+          year = {
+            year: event.date.year(), 
+            cards: []
+          }
         }
-        Promise.all(promises).then(x => {
-          let sortedKeys = []
-          for (let key in mandates) {
-              sortedKeys[sortedKeys.length] = key
-          }
-          sortedKeys.sort().reverse()
-          let strMonth = (x) => {
-            const month = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec']
-            return month[parseInt(x) - 1]
-          }
-          let years = []
-          let lastYear = ''
-          sortedKeys.forEach(key => {
-            let year = key.substring(0,4)
-            let month = key.substring(5,7)
-            let day = key.substring(8,10)
-            if (years.length === 0 || years[years.length - 1].year != year) {
-              years.push({ year: year, cards: [] })
-            }
-            years[years.length - 1].cards.push({
-              day: day,
-              month: strMonth(month),
-              title: 'Nya funktionärer',
-              content: (
-                <div>
-                  <div class="users">
-                    { mandates[key].map((x) => (
-                      <div className="crop" style={{backgroundImage: 'url(https://zfinger.datasektionen.se/user/' + x.user.kthid + '/image)'}} />
-                    )) }
-                  </div>
-                  <p>På denna dag tillträdde</p>
-                  <ul>
-                    { mandates[key].map((x) => (
-                      <li>{ x.user.first_name } { x.user.last_name } som { x.role.role.title }</li>
-                    )) }
-                  </ul>
-                </div>
-              ),
-              tags: ['dFunkt']
-            })
-          })
-          this.setState({years})
-          console.log(years)
+        year.cards.push(event)
+      })
+      if (year !== null) {
+        years.push(year)
+      }
+      return years
+    }
+
+    fetch('http:/'+'/192.168.1.165:5000')
+      .then(res => res.json())
+      .then(events => {
+        events = events.map(e => {
+          e.date = moment(e.date)
+          return e
         })
+        this.setState({events: events, years: eventsPerYear(events)})
       })
   }
 
-  render() {
+  render() {  
+    const templateForCard = (card, i) => {
+      switch (card.template) {
+        case 'dfunkt': return <DFunkt  order={i} data={card} key={'card-' + i} />
+        case 'sm'    : return <SM      order={i} data={card} key={'card-' + i} />
+        default      : return <General order={i} data={card} key={'card-' + i} />
+      }
+    }
+
     return (
       <div className="App">
+        <Methone config={{ color_scheme: 'black', links: [] }} />
+        <div className="MethoneSpan"></div>
+        <ScrollLegend years={this.state.years} events={this.state.events} />
         <div className="Header">
           <div>
             <img src={logo} alt="Datasektionens sköld" className="Logo" />
@@ -93,30 +73,17 @@ class App extends Component {
         </div>
         <div className="Timeline">
           { this.state.years.map(y => (
-            <div key={'year-' + y.year}>
+            <div key={'year-heading-' + y.year} id={'year-' + y.year}>
               <time className="Year">{ y.year }</time>
               <div className="cards">
-                { y.cards.map((c, i) => (
-                <div key={'card-' + y.year + '-' + i} className="card" style={{'order':i}}>
-                  <div>
-                    <div className="Head">
-                      <div className="Date">
-                        <div className="Day">{ c.day }</div>
-                        <div className="Month">{ c.month }</div>
-                      </div>
-                      <h2>{ c.title }</h2>
-                    </div>
-                    { c.content }
-                  </div>
-                </div>
-                )) }
+                { y.cards.map((c, i) => templateForCard(c, i)) }
               </div>
             </div>
           )) }
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App

@@ -2,6 +2,10 @@ body {
   background: #eee;
 }
 
+.MethoneSpan {
+  height: 50px;
+}
+
 time.Year {
   margin: 20px auto;
   font-size: 3em;
@@ -35,15 +39,15 @@ time.Year {
 }
 
 .Header {
-  width: 100%;
   min-height: 300px;
-  background: #e83d84;
+  background: #ea4d8f;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   text-align: center;
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-right: 50px;
 }
 .Header h1, .Header h2 {
   margin: 0;
@@ -61,7 +65,7 @@ time.Year {
 }
 
 .Timeline {
-  margin-bottom: 100px;
+  margin: 0 50px 100px 0;
 }
 .Timeline .cards {
   position: relative;
@@ -92,9 +96,15 @@ time.Year {
   margin-top: 50px;
   margin-bottom: -50px;
 }
+.Timeline .cards .card:nth-child(even):last-child {
+  margin-bottom: 0;
+}
 .Timeline .cards .card:nth-child(odd) {
   margin-top: -50px;
   margin-bottom: 50px;
+}
+.Timeline .cards .card:nth-child(odd):last-child {
+  margin-bottom: 0;
 }
 
 .Timeline .cards .card > div {
@@ -105,7 +115,7 @@ time.Year {
   margin: 10px 40px;
 }
 
-.Timeline .cards .card:nth-child(even)::before {
+.Timeline .cards .card::before {
   position: absolute;
   content: "";
   width: 4px;
@@ -118,20 +128,12 @@ time.Year {
   top: 35px;
 }
 .Timeline .cards .card:nth-child(odd)::before {
-  position: absolute;
-  content: "";
-  width: 4px;
-  height: 4px;
-  background-color: #aaa;
-  border-radius: 5px;
-  box-shadow: 0px 0px 2px 8px #eee;
-  z-index: 2;
   right: -2px;
-  top: 35px;
+  left: auto;
 }
 
 .Timeline .cards .card .Head {
-  height: 50px;
+  min-height: 50px;
   background: #f9f9f9;
   border-bottom: 1px solid #eee;
   margin: -20px -20px 10px;
@@ -149,7 +151,7 @@ time.Year {
   right: 15px;
   top: 10px;
 }
-.Timeline .cards .card:nth-child(even) .Head::before {
+.Timeline .cards .card .Head::before {
   position: absolute;
   content: "";
   width: 0;
@@ -162,13 +164,15 @@ time.Year {
   left: 15px;
   top: 10px;
 }
+.Timeline .cards .card:nth-child(odd) .Head::before {
+  display: none;
+}
 
 .Timeline .cards .card .Head .Date {
   display: none;
   font-weight: 300;
   background: #e83d84;
   color: #fff;
-  border-radius: 2px;
   width: 50px;
   height: 50px;
   display: inline-block;
@@ -227,3 +231,111 @@ time.Year {
   flex-grow: 1000000000000;
 }
 
+@media screen and (max-width: 900px) {
+  .Timeline .cards .card {
+    width: 100%;
+    padding-right: 40px;
+    margin: 0 !important;
+    left: 40px;
+  }
+  .Timeline .cards::after {
+    left: 40px !important;
+  }
+  .Timeline .cards .card:nth-child(odd) .Head::before {
+    display: block;
+  }
+  .Timeline .cards .card .Head::after {
+    display: none;
+  }
+  time.Year {
+    margin: 20px 40px;
+    text-align: left;
+  }
+  .Timeline .cards {
+    padding-top: 0px;
+  }
+  .Timeline .cards .card .Head .Date {
+    float: right;
+  }
+  .Timeline .cards .card:nth-child(odd)::before {
+    left: -2px;
+    right: auto;
+  }
+  .Timeline .cards .card > div .users .crop {
+    height: 10vw;
+    width: 10vw;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .Timeline .cards .card {
+    padding-right: 0px;
+    right: -5px;
+    left: 20px;
+  }
+  .Timeline .cards .card > div {
+    margin: 10px 0 10px 20px;
+    padding: 15px 15px 10px;
+  }
+  .Timeline .cards::after {
+    left: 20px !important;
+  }
+  time.Year {
+    margin: 10px 20px;
+    font-size: 2em;
+  }
+  .Timeline .cards {
+    padding-top: 0px;
+  }
+  .Timeline .cards .card .Head .Date {
+    float: right;
+  }
+  .Timeline .cards .card .Head::before { 
+    display: none !important;
+  }
+  .Timeline .cards .card .Head { 
+    min-height: 40px;
+    margin: -15px -15px -5px;
+  }
+  .Timeline .cards .card .Head h2 { 
+    margin: 10px 15px 0;
+  }
+  .Timeline .cards .card .Head .Date { 
+    height: 40px;
+    display: block;
+    line-height: 40px;
+    padding: 0 3px;
+    width: auto;
+  }
+  .Timeline .cards .card .Head .Date > div {
+    width: auto;
+    display: inline-block;
+    margin: 0 2px;
+  }
+  .Timeline .cards .card ul {
+    padding-left: 17px;
+  }
+  .Header {
+    padding: 0;
+    min-height: 150px;
+  }
+  .Header h1 {
+    font-size: 1.5em;
+  }
+  .Header h2 {
+    margin-top: 0;
+    font-size: 1.5em;
+  }
+  .Header .Logo {
+    max-width: 50px;
+    max-height: 50px;
+    margin: 10px;
+  }
+  .Timeline .cards .card > div .users {
+    margin: 5px -15px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    margin-bottom: 10px;
+  }
+}

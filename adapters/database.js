@@ -1,6 +1,6 @@
 const moment = require('moment')
 const MongoClient = require('mongodb').MongoClient;
-const url = "mongodb:/" + "/localhost";
+const url = process.env.MONGO_URL;
 
 const database = new Promise((resolve, reject) => {
 	MongoClient.connect(url, function(err, client) {

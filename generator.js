@@ -1,0 +1,45 @@
+const moment = require('moment')
+
+const events = []
+
+const generator = (adapters) => {
+	console.log('Generator init')
+	adapters.forEach(adapter => adapter.then(adapterEvents => {
+		adapterEvents.sort((a, b) => {
+			if (a.date.isBefore(b.date)) {
+				return 1
+			}
+			if (a.date.isAfter(b.date)) {
+				return -1
+			}
+			return 0
+		})
+
+		if (events.length === 0) {
+			events.push(...adapterEvents)
+			return
+		}
+
+		if (adapterEvents.length === 0) {
+			return
+		}
+
+		let i = events.length - 1
+		let j = adapterEvents.length - 1
+		while (j >= 0 && i >= 0) {
+			if (adapterEvents[j].date.isBefore(events[i].date)) {
+				events.splice(i + 1, 0, adapterEvents[j])
+				j--
+			} else {
+				i--
+			}
+		}
+		if (j >= 0) {
+			events.splice(0, 0, ...adapterEvents.slice(0, j + 1))
+		}
+	}))
+
+	return _ => events
+}
+
+module.exports = generator;

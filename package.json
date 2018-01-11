@@ -9,9 +9,14 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-moment": "^0.6.8",
-    "react-scripts": "1.0.17"
+    "react-scripts": "1.0.17",
+    "cors": "^2.8.4",
+    "express": "^4.16.2",
+    "mongodb": "^3.0.1",
+    "node-fetch": "^1.7.3"
   },
   "scripts": {
+    "start-server": "node app.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",

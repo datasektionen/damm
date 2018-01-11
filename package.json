@@ -16,8 +16,8 @@
     "node-fetch": "^1.7.3"
   },
   "scripts": {
-    "start-server": "node app.js",
-    "start": "react-scripts start",
+    "start": "node app.js",
+    "start-client": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",

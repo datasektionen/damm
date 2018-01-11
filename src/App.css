@@ -231,6 +231,8 @@ time.Year {
   flex-grow: 1000000000000;
 }
 
+
+
 @media screen and (max-width: 900px) {
   .Timeline .cards .card {
     width: 100%;
@@ -266,6 +268,7 @@ time.Year {
     width: 10vw;
   }
 }
+
 
 @media screen and (max-width: 600px) {
   .Timeline .cards .card {
@@ -338,4 +341,92 @@ time.Year {
     justify-content: flex-start;
     margin-bottom: 10px;
   }
+}
+
+
+
+
+.checkbox {
+  width: 240px;
+  max-width: 100%;
+  height: 30px;
+  margin: -10px 0;
+  position: relative;
+  margin: 10px 0 -10px;
+ }
+ table .checkbox {
+  width: 30px;
+  margin: 3px 0 0;
+  height: 20px;
+ }
+ .checkbox label {
+  position: absolute;
+  left: 12px;
+  top: 0;
+ }
+ .checkbox label:before {
+  content: '';
+  cursor: pointer;
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  top: -2px;
+  left: -12px;
+  float: left;
+  background: #fff;
+  border:1px solid #ddd;
+  box-shadow: inset 0 2px 3px rgba(0, 0, 0, .1);
+ }
+ .checkbox label:after {
+  opacity: 0.2;
+  content: '';
+  position: absolute;
+  width: 13px;
+  height: 8px;
+  background: transparent;
+  top: 4px;
+  left: -6px;
+  border: 3px solid #fff;
+  border-top: none;
+  border-right: none;
+  transition: .1s;
+  transform: rotate(-45deg);
+ }
+ .checkbox label:hover::after {
+  opacity: 0.5;
+ }
+ .checkbox input[type=checkbox]:checked + label:after {
+  opacity: 1;
+ }
+ .checkbox input[type=checkbox]:checked + label:before {
+  background: #ec5f99;
+ }
+ .checkbox input[type=checkbox]:disabled + label:before {
+  background: #eee;
+ }
+ .checkbox input[type=checkbox]:checked:disabled + label:before {
+  background: #666;
+ }
+ .checkbox input[type=checkbox]:checked + label {
+  color: #ec5f99;
+ }
+ input[type=checkbox] {
+  visibility: hidden;
+ }
+
+
+
+
+
+.Filter {
+  margin: 0 auto;
+  text-align: center;
+  padding: 20px 40px 10px 0;
+}
+.Filter h5 {
+  cursor: pointer;
+}
+.Filter ul {
+  list-style-type: none;
+  display: inline-block;
 }

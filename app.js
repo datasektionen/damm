@@ -8,7 +8,7 @@ const sm = require('./adapters/sm')
 const database = require('./adapters/database')
 
 const dataGenerator = require('./generator')([
-	dfunkt,
+	//dfunkt,
 	sm,
   database
 ])
@@ -22,11 +22,12 @@ app.use(function(req, res, next) {
 });
 
 app.use('/', express.static('build'))
-app.use('/fuzzyfile', (req, res) => { res.send('{"@type":"fuzzyfile","fuzzes":[]}') })
+app.get('/fuzzyfile', (req, res) => { res.send('{"@type":"fuzzyfile","fuzzes":[]}') })
 app.get('/api', (req, res) => {
   res.send(dataGenerator())
 })
-app.use((req, res) => res.sendFile(`${__dirname}/build/index.html`))
+console.log(`${__dirname}/build/index.html`)
+app.get('*', (req, res) => res.sendFile(`${__dirname}/build/index.html`))
 app.listen(5000, () => console.log('Listening on port 5000!'))
 
 /*

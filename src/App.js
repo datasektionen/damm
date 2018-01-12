@@ -47,7 +47,7 @@ class App extends Component {
       return years
     }
 
-    fetch('http:/' + '/localhost:5000/api')
+    fetch('/api')
       .then(res => res.json())
       .then(events => {
         events = events.map(e => {

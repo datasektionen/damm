@@ -8,7 +8,7 @@ class General extends Component {
       <div key={'card-' + this.props.data.date.year() + '-' + this.props.order} className="card" style={{'order': this.props.order}}>
         <div>
           <CardHead date={this.props.data.date} title={this.props.data.title} />
-          <MDReactComponent text={this.props.data.content} />
+          { this.props.data.content ? <MDReactComponent text={this.props.data.content} /> : false }
         </div>
       </div>
     )

@@ -168,6 +168,61 @@ time.Year {
   display: none;
 }
 
+
+.Timeline .cards .card.Anniversary {
+  width: 50%;
+  margin: 0 25%;
+  position: relative;
+  text-align: center;
+  z-index: 100;
+}
+.Timeline .cards .card.Anniversary::before {
+  right: auto;
+  left: auto;
+  margin-left: -2px;
+  top: -10px;
+}
+.Timeline .cards .card.Anniversary .Head::before {
+  display: block !important;
+  left: 50%;
+  right: 50%;
+  margin: 0 -10px;
+  top: 0px;
+  border: none;
+  border-color: #E5C100;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom-width: 10px;
+  border-bottom-style: solid;
+}
+.Timeline .cards .card.Anniversary .Head {
+  background: #E5C100;
+  padding: 20px 20px;
+}
+.Timeline .cards .card.Anniversary .Head h2 {
+  margin: 0;
+  padding: 0;
+}
+.Timeline .cards .card.Anniversary time {
+  font-size: 1.25em;
+  text-align: center;
+  margin: 0 auto;
+  float: none;
+  padding: 10px 0;
+  display: block;
+}
+.Timeline .cards .card.Anniversary .Head::after {
+  display: none;
+}
+.Timeline .cards .card.Anniversary i {
+  font-size: 5em;
+  display: block;
+  padding: 20px;
+  color: #E5C100;
+}
+
+
+
 .Timeline .cards .card .Head .Date {
   display: none;
   font-weight: 300;
@@ -266,6 +321,52 @@ time.Year {
   .Timeline .cards .card > div .users .crop {
     height: 10vw;
     width: 10vw;
+  }
+  .Timeline .cards .card.Anniversary {
+    width: 100%;
+    margin: 0 0;
+  }
+  .Timeline .cards .card.Anniversary::before {
+    margin: 0;
+    left: -2px;
+    right: 0;
+    top: 40px;
+  }
+  .Timeline .cards .card.Anniversary .Head::before {
+    left: 20px;
+    right: auto;
+    top: 10px;
+    border: none;
+    border-color: #E5C100;
+    border-top: 32px solid transparent;
+    border-bottom: 32px solid transparent;
+    border-right-width: 30px;
+    border-right-style: solid;
+  }
+  .Timeline .cards .card.Anniversary .Head {
+    background: #E5C100;
+    padding: 20px 20px;
+  }
+  .Timeline .cards .card.Anniversary .Head h2 {
+    margin: 0;
+    padding: 0;
+  }
+  .Timeline .cards .card.Anniversary time {
+    font-size: 1.25em;
+    text-align: center;
+    margin: 0 auto;
+    float: none;
+    padding: 10px 0;
+    display: block;
+  }
+  .Timeline .cards .card.Anniversary .Head::after {
+    display: none;
+  }
+  .Timeline .cards .card.Anniversary i {
+    font-size: 5em;
+    display: block;
+    padding: 20px;
+    color: #E5C100;
   }
 }
 

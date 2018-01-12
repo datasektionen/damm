@@ -1,17 +1,21 @@
 const express = require('express')
 const app = express()
 const cors = require('cors')
+const moment = require('moment')
 
 // Adapters
 const dfunkt = require('./adapters/dfunkt')
 const sm = require('./adapters/sm')
 const database = require('./adapters/database')
 
-const dataGenerator = require('./generator')([
-	dfunkt,
-	sm,
+const dataGenerator = require('./generator')
+const init = _ => dataGenerator([
+  dfunkt,
+  sm,
   database
 ])
+let cachedData = init()()
+let lastCached = moment()
 
 app.use(cors());
 app.use(function(req, res, next) {
@@ -22,9 +26,20 @@ app.use(function(req, res, next) {
 });
 
 app.use('/', express.static('build'))
+app.get('/refresh', (req, res) => { 
+  const limit = lastCached.clone()
+  limit.add(1, 'minute')
+  if (moment().isBefore(limit)) {
+    res.send('{"response": "error", "message":"Already refreshed"}') 
+  } else {
+    res.send('{"response": "ok"}')
+    cachedData = init()()
+    lastCached = moment()
+  }
+})
 app.get('/fuzzyfile', (req, res) => { res.send('{"@type":"fuzzyfile","fuzzes":[]}') })
 app.get('/api', (req, res) => {
-  res.send(dataGenerator())
+  res.send(cachedData)
 })
 console.log(`${__dirname}/build/index.html`)
 app.get('*', (req, res) => res.sendFile(`${__dirname}/build/index.html`))

@@ -3,16 +3,14 @@ import moment from 'moment'
 import './App.css'
 import logo from './skold.png'
 import ScrollLegend from './ScrollLegend'
-import General from './cards/General'
-import DFunkt from './cards/DFunkt'
-import SM from './cards/SM'
+import templates from './config/templates'
 import Methone from 'methone'
 
 class App extends Component {
   constructor(props) {
     super(props)
 
-    let show = ['dfunkt', 'sm', 'general']
+    let show = Object.keys(templates)
     if (typeof(Storage) !== 'undefined' && localStorage.getItem('show')) {
       try {
       show = JSON.parse(localStorage.getItem('show'))
@@ -49,7 +47,7 @@ class App extends Component {
       return years
     }
 
-    fetch('/api')
+    fetch('http:/' + '/localhost:5000/api')
       .then(res => res.json())
       .then(events => {
         events = events.map(e => {
@@ -65,15 +63,10 @@ class App extends Component {
       if (!this.state.show.includes(card.template)) {
         return false
       }
-      switch (card.template) {
-        case 'dfunkt': return <DFunkt  order={i} data={card} key={'card-' + i} />
-        case 'sm'    : return <SM      order={i} data={card} key={'card-' + i} />
-        default      : return <General order={i} data={card} key={'card-' + i} />
-      }
+      return templates[card.template].template(card, i)
     }
 
     const changeState = e => {
-      console.log(this.state.show)
       let show = []
       if (!e.target.checked) {
         show = this.state.show.filter(x => x !== e.target.id.substring(0, e.target.id.length - 7))
@@ -104,24 +97,16 @@ class App extends Component {
         <div className="Filter">
           <h5 onClick={x => this.setState({showFilter: !this.state.showFilter})}>Filtrera <i className="fa fa-filter"></i></h5>
           <ul style={ this.state.showFilter ? {display: 'inline-block'} : {display: 'none'} }>
-            <li>
-              <div className="checkbox">
-                <input type="checkbox" name="dfunkt-filter" id="dfunkt-filter" checked={this.state.show.includes('dfunkt')} onChange={changeState} />
-                <label htmlFor="dfunkt-filter">Funktionärer tillträder</label>
-              </div>
-            </li>
-            <li>
-              <div className="checkbox">
-                <input type="checkbox" name="sm-filter" id="sm-filter" checked={this.state.show.includes('sm')} onChange={changeState} />
-                <label htmlFor="sm-filter">SM &amp; DM</label>
-              </div>
-            </li>
-            <li>
-              <div className="checkbox">
-                <input type="checkbox" name="general-filter" id="general-filter" checked={this.state.show.includes('general')} onChange={changeState} />
-                <label htmlFor="general-filter">Allmän historia</label>
-              </div>
-            </li>
+            {
+              Object.keys(templates).map(templateId => (
+                <li key={'filter-' + templateId}>
+                  <div className="checkbox">
+                    <input type="checkbox" name={templateId + '-filter'} id={templateId + '-filter'} checked={this.state.show.includes(templateId)} onChange={changeState} />
+                    <label htmlFor={templateId + '-filter'}>{templates[templateId].title}</label>
+                  </div>
+                </li>
+              ))
+            }
           </ul>
         </div>
         <div className="Timeline">

@@ -3,8 +3,8 @@ const moment = require('moment')
 const events = []
 
 const generator = (adapters) => {
-	console.log('Generator init')
-	adapters.forEach(adapter => adapter.then(adapterEvents => {
+	console.log('Generator init', adapters)
+	adapters.forEach(adapter => adapter().then(adapterEvents => {
 		adapterEvents.sort((a, b) => {
 			if (a.date.isBefore(b.date)) {
 				return 1

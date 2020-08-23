@@ -3,17 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "cors": "^2.8.4",
+    "express": "^4.16.2",
     "markdown-react-js": "^1.0.0",
     "methone": "^0.3.5",
     "moment": "^2.20.1",
+    "mongodb": "^3.0.1",
+    "node-fetch": "^1.7.3",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-moment": "^0.6.8",
-    "react-scripts": "1.0.17",
-    "cors": "^2.8.4",
-    "express": "^4.16.2",
-    "mongodb": "^3.0.1",
-    "node-fetch": "^1.7.3"
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "1.0.17"
   },
   "scripts": {
     "start": "node app.js",
@@ -22,5 +23,6 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "postinstall": "npm run build"
-  }
+  },
+  "proxy": "http://localhost:5000"
 }

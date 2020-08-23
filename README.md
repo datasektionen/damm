@@ -7,3 +7,6 @@ Kör ```npm start``` i ett annat terminalfönster så startar klienten (på port
 ## Produktion
 Kör ```npm run build``` så byggs React-applikationen (klienten) och läggs i /build.
 Kör ```npm run start-server``` så byggs körs Node.js-applikationen (servern) på defaultport 500 och servar /api och /build (React-builden) (på /).
+
+## Environment tables
+Du behöver LOGIN2_API_KEY

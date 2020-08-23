@@ -7,7 +7,7 @@ class Admin extends React.Component {
 
     render() {
         console.log(this.props)
-        if (this.props.isAdmin && this.props.token) {
+        if (this.props.isAdmin && localStorage.getItem('token')) {
             return (
                 <div>
                     Du är admin

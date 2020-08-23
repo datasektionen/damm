@@ -8,7 +8,13 @@ const dfunkt = require('./adapters/dfunkt')
 const sm = require('./adapters/sm')
 const database = require('./adapters/database')
 
+const dAuth = require('./dauth')
+const db = require('./model')
+
+const bodyParser = require('body-parser')
+
 const dataGenerator = require('./generator')
+const { model } = require('mongoose')
 const init = _ => dataGenerator([
   dfunkt,
   sm,
@@ -18,6 +24,7 @@ let cachedData = init()()
 let lastCached = moment()
 
 app.use(cors());
+app.use(bodyParser.json())
 app.use(function(req, res, next) {
    res.header("Access-Control-Allow-Origin", "*");
    res.header('Access-Control-Allow-Methods', 'DELETE, PUT, GET, POST');
@@ -41,6 +48,17 @@ app.get('/fuzzyfile', (req, res) => { res.send('{"@type":"fuzzyfile","fuzzes":[]
 app.get('/api', (req, res) => {
   res.send(cachedData)
 })
+
+app.use('/api/admin', dAuth.adminAuth)
+app.get('/api/isAdmin', (req, res) => {
+  dAuth.isAdmin(req.query.token)
+  .then(x => res.json({"isAdmin": x}))
+  .catch(err => {
+    console.log(err)
+    res.status(500).json({"isAdmin": false})
+  })
+})
+
 console.log(`${__dirname}/build/index.html`)
 app.get('*', (req, res) => res.sendFile(`${__dirname}/build/index.html`))
 app.listen(5000, () => console.log('Listening on port 5000!'))

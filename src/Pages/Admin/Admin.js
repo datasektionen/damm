@@ -7,16 +7,16 @@ class Admin extends React.Component {
 
     render() {
         console.log(this.props)
-        if (!this.props.admin) {
+        if (this.props.isAdmin && this.props.token) {
             return (
                 <div>
-                    Du är inte admin
+                    Du är admin
                 </div>
             )
         } else {
             return (
                 <div>
-                    Du är admin
+                    Du är inte admin
                 </div>
             )
         }

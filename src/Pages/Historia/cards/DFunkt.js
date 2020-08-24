@@ -11,7 +11,7 @@ class DFunkt extends Component {
           (
           <div className="users">
             { this.props.data.mandates.map((x) => (
-              <div title={x.user.first_name + " " + x.user.last_name} key={'mandate-pic-' + x.user.kthid + '-' + x.role.identifier + '-' + this.props.data.date} className="crop" style={{backgroundImage: 'url(https://zfinger.datasektionen.se/user/' + x.user.kthid + '/image/200)'}} />
+              <div title={x.user.first_name + " " + x.user.last_name + " tillträdde som " + x.role.title} key={'mandate-pic-' + x.user.kthid + '-' + x.role.identifier + '-' + this.props.data.date} className="crop" style={{backgroundImage: 'url(https://zfinger.datasektionen.se/user/' + x.user.kthid + '/image/200)'}} />
             )) }
           </div>
           ) : false }

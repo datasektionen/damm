@@ -1,4 +1,6 @@
 import React from 'react'
+import { Redirect } from 'react-router-dom'
+import * as ROUTES from '../../routes'
 
 class Admin extends React.Component {
     constructor(props) {
@@ -7,18 +9,14 @@ class Admin extends React.Component {
 
     render() {
         console.log(this.props)
-        if (this.props.isAdmin && localStorage.getItem('token')) {
+        if (this.props.admin && localStorage.getItem('token')) {
             return (
                 <div>
                     Du är admin
                 </div>
             )
         } else {
-            return (
-                <div>
-                    Du är inte admin
-                </div>
-            )
+            return (<Redirect to={ROUTES.HOME} />)
         }
     }
 }

@@ -55,7 +55,7 @@ app.get('/api/isAdmin', (req, res) => {
   .then(x => res.json({"isAdmin": x}))
   .catch(err => {
     console.log(err)
-    res.status(500).json({"isAdmin": false})
+    res.status(404).json({"error": err})
   })
 })
 

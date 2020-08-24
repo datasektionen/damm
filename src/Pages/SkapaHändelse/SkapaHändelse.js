@@ -1,5 +1,6 @@
 import React from 'react'
 import {Redirect} from 'react-router-dom'
+import * as ROUTES from '../../routes'
 
 class SkapaHändelse extends React.Component {
     constructor(props) {
@@ -16,7 +17,7 @@ class SkapaHändelse extends React.Component {
             )
         } else {
             return (
-                <Redirect to="/login" />
+                <Redirect to={ROUTES.LOGIN} />
             )
         }
     }

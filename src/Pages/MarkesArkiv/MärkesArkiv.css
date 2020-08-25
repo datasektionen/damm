@@ -1,0 +1,79 @@
+.märke {
+    background-color: #f9f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    margin: auto;
+}
+
+.märke img {
+    width: 400px;
+    object-fit: cover;
+}
+
+.märke .head {
+    display: flex;
+    flex-direction: row;
+}
+
+.märke .head .date {
+    font-weight: 300;
+    background: #e83d84;
+    color: #fff;
+    min-width: 50%;
+    height: 50px;
+    display: inline-block;
+    text-align: center;
+    font-size: 0.9;
+    line-height: 1;
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.märke .head .produced {
+    font-weight: 300;
+    background: #E5C100;
+    min-width: 50%;
+    height: 50px;
+    display: inline-block;
+    text-align: center;
+    font-size: 0.9;
+    line-height: 1;
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.märke .title {
+    background-color: #f9f9f9f9;
+}
+
+.märke .title h2 {
+    font-size: 1.2em;
+    text-align: center;
+    margin: 20px 0 20px 0;
+}
+
+.märke .tags {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    flex-flow: wrap;
+    padding: 10px 0 10px 0;
+    color: gray;
+}
+
+.tag {
+    padding: 5px;
+    border-radius: 2px;
+    width: 100px;
+    text-align: center;
+    margin: 5px 10px 5px 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}

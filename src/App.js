@@ -9,6 +9,7 @@ import Historia from './Pages/Historia/Historia'
 import Admin from './Pages/Admin/Admin'
 import SkapaHändelse from './Pages/SkapaHändelse/SkapaHändelse'
 import Museum from './Pages/Museum/Museum'
+import MärkesArkiv from './Pages/MarkesArkiv/MärkesArkiv'
 
 class App extends Component {
   constructor(props) {
@@ -49,7 +50,7 @@ class App extends Component {
       ]
       
       if (localStorage.getItem('token')) links.push(<Link to={ROUTES.SKAPA_HANDELSE}>Skapa händelse</Link>)
-      if (this.state.admin === true && localStorage.getItem('token')) links.push(<Link to={ROUTES.ADMIN}>Admin</Link>)
+      if (this.state.admin === true && localStorage.getItem('token')) links.push(<Link to={ROUTES.ADMIN}>Administrera</Link>)
 
       links.push(<Link to={ROUTES.HELP}>Hjälp</Link>)
       return links
@@ -70,7 +71,7 @@ class App extends Component {
         <Switch>
           <Route exact path={ROUTES.HOME} render={match => <Historia {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.MUSEUM} render={match => <Museum {...this.props} {...this.state} /> } />
-          <Route exact path={ROUTES.MARKES_ARKIV} render={match => <div>Märkesarkivkomponent här plox</div> } />
+          <Route exact path={ROUTES.MARKES_ARKIV} render={match => <MärkesArkiv {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.SKAPA_HANDELSE} render={match => <SkapaHändelse {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.ADMIN} render={match => <Admin {...this.props} {...this.state} />} />
           <Route exact path={ROUTES.LOGIN} render={match => {window.location = `https://login2.datasektionen.se/login?callback=${encodeURIComponent(window.location.origin)}/token/` }} />

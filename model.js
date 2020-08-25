@@ -72,7 +72,8 @@ var markeSchema = new mongoose.Schema({
     images: [{
         type: String,
         data: Buffer
-    }]
+    }],
+    orderNo: [String],
 })
 
 markeSchema.statics.create = function(x, callback) {
@@ -81,6 +82,7 @@ markeSchema.statics.create = function(x, callback) {
         description: x.description,
         numProduced: x.numProduced,
         date: x.date,
+        orderNo: x.orderNo
     })
     marke.save().then(marke => callback(marke))
 }

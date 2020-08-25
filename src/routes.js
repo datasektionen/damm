@@ -5,3 +5,4 @@ export const SKAPA_HANDELSE = '/skapa-handelse';
 export const HELP = '/om';
 export const LOGIN = '/login';
 export const LOGOUT = '/logout';
+export const MARKES_ARKIV = '/markes-arkiv';

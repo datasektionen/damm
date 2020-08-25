@@ -44,7 +44,8 @@ class App extends Component {
     const methoneLinks = () => {
       let links = [
         <Link to={ROUTES.HOME}>Tidslinje</Link>,
-        <Link to={ROUTES.MUSEUM}>Historiska Artefakter</Link>,
+        <Link to={ROUTES.MUSEUM}>Historiska artefakter</Link>,
+        <Link to={ROUTES.MARKES_ARKIV}>Märkesarkiv</Link>,
       ]
       
       if (localStorage.getItem('token')) links.push(<Link to={ROUTES.SKAPA_HANDELSE}>Skapa händelse</Link>)
@@ -69,6 +70,7 @@ class App extends Component {
         <Switch>
           <Route exact path={ROUTES.HOME} render={match => <Historia {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.MUSEUM} render={match => <Museum {...this.props} {...this.state} /> } />
+          <Route exact path={ROUTES.MARKES_ARKIV} render={match => <div>Märkesarkivkomponent här plox</div> } />
           <Route exact path={ROUTES.SKAPA_HANDELSE} render={match => <SkapaHändelse {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.ADMIN} render={match => <Admin {...this.props} {...this.state} />} />
           <Route exact path={ROUTES.LOGIN} render={match => {window.location = `https://login2.datasektionen.se/login?callback=${encodeURIComponent(window.location.origin)}/token/` }} />

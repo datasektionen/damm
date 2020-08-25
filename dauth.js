@@ -1,6 +1,7 @@
 const fetch = require('node-fetch')
 //Configure process.env
 require('dotenv').config()
+var db = require('./model')
 
 //Authenticate user
 exports.authenticate = (token, callback) => {
@@ -62,13 +63,20 @@ exports.isAdmin = (token) => {
         fetch(`https://login2.datasektionen.se/verify/${token}.json?api_key=${process.env.LOGIN2_API_KEY}`)
         .then(res => res.json())
         .then(json => {
-            fetch(`https://pls.datasektionen.se/api/user/${json.user}/damm`)
-            .then(res => res.json())
-            .then(json => resolve(json.includes('admin') ? true : false))
-            .catch(err => {
-                console.log("Error fetching: ", err)
-                return reject(err)
+            console.log(json)
+
+            db.User.createFromLogin(json, (user) => {
+                console.log(user)
+                fetch(`https://pls.datasektionen.se/api/user/${json.user}/damm`)
+                .then(res => res.json())
+                .then(json => resolve(json.includes('admin') ? true : false))
+                .catch(err => {
+                    console.log("Error fetching: ", err)
+                    return reject(err)
+                })
+
             })
+
         })
         .catch(err => reject(err))
     })

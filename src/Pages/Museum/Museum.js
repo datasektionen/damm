@@ -1,11 +1,24 @@
 import React from 'react'
 import logo from '../../skold.png'
 import '../../App.css'
+import moment from 'moment'
+import General from '../Historia/cards/General'
 
 class Museum extends React.Component {
     constructor(props) {
         super(props)
 
+        this.state = {
+            artefakter: []
+        }
+    }
+
+    componentDidMount() {
+        fetch('/api/artefakter')
+        .then(res => res.json())
+        .then(json => {
+            this.setState({artefakter: json})
+        })
     }
 
     render() {
@@ -19,7 +32,11 @@ class Museum extends React.Component {
                         <h4>(Eller andra coola föremål)</h4>
                     </div>
                 </div>
-                Douglas mamma<br/>Breznak
+                <div className="Timeline">
+                <div className="cards">
+                    {this.state.artefakter.map((x,i) => <General data={{date: moment(x.date), title: x.name, content: x.description}} />)}
+                </div>
+                </div>
             </div>
         )
     }

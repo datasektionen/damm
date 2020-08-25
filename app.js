@@ -44,7 +44,30 @@ app.get('/refresh', (req, res) => {
     lastCached = moment()
   }
 })
-app.get('/fuzzyfile', (req, res) => { res.send('{"@type":"fuzzyfile","fuzzes":[]}') })
+
+//För sökrutan, finns i mobilläge. Eventuellt lägga till dessa globalt (åtminstone en för damm)
+const fuzzes = [
+  {
+    "name":"Tidslinje - Damm",
+    "str": "damm tidslinje historia",
+    "color": "#e83d84",
+    "href": "/"
+  },
+  {
+    "name":"Historiska artefakter - Damm",
+    "str": "damm historiska artefakter",
+    "color": "#e83d84",
+    "href": "/museum"
+  },
+  {
+    "name":"Märkesarkiv - Damm",
+    "str": "märkesarkiv arkiv damm märke",
+    "color": "#e83d84",
+    "href": "/markes-arkiv"
+  },
+]
+
+app.get('/fuzzyfile', (req, res) => { res.send(`{"@type":"fuzzyfile","fuzzes":${JSON.stringify(fuzzes)}}`) })
 app.get('/api', (req, res) => {
   res.send(cachedData)
 })
@@ -54,8 +77,17 @@ app.get('/api/isAdmin', (req, res) => {
   dAuth.isAdmin(req.query.token)
   .then(x => res.json({"isAdmin": x}))
   .catch(err => {
-    console.log(err)
+    console.log("Invalid token")
     res.status(404).json({"error": err})
+  })
+})
+
+app.get('/api/artefakter', (req, res) => {
+  db.Artefakt.find((err, data) => {
+    if (err) {
+      console.log(err)
+      res.send(err)
+    } else res.send(data)
   })
 })
 

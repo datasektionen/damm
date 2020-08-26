@@ -57,10 +57,7 @@ class MärkesArkiv extends React.Component {
 
     render() {
 
-        const filterTags = (e) => {
-            this.setState({filterTagsQuery: e.target.value})
-        }
-
+        //Function called when clicking on a tag in the filter section. Adds and removes a tag from the selected tags list.
         const toggleTag = (tag) => {
             //Remove from list
             if (this.state.selectedTags.includes(tag.text)) {
@@ -71,23 +68,35 @@ class MärkesArkiv extends React.Component {
             }
         }
 
-        const doSearch = (e) => {
-            this.setState({search: e.target.value})
-        }
-
+        //Function which checks if a patch's tags matches any we have selected.
         const hasTagsSelected = (märke) => {
 
+            //If no tags are selected, show all patches
             if (this.state.selectedTags.length === 0) return true
 
             const {tags} = märke
     
             const hits = tags.map(x => {
-                console.log(x)
                 if (this.state.selectedTags.includes(x.text)) return true
                 else return false
             })
 
+            //If there is one true in the list, we have a match and we should show the patch.
+            //TODO: If you select several tags, do we want them to "add up" i.e. only show the patches with those combinations of tags,
+            //or simply just show the patches who has any of those tags?
             return hits.includes(true)
+        }
+
+        //Function which checks if a patch matches the search query
+        const matchesSearch = (märke) => {
+            if (this.state.search.length === 0) return true
+            if (märke.name.toLowerCase().match(new RegExp(this.state.search.toLowerCase(), "g"))) return true
+            else return false
+        }
+
+        //Clears both selected tags and search query
+        const clearAll = () => {
+            this.setState({search: "", selectedTags: []})
         }
 
         return (
@@ -102,14 +111,14 @@ class MärkesArkiv extends React.Component {
                 <div className="settings">
                     <h3>Filtrera märken</h3>
                     <div className="sök">
-                        <input type="text" placeholder="Sök..." value={this.state.search} onChange={(e) => doSearch(e)}/>
+                        <input type="text" placeholder="Sök..." value={this.state.search} onChange={(e) => this.setState({search: e.target.value})}/>
                         <img className="clearImg" src={Add} onClick={() => {this.setState({search: ""})}}/>
-                        {/* <button>Sök</button> */}
                     </div>
                     <div className="filter">
-                        <input type="text" placeholder="Taggar" onChange={(e) => filterTags(e)} value={this.state.filterTagsQuery} />
+                        <input type="text" placeholder="Taggar" onChange={(e) => this.setState({filterTagsQuery: e.target.value})} value={this.state.filterTagsQuery} />
                         <img className="clearImg" src={Add} onClick={() => {this.setState({filterTagsQuery: ""})}}/>
                         <button onClick={() => {this.setState({selectedTags: []})}} disabled={this.state.selectedTags.length === 0}>Clear tags</button>
+                        <button onClick={() => clearAll()}>Clear all</button>
                         <div className="tagQueryResult">
                             {this.state.tags.map((x,i) => x.text.toLowerCase().match(new RegExp(this.state.filterTagsQuery.toLowerCase(), "g")) ? <TagClickable key={i} onClick={() => {toggleTag(x)}} {...x} selectedTags={this.state.selectedTags}/> : undefined)}
                         </div>
@@ -163,7 +172,7 @@ class MärkesArkiv extends React.Component {
                         date={moment(new Date('October 17, 2010 03:24:00'))}
                         numProduced={100}
                     /> */}
-                    {this.state.märken.map((x,i) => hasTagsSelected(x) ? <Märke key={i} {...x} date={moment(Date.now())} /> : undefined)}
+                    {this.state.märken.map((x,i) => (hasTagsSelected(x) && matchesSearch(x)) ? <Märke key={i} {...x} date={moment(Date.now())} /> : undefined)}
                 </div>
             </div>
         )

@@ -4,7 +4,9 @@
     border-radius: 2px;
     display: flex;
     flex-direction: column;
-    max-width: 300px;
+    /* max-width: 300px;
+    min-width: 300px; */
+    width: 300px;
     /* margin: auto; */
     margin: 10px;
 }
@@ -106,11 +108,11 @@
 }
 
 .tag {
-    padding: 5px;
+    padding: 5px 10px 5px 10px;
     border-radius: 2px;
-    width: 100px;
+    /* width: 100px; */
     text-align: center;
-    margin: 5px 10px 5px 10px;
+    margin: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 

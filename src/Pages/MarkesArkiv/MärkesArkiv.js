@@ -71,6 +71,7 @@ class MärkesArkiv extends React.Component {
                     </div>
                 </div>
                 <div className="settings">
+                    <h3>Filtrera märken</h3>
                     <div className="sök">
                         <input type="text" placeholder="Sök..." value={this.state.search} onChange={(e) => doSearch(e)}/>
                         <img className="clearImg" src={Add} onClick={() => {this.setState({search: ""})}}/>

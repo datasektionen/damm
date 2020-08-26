@@ -62,32 +62,7 @@ artefaktSchema.statics.create = function(x, callback) {
 }
 
 //----------
-// Märke
-
-var markeSchema = new mongoose.Schema({
-    name: String,
-    description: String,
-    numProduced: Number,
-    date: String,
-    images: [{
-        type: String,
-        data: Buffer
-    }],
-    orderNo: [String],
-    price: String,
-})
-
-markeSchema.statics.create = function(x, callback) {
-    var marke = new this({
-        name: x.name,
-        description: x.description,
-        numProduced: x.numProduced,
-        price: x.price,
-        date: x.date,
-        orderNo: x.orderNo
-    })
-    marke.save().then(marke => callback(marke))
-}
+// Märken och grejer
 
 var tagSchema = new mongoose.Schema({
     text: String,
@@ -106,15 +81,42 @@ tagSchema.statics.create = function(x, callback) {
     tag.save().then(tag => callback(tag))
 }
 
+var Tag = mongoose.model('Tag', tagSchema)
+
+var markeSchema = new mongoose.Schema({
+    name: String,
+    description: String,
+    numProduced: Number,
+    date: String,
+    image: {
+        type: String,
+        data: Buffer
+    },
+    orderNo: [String],
+    price: String,
+    tags: [{text: String}]
+})
+
+
+markeSchema.statics.create = function(x, callback) {
+    var märke = new this({
+        name: x.name,
+        description: x.description,
+        numProduced: x.numProduced,
+        date: x.date,
+        image: "",
+        orderNo: [],
+        price: x.price,
+        tags: [x.tags]
+    })
+    märke.save().then(artefakt => callback(artefakt))
+}
+
+var Marke = mongoose.model('Marke', markeSchema)
 
 var User = mongoose.model('User', userSchema)
 var Artefakt = mongoose.model('Artefakt', artefaktSchema)
-var Marke = mongoose.model('Marke', markeSchema)
-var Tag = mongoose.model('Tag', tagSchema)
 
-// Artefakt.create({name: "Williams mamma", description: "Williams mamma, beskrivning", image: "en bild", date: moment('2014-03-06')}, (artefakt) => {
-//     console.log(artefakt)
-// })
 
 module.exports = {
     User,

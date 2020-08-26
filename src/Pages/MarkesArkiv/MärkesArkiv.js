@@ -21,7 +21,8 @@ class MärkesArkiv extends React.Component {
             tags: [],
             filterTagsQuery: "",
             selectedTags: [],
-            search: ""
+            search: "",
+            märken: [],
         }
     }
 
@@ -37,8 +38,21 @@ class MärkesArkiv extends React.Component {
                 console.log(err)
             })
         }
+
+        const fetchMärken = () => {
+            fetch('/api/marken')
+            .then(res => res.json())
+            .then(res => {
+                console.log(res)
+                this.setState({märken: res})
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        }
         
         fetchTags()
+        fetchMärken()
     }
 
     render() {
@@ -59,6 +73,21 @@ class MärkesArkiv extends React.Component {
 
         const doSearch = (e) => {
             this.setState({search: e.target.value})
+        }
+
+        const hasTagsSelected = (märke) => {
+
+            if (this.state.selectedTags.length === 0) return true
+
+            const {tags} = märke
+    
+            const hits = tags.map(x => {
+                console.log(x)
+                if (this.state.selectedTags.includes(x.text)) return true
+                else return false
+            })
+
+            return hits.includes(true)
         }
 
         return (
@@ -87,9 +116,9 @@ class MärkesArkiv extends React.Component {
                     </div>
                 </div>
                 <div className="märken">
-                    <Märke
+                    {/* <Märke
                         image={Sektionmärket}
-                        title="Konglig Datasektionens sektionsmärke"
+                        name="Konglig Datasektionens sektionsmärke"
                         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer augue lacus, congue et ex euismod, malesuada consectetur elit. Ut euismod, ligula eu egestas aliquet, tellus ipsum luctus tortor, in rutrum mi tortor ac sem. Vestibulum tempor varius ultricies. Quisque vitae erat dolor. Etiam ac risus et mi eleifend scelerisque. Sed volutpat venenatis erat in pellentesque. Donec eros lorem, dapibus et purus sed, faucibus fermentum lorem."
                         date={moment(Date.now())}
                         numProduced={100}
@@ -98,14 +127,14 @@ class MärkesArkiv extends React.Component {
                     />
                     <Märke
                         image={Sjöslaget}
-                        title="Sjöslaget 2010 testar ett extra långt namn långt ord Flaggstångsknoppsputsmedel testar ett extra långt namn långt ord Flaggstångsknoppsputsmedel"
+                        name="Sjöslaget 2010 testar ett extra långt namn långt ord Flaggstångsknoppsputsmedel testar ett extra långt namn långt ord Flaggstångsknoppsputsmedel"
                         description=""
                         date={moment(new Date('October 17, 2010 03:24:00'))}
                         numProduced={100}
                     />
                     <Märke
                         image={pung}
-                        title="PUNG"
+                        name="PUNG"
                         description=""
                         date={moment(new Date('March 17, 2008 03:24:00'))}
                         numProduced={100}
@@ -113,7 +142,7 @@ class MärkesArkiv extends React.Component {
                     />
                     <Märke
                         image={metadorerna}
-                        title="Metadorerna"
+                        name="Metadorerna"
                         description=""
                         date={moment(new Date('May 3, 2013 03:24:00'))}
                         price="20"
@@ -121,7 +150,7 @@ class MärkesArkiv extends React.Component {
                     />
                     <Märke
                         image={starkt}
-                        title="Starkt är vackert"
+                        name="Starkt är vackert"
                         description=""
                         date={moment(new Date('September 24, 2009 03:24:00'))}
                         price="15"
@@ -129,11 +158,12 @@ class MärkesArkiv extends React.Component {
                     />
                     <Märke
                         image={Sjöslaget}
-                        title="Sjöslaget 2010"
+                        name="Sjöslaget 2010"
                         description=""
                         date={moment(new Date('October 17, 2010 03:24:00'))}
                         numProduced={100}
-                    />
+                    /> */}
+                    {this.state.märken.map((x,i) => hasTagsSelected(x) ? <Märke key={i} {...x} date={moment(Date.now())} /> : undefined)}
                 </div>
             </div>
         )

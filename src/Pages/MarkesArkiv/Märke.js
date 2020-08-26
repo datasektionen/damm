@@ -1,7 +1,7 @@
 import React from 'react'
 import Tag from './Tag'
 
-const Märke = ({image, date, title, description, numProduced = "?", tags = [], price}) => {
+const Märke = ({image, date, name, description, numProduced = "?", tags = [], price}) => {
     return (
         <div className="märke">
                 <div><img src={image} /></div>
@@ -10,10 +10,10 @@ const Märke = ({image, date, title, description, numProduced = "?", tags = [], 
                     {/* <div className="produced" title="Antal producerade (första utgåvan)">{numProduced} st</div> */}
                     <div className="price" title="Pris">{price ? (price + " kr") : "Gratis"}</div>
                 </div>
-                <div className="title"><h2>{title}</h2></div>
+                <div className="title"><h2>{name}</h2></div>
                 {/* <div className="desc">{description ? description : "Ingen beskrivning"}</div> */}
                 <div className="tags">
-                    {tags.length === 0 ? "Inga taggar" : tags.map((x,i) => <Tag key={i} color={x.color} bgColor={x.color} backgroundColor={x.backgroundColor} hoverText={x.hoverText} text={x.text} />)}
+                    {tags.length === 0 ? "Inga taggar" : tags.map((x,i) => <Tag key={i} color={x.color} backgroundColor={x.backgroundColor} hoverText={x.hoverText} text={x.text} />)}
                 </div>
         </div>
     )

@@ -5,6 +5,9 @@ import logo from '../../skold.png'
 import ScrollLegend from '../../ScrollLegend'
 import templates from '../../config/templates'
 
+import General from './cards/General'
+import Anniversary from './cards/Anniversary'
+
 class Historia extends React.Component {
     constructor(props) {
         super(props)
@@ -107,6 +110,15 @@ class Historia extends React.Component {
                 </ul>
                 </div>
                 <div className="Timeline">
+                  {/* Ta bort detta, mockdata */}
+                  <div key={'year-heading-' + 2021} id={'year-' + 2021}>
+                    <time className="Year">{ 2021 }</time>
+                    <div className="cards">
+                      <Anniversary data={{date: moment(new Date('October 7, 2021 00:00:00')), order: 0, title: "Konglig Datasektionen fyller 38 år"}} />
+                      <General data={{date: moment(Date.now()), order: 1, title: "Generell historia-test", content:'### Det var en gång en gubbe, som bodde i en stubbe\n Markdownsupport :O \n\nVårbalen 2019 var en bra jävla bal'}}/>
+                    </div>
+                  </div>
+                  {/* Ta bort ovan, mockdata */}
                 { this.state.years.map(y => (
                     <div key={'year-heading-' + y.year} id={'year-' + y.year}>
                     <time className="Year">{ y.year }</time>

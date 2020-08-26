@@ -1,124 +1,93 @@
 import React, { Component } from 'react'
-import moment from 'moment'
-import './App.css'
-import logo from './skold.png'
-import ScrollLegend from './ScrollLegend'
-import templates from './config/templates'
+import { Switch, Route, Redirect, Link } from 'react-router-dom'
 import Methone from 'methone'
+import * as ROUTES from './routes'
+
+import './App.css'
+
+import Historia from './Pages/Historia/Historia'
+import Admin from './Pages/Admin/Admin'
+import SkapaHändelse from './Pages/SkapaHändelse/SkapaHändelse'
+import Museum from './Pages/Museum/Museum'
+import MärkesArkiv from './Pages/MarkesArkiv/MärkesArkiv'
+import MärkePage from './Pages/MarkesArkiv/MärkePage'
 
 class App extends Component {
   constructor(props) {
     super(props)
 
-    let show = Object.keys(templates)
-    if (typeof(Storage) !== 'undefined' && localStorage.getItem('show')) {
-      try {
-      show = JSON.parse(localStorage.getItem('show'))
-      } catch (e) {}
-    }
-
     this.state = {
-      events: [],
-      showFilter: false,
-      show: show,
-      years: []
+      admin: false
     }
   }
 
   componentDidMount() {
-    const eventsPerYear = events => {
-      const years = []
-      let year = null
-      events.forEach(event => {
-        if (year === null || year.year !== event.date.year()) {
-          if (year !== null) {
-            years.push(year)
-          }
-          year = {
-            year: event.date.year(), 
-            cards: []
-          }
-        }
-        year.cards.push(event)
-      })
-      if (year !== null) {
-        years.push(year)
-      }
-      return years
-    }
-
-    fetch('/api')
+    if (localStorage.getItem('token')) {
+      fetch(`/api/isAdmin?token=${localStorage.getItem('token')}`)
       .then(res => res.json())
-      .then(events => {
-        events = events.map(e => {
-          e.date = moment(e.date)
-          return e
-        })
-        this.setState({events: events, years: eventsPerYear(events)})
+      .then(json => {
+        console.log(json)
+        if (json.error) {
+          window.location=ROUTES.LOGIN
+        } else {
+          // localStorage.setItem('isAdmin', json.isAdmin)
+          this.setState({admin: json.isAdmin})
+        }
       })
+      .catch(err => {
+        console.log(err)
+        window.location=ROUTES.LOGIN
+      })
+    }
   }
 
-  render() {  
-    const templateForCard = (card, i) => {
-      if (!this.state.show.includes(card.template)) {
-        return false
-      }
-      return templates[card.template].template(card, i)
+  render() {
+
+    const methoneLinks = () => {
+      let links = [
+        <Link to={ROUTES.HOME}>Tidslinje</Link>,
+        <Link to={ROUTES.MUSEUM}>Historiska artefakter</Link>,
+        <Link to={ROUTES.MARKES_ARKIV}>Märkesarkiv</Link>,
+      ]
+      
+      if (localStorage.getItem('token')) links.push(<Link to={ROUTES.SKAPA_HANDELSE}>Skapa händelse</Link>)
+      if (this.state.admin === true && localStorage.getItem('token')) links.push(<Link to={ROUTES.ADMIN}>Administrera</Link>)
+
+      links.push(<Link to={ROUTES.HELP}>Hjälp</Link>)
+      return links
     }
 
-    const changeState = e => {
-      let show = []
-      if (!e.target.checked) {
-        show = this.state.show.filter(x => x !== e.target.id.substring(0, e.target.id.length - 7))
-        this.setState({show})
-      } else {
-        show = this.state.show
-        show.push(e.target.id.substring(0, e.target.id.length - 7))
-        this.setState({show})
-      }
-
-      if (typeof(Storage) !== 'undefined') {
-        localStorage.setItem('show', JSON.stringify(show));
-      }
-    }
+    console.log(methoneLinks())
 
     return (
       <div className="App">
-        <Methone config={{ color_scheme: 'black', links: [] }} />
+        <Methone config={{
+          system_name: 'damm',
+          color_scheme: 'cerise',
+          links: methoneLinks(),
+          login_text: localStorage.getItem('token') ? "Logga ut" : "Logga in",
+          login_href: localStorage.getItem('token') ? "/logout" : "/login"
+        }} />
         <div className="MethoneSpan"></div>
-        <ScrollLegend years={this.state.years} events={this.state.events} />
-        <div className="Header">
-          <div>
-            <img src={logo} alt="Datasektionens sköld" className="Logo" />
-            <h1>Konglig Datasektionens</h1>
-            <h2>Sektionshistoria</h2>
-          </div>
-        </div>
-        <div className="Filter">
-          <h5 onClick={x => this.setState({showFilter: !this.state.showFilter})}>Filtrera <i className="fa fa-filter"></i></h5>
-          <ul style={ this.state.showFilter ? {display: 'inline-block'} : {display: 'none'} }>
-            {
-              Object.keys(templates).map(templateId => (
-                <li key={'filter-' + templateId}>
-                  <div className="checkbox">
-                    <input type="checkbox" name={templateId + '-filter'} id={templateId + '-filter'} checked={this.state.show.includes(templateId)} onChange={changeState} />
-                    <label htmlFor={templateId + '-filter'}>{templates[templateId].title}</label>
-                  </div>
-                </li>
-              ))
-            }
-          </ul>
-        </div>
-        <div className="Timeline">
-          { this.state.years.map(y => (
-            <div key={'year-heading-' + y.year} id={'year-' + y.year}>
-              <time className="Year">{ y.year }</time>
-              <div className="cards">
-                { y.cards.map((c, i) => templateForCard(c, i)) }
-              </div>
-            </div>
-          )) }
-        </div>
+        <Switch>
+          <Route exact path={ROUTES.HOME} render={match => <Historia {...this.props} {...this.state} /> } />
+          <Route exact path={ROUTES.MUSEUM} render={match => <Museum {...this.props} {...this.state} /> } />
+          <Route exact path={ROUTES.MARKES_ARKIV} render={match => <MärkesArkiv {...this.props} {...this.state} /> } />
+          <Route exact path={ROUTES.MARKE} render={match => <MärkePage /> } />
+          <Route exact path={ROUTES.SKAPA_HANDELSE} render={match => <SkapaHändelse {...this.props} {...this.state} /> } />
+          <Route exact path={ROUTES.ADMIN} render={match => <Admin {...this.props} {...this.state} />} />
+          <Route exact path={ROUTES.LOGIN} render={match => {window.location = `https://login2.datasektionen.se/login?callback=${encodeURIComponent(window.location.origin)}/token/` }} />
+          <Route exact path={ROUTES.LOGOUT} render={({match}) => {
+            localStorage.removeItem('token')
+            return <Redirect to={ROUTES.HOME} />
+          }} />
+          <Route path='/token/:token' render={({match}) => {
+            localStorage.setItem('token', match.params.token)
+            return <Redirect to={ROUTES.HOME} />
+          }} />
+          {/* TODO: Fixa en dammig 404-komponent */}
+          <Route path="*" render={match => <div>Sidan hittades ej</div>} />
+        </Switch>
       </div>
     )
   }

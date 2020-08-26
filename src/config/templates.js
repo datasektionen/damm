@@ -1,8 +1,8 @@
 import React from 'react'
-import General from '../cards/General'
-import DFunkt from '../cards/DFunkt'
-import SM from '../cards/SM'
-import Anniversary from '../cards/Anniversary'
+import General from '../Pages/Historia/cards/General'
+import DFunkt from '../Pages/Historia/cards/DFunkt'
+import SM from '../Pages/Historia/cards/SM'
+import Anniversary from '../Pages/Historia/cards/Anniversary'
 
 const templates = {
 	dfunkt: {

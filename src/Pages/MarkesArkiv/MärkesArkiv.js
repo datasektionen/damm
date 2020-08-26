@@ -94,7 +94,7 @@ class MärkesArkiv extends React.Component {
                         date={moment(Date.now())}
                         numProduced={100}
                         price="10"
-                        tags={[{text: "Gasque", hoverText: "Override test"}, {text: "2020", backgroundColor: "#b3b1ed", color: "black"}, {text: "Sektionen", backgroundColor: "#1d76db", color: "white"}, {text: "dfunk", backgroundColor: "#d93f0b", color: "white"}]}
+                        tags={this.state.tags}
                     />
                     <Märke
                         image={Sjöslaget}

@@ -23,6 +23,7 @@ class MärkesArkiv extends React.Component {
             selectedTags: [],
             search: "",
             märken: [],
+            showTags: false,
         }
     }
 
@@ -110,19 +111,28 @@ class MärkesArkiv extends React.Component {
                 </div>
                 <div className="settings">
                     <h3>Filtrera märken</h3>
+                    <div className="buttons">
+                        <button onClick={() => {this.setState({selectedTags: []})}} disabled={this.state.selectedTags.length === 0}>Rensa taggar</button>
+                        <button onClick={() => clearAll()} disabled={this.state.selectedTags.length === 0 && this.state.search.length === 0}>Rensa allt</button>
+                        <button onClick={() => {this.setState({showTags: !this.state.showTags})}}>{this.state.showTags ? "Göm taggar" : "Visa taggar"}</button>
+                    </div>
                     <div className="sök">
                         <input type="text" placeholder="Sök..." value={this.state.search} onChange={(e) => this.setState({search: e.target.value})}/>
                         <img className="clearImg" src={Add} onClick={() => {this.setState({search: ""})}}/>
                     </div>
-                    <div className="filter">
-                        <input type="text" placeholder="Taggar" onChange={(e) => this.setState({filterTagsQuery: e.target.value})} value={this.state.filterTagsQuery} />
-                        <img className="clearImg" src={Add} onClick={() => {this.setState({filterTagsQuery: ""})}}/>
-                        <button onClick={() => {this.setState({selectedTags: []})}} disabled={this.state.selectedTags.length === 0}>Clear tags</button>
-                        <button onClick={() => clearAll()}>Clear all</button>
-                        <div className="tagQueryResult">
-                            {this.state.tags.map((x,i) => x.text.toLowerCase().match(new RegExp(this.state.filterTagsQuery.toLowerCase(), "g")) ? <TagClickable key={i} onClick={() => {toggleTag(x)}} {...x} selectedTags={this.state.selectedTags}/> : undefined)}
+                    {this.state.showTags ? 
+                        <div>
+                            <div className="filter">
+                                <input type="text" placeholder="Filtrera taggar" onChange={(e) => this.setState({filterTagsQuery: e.target.value})} value={this.state.filterTagsQuery} />
+                                <img className="clearImg" src={Add} onClick={() => {this.setState({filterTagsQuery: ""})}}/>
+                            </div>
+                            <div className="tagQueryResult">
+                                {this.state.tags.map((x,i) => x.text.toLowerCase().match(new RegExp(this.state.filterTagsQuery.toLowerCase(), "g")) ? <TagClickable key={i} onClick={() => {toggleTag(x)}} {...x} selectedTags={this.state.selectedTags}/> : undefined)}
+                            </div>
                         </div>
-                    </div>
+                    :
+                        undefined
+                    }
                 </div>
                 <div className="märken">
                     {/* <Märke

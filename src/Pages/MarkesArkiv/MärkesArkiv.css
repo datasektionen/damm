@@ -85,7 +85,7 @@
 .märke .desc {
     text-align: center;
     padding: 15px;
-    border-top: solid 1px rgba(0, 0, 0, 0.2);
+    border-top: solid 1px #eee;
     color: gray;
 }
 
@@ -103,7 +103,7 @@
     flex-flow: wrap;
     padding: 10px 0 10px 0;
     color: gray;
-    border-top: solid 1px rgba(0, 0, 0, 0.2);
+    border-top: solid 1px #eee;
     height: 100%;
 }
 
@@ -148,8 +148,8 @@ div > .märken {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    /* margin: auto; */
-    /* justify-content: center; */
+    align-items: center;
+    justify-content: center;
 }
 
 .settings {
@@ -165,7 +165,7 @@ div > .märken {
     height: 15px;
     transform: rotate(45deg);
     position: relative;
-    left: -20px;
+    left: -30px;
     opacity: 0.7;
 }
 
@@ -173,30 +173,45 @@ div > .märken {
     cursor: pointer;
 }
 
-.settings .filter .tagQueryResult {
+.settings .tagQueryResult {
     display: flex;
     flex-direction: row;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     flex-wrap: wrap;
+    padding: 30px 100px 30px 100px;
 }
 
-.settings .filter .tagQueryResult .tagClickable {
-    margin: 10px;
+.settings .tagQueryResult .tagClickable {
+    margin: 5px;
     user-select: none;
 }
 
 .settings .sök input {
-    width: 200px;
+    width: 300px;
     height: 50px;
     padding: 10px;
+}
+
+.settings .filter {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
 
 .settings .filter input {
-    width: 130px;
+    width: 300px;
     height: 50px;
     padding: 10px;
 }
 
-.settings .filter button {
+.settings .buttons {
+
+}
+
+.settings button {
     background-color: #E5C100;
+    margin: 10px;
 }

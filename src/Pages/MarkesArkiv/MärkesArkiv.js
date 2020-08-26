@@ -135,7 +135,7 @@ class MärkesArkiv extends React.Component {
                     }
                 </div>
                 <div className="märken">
-                    <Märke
+                    {/* <Märke
                         image={Sektionmärket}
                         name="Konglig Datasektionens sektionsmärke"
                         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer augue lacus, congue et ex euismod, malesuada consectetur elit. Ut euismod, ligula eu egestas aliquet, tellus ipsum luctus tortor, in rutrum mi tortor ac sem. Vestibulum tempor varius ultricies. Quisque vitae erat dolor. Etiam ac risus et mi eleifend scelerisque. Sed volutpat venenatis erat in pellentesque. Donec eros lorem, dapibus et purus sed, faucibus fermentum lorem."
@@ -181,7 +181,7 @@ class MärkesArkiv extends React.Component {
                         description=""
                         date={moment(new Date('October 17, 2010 03:24:00'))}
                         numProduced={100}
-                    />
+                    /> */}
                     {this.state.märken.map((x,i) => (hasTagsSelected(x) && matchesSearch(x)) ? <Märke key={i} {...x} date={moment(Date.now())} /> : undefined)}
                 </div>
             </div>

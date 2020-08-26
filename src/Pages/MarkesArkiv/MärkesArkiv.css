@@ -158,6 +158,7 @@ div > .märken {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding-bottom: 15px;
 }
 
 .settings .clearImg {
@@ -207,20 +208,13 @@ div > .märken {
     padding: 10px;
 }
 
-.settings .buttons {
-
-}
-
 .settings button {
     background-color: #E5C100;
     margin: 10px;
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 600px) {
 
-    .märken {
-
-    }
     .märke {
         width: 90%;
         margin-top: 10px;
@@ -233,7 +227,7 @@ div > .märken {
     }
 
     .settings {
-        padding-bottom: 20px;
+        padding-bottom: 10px;
         border-bottom: solid 1px #eee;
         white-space: nowrap;
     }
@@ -298,3 +292,7 @@ div > .märken {
         font-size: 1.2em;
     }
 }
+
+/* @media screen and (max-width: 900px) {
+
+} */

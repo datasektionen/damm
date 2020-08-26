@@ -109,6 +109,18 @@ app.get('/api/marken', (req, res) => {
   })
 })
 
+app.get('/api/marke/id/:id', (req, res) => {
+  db.Marke.find({_id: req.params.id}, (err, data) => {
+    if (err) {
+      console.log(err)
+      res.send(err)
+    } else {
+      console.log(data)
+      res.send(data)
+    }
+  })
+})
+
 console.log(`${__dirname}/build/index.html`)
 app.get('*', (req, res) => res.sendFile(`${__dirname}/build/index.html`))
 app.listen(5000, () => console.log('Listening on port 5000!'))

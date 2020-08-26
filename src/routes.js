@@ -6,3 +6,4 @@ export const HELP = '/om';
 export const LOGIN = '/login';
 export const LOGOUT = '/logout';
 export const MARKES_ARKIV = '/markes-arkiv';
+export const MARKE = '/marke/:id'

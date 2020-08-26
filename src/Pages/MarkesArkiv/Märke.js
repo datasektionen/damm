@@ -1,9 +1,9 @@
 import React from 'react'
 import Tag from './Tag'
 
-const Märke = ({image, date, name, description, numProduced = "?", tags = [], price}) => {
+const Märke = ({image, date, name, description, numProduced = "?", tags = [], price, ...rest}) => {
     return (
-        <div className="märke">
+        <div className="märke" title={description} onClick={() => {window.location=`/marke/${rest._id}`}}>
                 <div><img src={image} /></div>
                 <div className="head">
                     <div className="date" title="Utgivningsdatum (första utgåvan)">{date.format("DD MMM YYYY")}</div>

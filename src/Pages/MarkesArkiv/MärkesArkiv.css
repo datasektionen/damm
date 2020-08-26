@@ -215,3 +215,86 @@ div > .märken {
     background-color: #E5C100;
     margin: 10px;
 }
+
+@media screen and (max-width: 900px) {
+
+    .märken {
+
+    }
+    .märke {
+        width: 90%;
+        margin-top: 10px;
+    }
+
+    .märke img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+    }
+
+    .settings {
+        padding-bottom: 20px;
+        border-bottom: solid 1px #eee;
+        white-space: nowrap;
+    }
+
+    .settings .sök {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .settings .sök input {
+        width: 80%;
+    }
+
+
+    .settings .buttons {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+    }
+
+    .settings .buttons button {
+        margin: 5px;
+    }
+
+    .settings .filter {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .settings .filter input {
+        width: 80%;
+    }
+
+    .settings .tagQueryResult {
+        padding: 10px;
+    }
+
+    .märke .title h2 {
+        font-size: 1.6em;
+    }
+
+    .tag {
+        padding: 10px 15px 10px 15px;
+        font-size: 1.1em;
+    }
+
+    .märke .head .date {
+        font-weight: 400;
+        font-size: 1.2em;
+    }
+    .märke .head .price {
+        font-weight: 400;
+        font-size: 1.2em;
+    }
+}

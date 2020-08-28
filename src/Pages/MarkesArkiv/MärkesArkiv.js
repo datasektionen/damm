@@ -13,6 +13,10 @@ import moment from 'moment'
 import Add from './add.png'
 import TagClickable from './TagClickable'
 
+//TODO:
+//More advanced filtering/sort by
+//Sort by: name asc/desc, price asc/desc, year asc/desc,
+
 class MärkesArkiv extends React.Component {
     constructor(props) {
         super(props)
@@ -31,7 +35,6 @@ class MärkesArkiv extends React.Component {
             search: "",
             märken: [],
             showTags: showTags,
-            additive: true,
         }
     }
 
@@ -78,29 +81,29 @@ class MärkesArkiv extends React.Component {
         }
 
         //Function which checks if a patch's tags matches any we have selected.
-        const hasTagsSelected = (märke) => {
+        const patchTagsMatchesSelected = (märke) => {
+            const {tags} = märke
 
             //If no tags are selected, show all patches
             if (this.state.selectedTags.length === 0) return true
+            //Past the if statement above, we know we have selected at least one tag.
 
-            const {tags} = märke
+            //If patch has no tags, do not match
+            if (tags.length === 0) return false
     
+            //Returns an array with booleans where each boolean represents a tag match.
             const hits = tags.map(x => {
                 if (this.state.selectedTags.includes(x.text)) return true
                 else return false
             })
 
-            if (this.state.additive) {
-                let res
-                if (hits.length === 1) res = hits[0] === true ? 1 : 0
-                //Apparently true + true = 2, true + false = 1 and so on, but I do this below to be more clear
-                else res = hits.reduce((acc, curr) => acc + (curr === true ? 1 : 0))
-                return res === this.state.selectedTags.length
-            }
-
-            //Old method, doesn't "add up" when you select several tags, i.e. if you select tags: gasque and mottagning you
-            //get patches which have gasque OR mottagning, not those who have that specific combination.
-            return hits.includes(true)
+            let tagMatches
+            //Could just do hits[0] + 0 since true + 0 = 1 and false + 0 = 0, but you never know with js
+            //This line is because of reduce, when you reduce an array with one element, it only takes the accumulator value.
+            if (hits.length === 1) tagMatches = hits[0] === true ? 1 : 0
+            //true + true = 2, true + false = 1 and so on, but I do this below to be more clear
+            else tagMatches = hits.reduce((acc, curr) => acc + (curr === true ? 1 : 0))
+            return tagMatches === this.state.selectedTags.length
         }
 
         //Function which checks if a patch matches the search query
@@ -203,7 +206,7 @@ class MärkesArkiv extends React.Component {
                         date={moment(new Date('October 17, 2010 03:24:00'))}
                         numProduced={100}
                     /> */}
-                    {this.state.märken.map((x,i) => (hasTagsSelected(x) && matchesSearch(x)) ? <Märke key={i} {...x} date={moment(Date.now())} /> : undefined)}
+                    {this.state.märken.map((x,i) => (patchTagsMatchesSelected(x) && matchesSearch(x)) ? <Märke key={i} {...x} date={moment(Date.now())} /> : undefined)}
                 </div>
             </div>
         )

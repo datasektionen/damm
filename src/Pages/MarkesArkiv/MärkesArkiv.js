@@ -24,6 +24,7 @@ class MärkesArkiv extends React.Component {
             search: "",
             märken: [],
             showTags: false,
+            additive: true,
         }
     }
 
@@ -82,9 +83,16 @@ class MärkesArkiv extends React.Component {
                 else return false
             })
 
-            //If there is one true in the list, we have a match and we should show the patch.
-            //TODO: If you select several tags, do we want them to "add up" i.e. only show the patches with those combinations of tags,
-            //or simply just show the patches who has any of those tags?
+            if (this.state.additive) {
+                let res
+                if (hits.length === 1) res = hits[0] === true ? 1 : 0
+                //Apparently true + true = 2, true + false = 1 and so on, but I do this below to be more clear
+                else res = hits.reduce((acc, curr) => acc + (curr === true ? 1 : 0))
+                return res === this.state.selectedTags.length
+            }
+
+            //Old method, doesn't "add up" when you select several tags, i.e. if you select tags: gasque and mottagning you
+            //get patches which have gasque OR mottagning, not those who have that specific combination.
             return hits.includes(true)
         }
 

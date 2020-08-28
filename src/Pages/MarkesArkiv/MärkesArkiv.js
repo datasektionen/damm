@@ -17,13 +17,20 @@ class MärkesArkiv extends React.Component {
     constructor(props) {
         super(props)
 
+        let showTags = false
+        if (typeof(Storage) !== 'undefined' && localStorage.getItem('showTags')) {
+          try {
+          showTags = JSON.parse(localStorage.getItem('showTags'))
+          } catch (e) {}
+        }
+
         this.state = {
             tags: [],
             filterTagsQuery: "",
             selectedTags: [],
             search: "",
             märken: [],
-            showTags: false,
+            showTags: showTags,
             additive: true,
         }
     }
@@ -108,6 +115,12 @@ class MärkesArkiv extends React.Component {
             this.setState({search: "", selectedTags: []})
         }
 
+        const toggleShowTags = () => {
+            this.setState({showTags: !this.state.showTags}, () => {
+                localStorage.setItem('showTags', JSON.stringify(this.state.showTags));
+            })
+        }
+
         return (
             <div>
                 <div className="Header">
@@ -122,7 +135,7 @@ class MärkesArkiv extends React.Component {
                     <div className="buttons">
                         <button onClick={() => {this.setState({selectedTags: []})}} disabled={this.state.selectedTags.length === 0}>Rensa taggar</button>
                         <button onClick={() => clearAll()} disabled={this.state.selectedTags.length === 0 && this.state.search.length === 0}>Rensa allt</button>
-                        <button onClick={() => {this.setState({showTags: !this.state.showTags})}}>{this.state.showTags ? "Göm taggar" : "Visa taggar"}</button>
+                        <button onClick={() => toggleShowTags()}>{this.state.showTags ? "Göm taggar" : "Visa taggar"}</button>
                     </div>
                     <div className="sök">
                         <input type="text" placeholder="Sök..." value={this.state.search} onChange={(e) => this.setState({search: e.target.value})}/>

@@ -1,9 +1,10 @@
 export const HOME = '/';
 export const ADMIN = '/admin';
 export const MUSEUM = '/museum';
-export const SKAPA_HANDELSE = '/skapa-handelse';
+export const SKAPA_HANDELSE = '/skapa/handelse';
 export const HELP = '/om';
 export const LOGIN = '/login';
 export const LOGOUT = '/logout';
-export const MARKES_ARKIV = '/markes-arkiv';
+export const MARKES_ARKIV = '/markesarkiv';
 export const MARKE = '/marke/:id'
+export const SKAPA_MARKE = '/admin/skapa/marke'

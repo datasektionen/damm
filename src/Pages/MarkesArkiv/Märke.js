@@ -4,7 +4,7 @@ import moment from 'moment'
 
 const Märke = ({image, date, name, description, numProduced = "?", tags = [], price, ...rest}) => {
     return (
-        <div className="märke" title={description} onClick={() => {window.location=`/marke/${rest._id}`}}>
+        <div className="märke" title={description} onClick={() => {/*window.location=`/marke/${rest._id}`*/}}>
                 <div><img src={image} /></div>
                 <div className="head">
                     <div className="date" title="Utgivningsdatum (första utgåvan)">{date ? moment(date).format("DD MMM YYYY") : "Okänt"}</div>

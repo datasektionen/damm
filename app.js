@@ -10,6 +10,7 @@ const database = require('./adapters/database')
 
 const dAuth = require('./dauth')
 const db = require('./model')
+const api = require('./api')
 
 const bodyParser = require('body-parser')
 
@@ -71,55 +72,7 @@ app.get('/fuzzyfile', (req, res) => { res.send(`{"@type":"fuzzyfile","fuzzes":${
 app.get('/api', (req, res) => {
   res.send(cachedData)
 })
-
-app.use('/api/admin', dAuth.adminAuth)
-app.get('/api/isAdmin', (req, res) => {
-  dAuth.isAdmin(req.query.token)
-  .then(x => res.json({"isAdmin": x}))
-  .catch(err => {
-    console.log("Invalid token")
-    res.status(404).json({"error": err})
-  })
-})
-
-app.get('/api/artefakter', (req, res) => {
-  db.Artefakt.find((err, data) => {
-    if (err) {
-      console.log(err)
-      res.send(err)
-    } else res.send(data)
-  })
-})
-
-app.get('/api/tags', (req, res) => {
-  db.Tag.find((err, data) => {
-    if (err) {
-      console.log(err)
-      res.send(err)
-    } else res.send(data)
-  })
-})
-
-app.get('/api/marken', (req, res) => {
-  db.Marke.find((err, data) => {
-    if (err) {
-      console.log(err)
-      res.send(err)
-    } else res.send(data)
-  })
-})
-
-app.get('/api/marke/id/:id', (req, res) => {
-  db.Marke.find({_id: req.params.id}, (err, data) => {
-    if (err) {
-      console.log(err)
-      res.send(err)
-    } else {
-      console.log(data)
-      res.send(data)
-    }
-  })
-})
+app.use('/api', api)
 
 console.log(`${__dirname}/build/index.html`)
 app.get('*', (req, res) => res.sendFile(`${__dirname}/build/index.html`))

@@ -36,7 +36,8 @@ class MärkesArkiv extends React.Component {
             märken: [],
             showTags: showTags,
             numPatches: 0,
-            sortRule: "standard"
+            sortRule: "standard",
+            file: undefined,
         }
     }
 

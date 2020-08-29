@@ -95,7 +95,10 @@ var markeSchema = new mongoose.Schema({
     },
     orderNo: [String],
     price: String,
-    tags: [{text: String}]
+    tags: [{text: String}],
+    createdBy: [String],
+    uploadedBy: String,
+    uploadDate: String
 })
 
 
@@ -123,5 +126,6 @@ module.exports = {
     User,
     Artefakt,
     Marke,
-    Tag
+    Tag,
+    mongoose
 }

@@ -36,7 +36,7 @@ class App extends Component {
       })
       .catch(err => {
         console.log(err)
-        window.location=ROUTES.LOGIN
+        // window.location=ROUTES.LOGIN
       })
     }
   }
@@ -79,11 +79,13 @@ class App extends Component {
           <Route exact path={ROUTES.LOGIN} render={match => {window.location = `https://login2.datasektionen.se/login?callback=${encodeURIComponent(window.location.origin)}/token/` }} />
           <Route exact path={ROUTES.LOGOUT} render={({match}) => {
             localStorage.removeItem('token')
-            return <Redirect to={ROUTES.HOME} />
+            window.location=ROUTES.HOME
+            // return <Redirect to={ROUTES.HOME} />
           }} />
           <Route path='/token/:token' render={({match}) => {
             localStorage.setItem('token', match.params.token)
-            return <Redirect to={ROUTES.HOME} />
+            window.location=ROUTES.HOME
+            // return <Redirect to={ROUTES.HOME} />
           }} />
           {/* TODO: Fixa en dammig 404-komponent */}
           <Route path="*" render={match => <div>Sidan hittades ej</div>} />

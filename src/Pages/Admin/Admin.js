@@ -13,9 +13,15 @@ class Admin extends React.Component {
         console.log(this.props)
 
         const cards = [
-            {title: "Lägg till märke",
+        {
+            title: "Lägg till märke",
             description: "Lägg till ett nytt (eller gammalt) märke till arkivet för dOsq att beskåda.",
             link: ROUTES.SKAPA_MARKE,
+        },
+        {
+            title: "Hantera märkestaggar",
+            description: "Lägg till, redigera eller ta bort märkestaggar.",
+            link: ROUTES.MARKESTAGGAR,
         },
         {
             title: "Lägg till händelse",

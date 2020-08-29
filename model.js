@@ -89,10 +89,7 @@ var markeSchema = new mongoose.Schema({
     numProduced: Number,
     //Håller strängar i formatet: "2020-08-29"
     date: String,
-    image: {
-        type: String,
-        data: Buffer
-    },
+    image: String,
     orderNo: [String],
     price: String,
     tags: [{text: String}],
@@ -108,10 +105,10 @@ markeSchema.statics.create = function(x, callback) {
         description: x.description,
         numProduced: x.numProduced,
         date: x.date,
-        image: "",
+        image: x.image,
         orderNo: [],
         price: x.price,
-        tags: [x.tags]
+        tags: x.tags ? x.tags : []
     })
     märke.save().then(artefakt => callback(artefakt))
 }

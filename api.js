@@ -34,7 +34,9 @@ let upload = multer({
     storage
 })
 
-router.use('/admin', dAuth.adminAuth)
+//COMMENT LINE BELOW TO SKIP ADMIN AUTH IN DEV
+//TODO: MOVE TOKEN TO PARAM INSTEAD OF JSON
+// router.use('/admin', dAuth.adminAuth)
 router.post('/admin/upload', upload.single('file'), (req, res) => {
     console.log(req.file)
     if (!req.file) return res.json({"error":"No file provided."})
@@ -120,19 +122,12 @@ router.get('/marke/id/:id', (req, res) => {
   })
 })
 
-router.post('/admin/marke/create', upload.single('file'), (req, res) => {
-    console.log(req.file)
-    if (!req.file) return res.json({"error":"No file provided."})
-    
-    res.json({
-        status: "success",
-        id: req.file.id,
-        filename: req.file.filename,
-        originalName: req.file.originalname,
-        mimetype: req.file.mimetype,
-        size: req.file.size
-    })
-
+router.post('/admin/marke/create', (req, res) => {
+  const {name, description, date, price, image} = req.body
+  db.Marke.create({name, description, date, price, image}, (marke) => {
+    console.log(marke)
+    res.json({"success":"true"})
+  })
 })
 
 

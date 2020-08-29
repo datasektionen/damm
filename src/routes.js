@@ -8,3 +8,5 @@ export const LOGOUT = '/logout';
 export const MARKES_ARKIV = '/markesarkiv';
 export const MARKE = '/marke/:id'
 export const SKAPA_MARKE = '/admin/skapa/marke'
+export const MARKESTAGGAR = '/admin/markestaggar'
+export const MARKE_IMG_PATH = '/api/file'

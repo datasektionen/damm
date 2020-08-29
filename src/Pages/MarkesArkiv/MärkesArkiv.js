@@ -35,6 +35,8 @@ class MärkesArkiv extends React.Component {
             search: "",
             märken: [],
             showTags: showTags,
+            numPatches: 0,
+            sortRule: "standard"
         }
     }
 
@@ -56,7 +58,7 @@ class MärkesArkiv extends React.Component {
             .then(res => res.json())
             .then(res => {
                 console.log(res)
-                this.setState({märken: res})
+                this.setState({märken: res, numPatches: res.length})
             })
             .catch(err => {
                 console.log(err)
@@ -117,11 +119,72 @@ class MärkesArkiv extends React.Component {
         const clearAll = () => {
             this.setState({search: "", selectedTags: []})
         }
-
+        
+        //Shows/hides tags and saves the state to localstorage
         const toggleShowTags = () => {
             this.setState({showTags: !this.state.showTags}, () => {
                 localStorage.setItem('showTags', JSON.stringify(this.state.showTags));
             })
+        }
+        
+        //Array of sort options
+        const sortOptions = ["Sortera på: Standard", "Namn (A-Ö)", "Namn (Ö-A)", "Pris (Lägst överst)", "Pris (Högst överst)", "Datum (Nu-1983)", "Datum (1983-Nu)"]
+
+        //Function that sorts results
+        const sortResults = () => {
+            const {sortRule} = this.state
+            
+            if (sortRule === sortOptions[0].toLowerCase()) return this.state.märken
+
+            if (sortRule === sortOptions[1].toLowerCase()) {
+                return [...this.state.märken].sort((a, b) => {
+                    const A = a.name.toLowerCase()
+                    const B = b.name.toLowerCase()
+                    if (A < B) return -1
+                    if (A > B) return 1
+                    return 0
+                })
+            }
+
+            if (sortRule === sortOptions[2].toLowerCase()) {
+                return [...this.state.märken].sort((a, b) => {
+                    const A = a.name.toLowerCase()
+                    const B = b.name.toLowerCase()
+                    if (A > B) return -1
+                    if (A < B) return 1
+                    return 0
+                })
+            }
+
+            if (sortRule === sortOptions[3].toLowerCase()) {
+                return [...this.state.märken].sort((a, b) => {
+                    const A = a.price.toLowerCase()
+                    const B = b.price.toLowerCase()
+                    if (A < B) return -1
+                    if (A > B) return 1
+                    return 0
+                })
+            }
+
+            if (sortRule === sortOptions[4].toLowerCase()) {
+                return [...this.state.märken].sort((a, b) => {
+                    const A = a.price.toLowerCase()
+                    const B = b.price.toLowerCase()
+                    if (A > B) return -1
+                    if (A < B) return 1
+                    return 0
+                })
+            }
+
+            if (sortRule === sortOptions[5].toLowerCase()) {
+                return [...this.state.märken].sort((a, b) => new moment(a.date).format('YYYYMMDD') - new moment(b.date).format('YYYYMMDD'))
+            }
+
+            if (sortRule === sortOptions[6].toLowerCase()) {
+                return [...this.state.märken].sort((a, b) => new moment(b.date).format('YYYYMMDD') - new moment(a.date).format('YYYYMMDD'))
+            }
+
+            return this.state.märken
         }
 
         return (
@@ -134,7 +197,7 @@ class MärkesArkiv extends React.Component {
                     </div>
                 </div>
                 <div className="settings">
-                    <h3>Filtrera märken</h3>
+        <h3>Sök bland {this.state.numPatches} märken</h3>
                     <div className="buttons">
                         <button onClick={() => {this.setState({selectedTags: []})}} disabled={this.state.selectedTags.length === 0}>Rensa taggar</button>
                         <button onClick={() => clearAll()} disabled={this.state.selectedTags.length === 0 && this.state.search.length === 0}>Rensa allt</button>
@@ -143,6 +206,9 @@ class MärkesArkiv extends React.Component {
                     <div className="sök">
                         <input type="text" placeholder="Sök..." value={this.state.search} onChange={(e) => this.setState({search: e.target.value})}/>
                         <img className="clearImg" src={Add} onClick={() => {this.setState({search: ""})}}/>
+                        <select name="sortera" onChange={(e) => this.setState({sortRule: e.target.value})}>
+                            {sortOptions.map((x, i) => <option key={i} value={x.toLowerCase()}>{x}</option>)}
+                        </select>
                     </div>
                     {this.state.showTags ? 
                         <div>
@@ -206,7 +272,7 @@ class MärkesArkiv extends React.Component {
                         date={moment(new Date('October 17, 2010 03:24:00'))}
                         numProduced={100}
                     /> */}
-                    {this.state.märken.map((x,i) => (patchTagsMatchesSelected(x) && matchesSearch(x)) ? <Märke key={i} {...x} date={moment(Date.now())} /> : undefined)}
+                    {sortResults(this.state.märken).map((x,i) => (patchTagsMatchesSelected(x) && matchesSearch(x)) ? <Märke key={i} {...x} /*date={moment(Date.now())}*/ /> : undefined)}
                 </div>
             </div>
         )

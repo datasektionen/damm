@@ -87,6 +87,7 @@ var markeSchema = new mongoose.Schema({
     name: String,
     description: String,
     numProduced: Number,
+    //Håller strängar i formatet: "2020-08-29"
     date: String,
     image: {
         type: String,

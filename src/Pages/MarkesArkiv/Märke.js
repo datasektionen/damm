@@ -1,12 +1,13 @@
 import React from 'react'
 import Tag from './Tag'
+import moment from 'moment'
 
 const Märke = ({image, date, name, description, numProduced = "?", tags = [], price, ...rest}) => {
     return (
-        <div className="märke" title={description} onClick={() => {window.location=`/marke/${rest._id}`}}>
+        <div className="märke" title={description} onClick={() => {/*window.location=`/marke/${rest._id}`*/}}>
                 <div><img src={image} /></div>
                 <div className="head">
-                    <div className="date" title="Utgivningsdatum (första utgåvan)">{date.format("DD MMM YYYY")}</div>
+                    <div className="date" title="Utgivningsdatum (första utgåvan)">{date ? moment(date).format("DD MMM YYYY") : "Okänt"}</div>
                     {/* <div className="produced" title="Antal producerade (första utgåvan)">{numProduced} st</div> */}
                     <div className="price" title="Pris">{price ? (price + " kr") : "Gratis"}</div>
                 </div>

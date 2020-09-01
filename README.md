@@ -9,4 +9,11 @@ Kör ```npm run build``` så byggs React-applikationen (klienten) och läggs i /
 Kör ```npm run start-server``` så byggs körs Node.js-applikationen (servern) på defaultport 500 och servar /api och /build (React-builden) (på /).
 
 ## Environment tables
-Du behöver LOGIN2_API_KEY
+Du behöver LOGIN2_API_KEY, MONGO_URL
+
+The following environment variables are required to run the project:
+
+| Variable              | Description                           | Default                       |
+|-----------------------|---------------------------------------|-------------------------------|
+| LOGIN2_API_KEY        | Login2 api-nyckel                     | ---                           |
+| MONGO_URL             | URL till mongodatabasen               | ---                           |

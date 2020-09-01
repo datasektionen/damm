@@ -11,6 +11,8 @@ import SkapaHändelse from './Pages/SkapaHändelse/SkapaHändelse'
 import Museum from './Pages/Museum/Museum'
 import MärkesArkiv from './Pages/MarkesArkiv/MärkesArkiv'
 import MärkePage from './Pages/MarkesArkiv/MärkePage'
+import AdminMärke from './Pages/Admin/AdminMärke'
+import NotFound from './Pages/NotFound'
 
 class App extends Component {
   constructor(props) {
@@ -23,12 +25,13 @@ class App extends Component {
 
   componentDidMount() {
     if (localStorage.getItem('token')) {
-      fetch(`/api/isAdmin?token=${localStorage.getItem('token')}`)
+      fetch(`${ROUTES.API_IS_ADMIN}?token=${localStorage.getItem('token')}`)
       .then(res => res.json())
       .then(json => {
         console.log(json)
         if (json.error) {
-          window.location=ROUTES.LOGIN
+          localStorage.removeItem('token')
+          window.location=ROUTES.HOME
         } else {
           // localStorage.setItem('isAdmin', json.isAdmin)
           this.setState({admin: json.isAdmin})
@@ -36,7 +39,7 @@ class App extends Component {
       })
       .catch(err => {
         console.log(err)
-        window.location=ROUTES.LOGIN
+        // window.location=ROUTES.LOGIN
       })
     }
   }
@@ -47,10 +50,10 @@ class App extends Component {
       let links = [
         <Link to={ROUTES.HOME}>Tidslinje</Link>,
         <Link to={ROUTES.MUSEUM}>Historiska artefakter</Link>,
-        <Link to={ROUTES.MARKES_ARKIV}>Märkesarkiv</Link>,
+        <Link to={ROUTES.MÄRKESARKIV}>Märkesarkiv</Link>,
       ]
       
-      if (localStorage.getItem('token')) links.push(<Link to={ROUTES.SKAPA_HANDELSE}>Skapa händelse</Link>)
+      if (localStorage.getItem('token')) links.push(<Link to={ROUTES.SKAPA_HÄNDELSE}>Skapa händelse</Link>)
       if (this.state.admin === true && localStorage.getItem('token')) links.push(<Link to={ROUTES.ADMIN}>Administrera</Link>)
 
       links.push(<Link to={ROUTES.HELP}>Hjälp</Link>)
@@ -72,21 +75,24 @@ class App extends Component {
         <Switch>
           <Route exact path={ROUTES.HOME} render={match => <Historia {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.MUSEUM} render={match => <Museum {...this.props} {...this.state} /> } />
-          <Route exact path={ROUTES.MARKES_ARKIV} render={match => <MärkesArkiv {...this.props} {...this.state} /> } />
-          <Route exact path={ROUTES.MARKE} render={match => <MärkePage /> } />
-          <Route exact path={ROUTES.SKAPA_HANDELSE} render={match => <SkapaHändelse {...this.props} {...this.state} /> } />
+          <Route exact path={ROUTES.MÄRKESARKIV} render={match => <MärkesArkiv {...this.props} {...this.state} /> } />
+          <Route exact path={ROUTES.MÄRKE} render={match => <MärkePage /> } />
+          <Route exact path={ROUTES.SKAPA_MÄRKE} render={match => <AdminMärke {...this.props} {...this.state} />} />
+          <Route exact path={ROUTES.SKAPA_HÄNDELSE} render={match => <SkapaHändelse {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.ADMIN} render={match => <Admin {...this.props} {...this.state} />} />
           <Route exact path={ROUTES.LOGIN} render={match => {window.location = `https://login2.datasektionen.se/login?callback=${encodeURIComponent(window.location.origin)}/token/` }} />
           <Route exact path={ROUTES.LOGOUT} render={({match}) => {
             localStorage.removeItem('token')
-            return <Redirect to={ROUTES.HOME} />
+            window.location=ROUTES.HOME
+            // return <Redirect to={ROUTES.HOME} />
           }} />
-          <Route path='/token/:token' render={({match}) => {
+          <Route path={ROUTES.TOKEN} render={({match}) => {
             localStorage.setItem('token', match.params.token)
-            return <Redirect to={ROUTES.HOME} />
+            window.location=ROUTES.HOME
+            // return <Redirect to={ROUTES.HOME} />
           }} />
           {/* TODO: Fixa en dammig 404-komponent */}
-          <Route path="*" render={match => <div>Sidan hittades ej</div>} />
+          <Route path="*" render={match => <NotFound />} />
         </Switch>
       </div>
     )

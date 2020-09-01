@@ -2,7 +2,7 @@ var fetch = require('node-fetch')
 var mongoose = require('mongoose');
 
 const dAuth = require('./dauth')
-const moment = require('moment')
+const moment = require('moment');
 
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true,  useUnifiedTopology: true })
 .then(console.log("DB connected"))
@@ -87,14 +87,27 @@ var markeSchema = new mongoose.Schema({
     name: String,
     description: String,
     numProduced: Number,
+    //Håller strängar i formatet: "2020-08-29"
     date: String,
-    image: {
-        type: String,
-        data: Buffer
-    },
-    orderNo: [String],
+    image: String,
+    orders: [{
+        company: String,
+        order: String
+    }],
     price: String,
-    tags: [{text: String}]
+    tags: [{
+        _id: mongoose.Types.ObjectId,
+        text: String,
+        color: String,
+        hoverText: String,
+        backgroundColor: String
+    }],
+    createdBy: [{
+        firstName: String,
+        lastName: String,
+    }],
+    uploadedBy: String,
+    uploadDate: String
 })
 
 
@@ -104,10 +117,11 @@ markeSchema.statics.create = function(x, callback) {
         description: x.description,
         numProduced: x.numProduced,
         date: x.date,
-        image: "",
-        orderNo: [],
+        image: x.image,
         price: x.price,
-        tags: [x.tags]
+        tags: x.tags ? x.tags : [],
+        createdBy: x.createdBy,
+        orders: x.orders
     })
     märke.save().then(artefakt => callback(artefakt))
 }
@@ -122,5 +136,6 @@ module.exports = {
     User,
     Artefakt,
     Marke,
-    Tag
+    Tag,
+    mongoose
 }

@@ -22,7 +22,8 @@ const INITIAL_STATE = {
     numFiles: 1,
 }
 
-const SUCCESS_STATE = {...INITIAL_STATE, success: true}
+const SUCCESS_STATE = {...INITIAL_STATE, success: true, tags: []}
+const RESET_STATE = {...INITIAL_STATE, success: false, tags: [],}
 
 class AdminMärke extends React.Component {
     constructor(props) {
@@ -80,6 +81,7 @@ class AdminMärke extends React.Component {
                     console.log(res)
                     // window.location=ROUTES.SKAPA_MÄRKE
                     this.setState({...SUCCESS_STATE})
+                    window.scrollTo(0, 0)
                 })
                 .catch(err => {
                     console.log(err)
@@ -169,7 +171,7 @@ class AdminMärke extends React.Component {
             <div className="Admin">
                 <div className="Header">
                     <div className="HeaderLeft"><Link to={ROUTES.ADMIN}>« Tillbaka</Link></div>
-                    <h2>Lägg till märke</h2>
+                    <div><h2>Lägg till märke</h2></div>
                 </div>
                 <div className="Form">
                     <form onSubmit={(e) => submit(e)}>
@@ -217,7 +219,7 @@ class AdminMärke extends React.Component {
                                 <h4>Namn på den/de som skapat märket (om känt)</h4>
                                 <div className="add">
                                     <input type="text" name="firstName" placeholder="Förnamn" value={this.state.firstName} onChange={(e) => handleChange(e)} />
-                                    <input type="text" name="lastName" placeholder="Efternamn" value={this.state.lastName} onChange={(e) => handleChange(e)} />
+                                    <input type="text" id="lastName" name="lastName" placeholder="Efternamn" value={this.state.lastName} onChange={(e) => handleChange(e)} />
                                     <button onClick={(e) => addCreator(e)} disabled={this.state.firstName === ""}>Lägg till</button>
                                 </div>
                                 {this.state.creators.map((x,i) => <div className="creator" key={i}>{x.firstName} {x.lastName}<i class="fa fa-times" onClick={(e) => removeCreator(e, i)}></i></div>)}
@@ -252,7 +254,7 @@ class AdminMärke extends React.Component {
                         </div>
                         <div className="BottomButtons">
                             <button disabled={invalid} formAction="submit">Spara märke</button>
-                            <button  className="rensa" disabled={true}>Rensa</button>
+                            <button  className="rensa" onClick={(e) => {e.preventDefault(); this.setState({...RESET_STATE})}}>Rensa</button>
                         </div>
                     </form>
                 </div>

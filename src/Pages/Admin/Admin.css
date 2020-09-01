@@ -300,3 +300,71 @@
     text-align: center;
     padding: 5px;
 }
+
+@media screen and (max-width: 600px) {
+    .Admin .Form form {
+        width: 100%;
+    }
+
+    .Admin .Form form .file-input {
+        width: 100%;
+    }
+
+    .Admin .Form form #name {
+        width: 100%;
+    }
+
+    .Admin .Form form #description {
+        width: 100%;
+    }
+
+    .Admin .Form form .date,
+    .Admin .Form form .date input {
+        width: 100%;
+    }
+
+    .Admin .Form form .price,
+    .Admin .Form form .price input {
+        width: 100%;
+    }
+
+    .Admin .Form form .creators {
+        width: 100%;
+    }
+
+    .Admin .Form form .creators button {
+        font-size: 1em;
+        width: 30%;
+    }
+
+    .Admin form .creators .add input {
+        width: 35%;
+    }
+
+    .Admin .Header {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .Admin .HeaderLeft {
+        /* position: absolute; */
+        /* left: 20%; */
+        position: absolute;
+        top: 50px;
+        left: 0;
+        background-color: #e83d84;
+        width: 100%;
+    }
+
+}
+
+@media screen and (max-width: 900px) and (min-width: 601px) {
+    .Admin .Form form {
+        width: 90%;
+    }
+
+    .Admin .HeaderLeft {
+        position: relative;
+        left: -10%;
+    }
+}

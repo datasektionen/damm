@@ -73,14 +73,17 @@ class MärkesArkiv extends React.Component {
 
     render() {
 
+        const selectedTagsIncludesTag = (tagName) => {
+            return this.state.selectedTags.filter(x => x.text === tagName).length > 0
+        }
+
         //Function called when clicking on a tag in the filter section. Adds and removes a tag from the selected tags list.
         const toggleTag = (tag) => {
             //Remove from list
-            if (this.state.selectedTags.includes(tag.text)) {
-                this.setState({selectedTags: this.state.selectedTags.filter(x => x !== tag.text)})
-             //Add it to the list
-            } else {
-                this.setState({selectedTags: this.state.selectedTags.concat(tag.text)})
+            if (selectedTagsIncludesTag(tag.text)) {
+                this.setState({selectedTags: this.state.selectedTags.filter(x => x.text !== tag.text)})
+            } else { //Add
+                this.setState({selectedTags: this.state.selectedTags.concat(tag)})
             }
         }
 
@@ -96,8 +99,8 @@ class MärkesArkiv extends React.Component {
             if (tags.length === 0) return false
     
             //Returns an array with booleans where each boolean represents a tag match.
-            const hits = tags.map(x => {
-                if (this.state.selectedTags.includes(x.text)) return true
+            const hits = tags.map((x,i) => {
+                if (selectedTagsIncludesTag(x.text)) return true
                 else return false
             })
 

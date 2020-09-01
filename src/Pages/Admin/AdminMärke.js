@@ -7,7 +7,6 @@ const INITIAL_STATE = {
     image: undefined,
     uploading: false,
     imageSrc: "",
-    tags: [],
     selectedTags: [],
     name: "",
     description: "",
@@ -17,6 +16,10 @@ const INITIAL_STATE = {
     firstName: "",
     lastName: "",
     creators: [],
+    orders: [],
+    company: "",
+    order: "",
+    numFiles: 1,
 }
 
 const SUCCESS_STATE = {...INITIAL_STATE, success: true}
@@ -26,7 +29,7 @@ class AdminMärke extends React.Component {
         super(props)
 
 
-        this.state = {...INITIAL_STATE, success: false}
+        this.state = {...INITIAL_STATE, success: false, tags: [],}
     }
 
     componentDidMount() {
@@ -50,7 +53,7 @@ class AdminMärke extends React.Component {
         const submit = (e) => {
             e.preventDefault()
 
-            const {name, description, date, price, imageSrc, creators, selectedTags} = this.state
+            const {name, description, date, price, imageSrc, creators, selectedTags, orders} = this.state
 
             const body = {
                 token: localStorage.getItem('token'),
@@ -60,6 +63,8 @@ class AdminMärke extends React.Component {
                 price,
                 image: `${ROUTES.API_MÄRKE_GET_IMG_PATH}/${imageSrc}`,
                 creators,
+                selectedTags,
+                orders,
             }
 
             console.log(body)
@@ -102,19 +107,31 @@ class AdminMärke extends React.Component {
             })
         }
 
-        const handleFileChange = (e) => {
+        const handleImageChange = (e) => {
             this.setState({image: e.target.files[0], imageSrc: "", uploading: true}, () => {
                 uploadImage()
             })
         }
 
+        // const toggleTag = (tag) => {
+        //     //Remove from list
+        //     if (this.state.selectedTags.includes(tag.text)) {
+        //         this.setState({selectedTags: this.state.selectedTags.filter(x => x !== tag.text)})
+        //      //Add it to the list
+        //     } else {
+        //         this.setState({selectedTags: this.state.selectedTags.concat(tag.text)})
+        //     }
+        // }
+
+        const selectedTagsIncludesTag = (tagName) => {
+            return this.state.selectedTags.filter((x,i) => x.text === tagName).length > 0
+        }
+
         const toggleTag = (tag) => {
-            //Remove from list
-            if (this.state.selectedTags.includes(tag.text)) {
-                this.setState({selectedTags: this.state.selectedTags.filter(x => x !== tag.text)})
-             //Add it to the list
+            if (selectedTagsIncludesTag(tag.text)) {
+                this.setState({selectedTags: this.state.selectedTags.filter(x => x.text !== tag.text)})
             } else {
-                this.setState({selectedTags: this.state.selectedTags.concat(tag.text)})
+                this.setState({selectedTags: this.state.selectedTags.concat(tag)})
             }
         }
 
@@ -134,6 +151,18 @@ class AdminMärke extends React.Component {
             this.setState({creators: this.state.creators.filter((x,i) => index !== i)})
         }
 
+        const addOrder = e => {
+            e.preventDefault()
+            this.setState({orders: this.state.orders.concat({company: this.state.company, order: this.state.order})}, () => {
+                this.setState({order: "", company: ""})
+            })
+        }
+
+        const removeOrder = (e, index) => {
+            e.preventDefault()
+            this.setState({orders: this.state.orders.filter((x,i) => index !== i)})
+        }
+
         const invalid = this.state.name.length === 0 || this.state.imageSrc === ""
 
         return (
@@ -147,7 +176,7 @@ class AdminMärke extends React.Component {
                         {this.state.success && <div className="success">Märket sparat!</div>}
                         <div className="file-input">
                             <label>
-                                <input id="image" name="image" type="file" onChange={(e) => handleFileChange(e)} />
+                                <input id="image" name="image" type="file" onChange={(e) => handleImageChange(e)} />
                                 {!this.state.image ?
                                     <div className="preupload">
                                         <div>
@@ -170,18 +199,56 @@ class AdminMärke extends React.Component {
                                 }
                             </label>
                         </div>
-                        <input name="name" type="text" autoComplete={false} placeholder="Namn" value={this.state.name} onChange={(e) => handleChange(e)} />
-                        <textarea name="description" placeholder="Beskrivning" value={this.state.description} onChange={(e) => handleChange(e)} />
-                        <input name="date" type="date" value={this.state.date} onChange={(e) => handleChange(e)}/>
-                        <input name="price" type="text" placeholder="Pris, lämna tomt om gratis" value={this.state.price} onChange={(e) => handleChange(e)}/>
+                        <h3>Namn och beskrivning</h3>
+                        <input id="name" name="name" type="text" autoComplete={false} placeholder="Namn" value={this.state.name} onChange={(e) => handleChange(e)} />
+                        <textarea id="description" name="description" placeholder="Beskrivning" value={this.state.description} onChange={(e) => handleChange(e)} />
+                        <div className="date">
+                            <h3>Datum</h3>
+                            <h4>Lämna tomt om okänt</h4>
+                            <input name="date" type="date" value={this.state.date} onChange={(e) => handleChange(e)}/>
+                        </div>
+                        <div className="price">
+                            <h3>Pris</h3>
+                            <h4>Lämna tomt om gratis, "-" om det ej säljs och "Gratis" om gratis</h4>
+                            <input name="price" type="text" placeholder="Pris" value={this.state.price} onChange={(e) => handleChange(e)}/>
+                        </div>
                         <div className="creators">
-                                <input type="text" name="firstName" placeholder="Förnamn" value={this.state.firstName} onChange={(e) => handleChange(e)} />
-                                <input type="text" name="lastName" placeholder="Efternamn" value={this.state.lastName} onChange={(e) => handleChange(e)} />
-                                <button onClick={(e) => addCreator(e)} disabled={this.state.firstName === ""}>Lägg till</button>
+                                <h3>Skapare</h3>
+                                <h4>Namn på den/de som skapat märket (om känt)</h4>
+                                <div className="add">
+                                    <input type="text" name="firstName" placeholder="Förnamn" value={this.state.firstName} onChange={(e) => handleChange(e)} />
+                                    <input type="text" name="lastName" placeholder="Efternamn" value={this.state.lastName} onChange={(e) => handleChange(e)} />
+                                    <button onClick={(e) => addCreator(e)} disabled={this.state.firstName === ""}>Lägg till</button>
+                                </div>
                                 {this.state.creators.map((x,i) => <div className="creator" key={i}>{x.firstName} {x.lastName}<i class="fa fa-times" onClick={(e) => removeCreator(e, i)}></i></div>)}
                         </div>
-                        <div className="tags">
-                            {this.state.tags.map((x,i) =>  <TagClickable key={i} onClick={() => {toggleTag(x)}} {...x} selectedTags={this.state.selectedTags}/> )}
+                        <div className="tagsection">
+                            <h3>Taggar</h3>
+                            <h4>Lägg till passande taggar till märket. Underlättar sökning.</h4>
+                            <div className="tags">
+                                {this.state.tags.map((x,i) =>  <TagClickable key={i} onClick={() => {toggleTag(x)}} {...x} selectedTags={this.state.selectedTags}/> )}
+                            </div>
+                        </div>
+                        {/* <div className="files">
+                            <h3>Filer</h3>
+                            <h4>Filer som tillhör märket, exempelvis källfiler i vektorformat eller .pdf</h4>
+                            <div className="input">
+                                <input type="file" />
+                                <button onClick={e => {
+                                    e.preventDefault()
+                                    this.setState({numFiles: this.state.numFiles + 1})
+                                }}>Lägg till ny fil</button>
+                            </div>
+                        </div> */}
+                        <div className="orders">
+                            <h3>Ordrar</h3>
+                            <h4>Ordernummer eller referensnummer från tidigare beställningar. För att underlätta framtida beställningar</h4>
+                            <div className="input">
+                                <input name="company" type="text" placeholder="Företag" value={this.state.company} onChange={(e) => handleChange(e)} />
+                                <input name="order" type="text" placeholder="Referens" value={this.state.order} onChange={(e) => handleChange(e)} />
+                                <button onClick={(e) => addOrder(e)}>Lägg till</button>
+                            </div>
+                            {this.state.orders.map((x,i) => <div className="order" key={i}>{x.company} {x.order}<i class="fa fa-times" onClick={(e) => removeOrder(e, i)}></i></div>)}
                         </div>
                         <div className="BottomButtons">
                             <button disabled={invalid} formAction="submit">Spara märke</button>

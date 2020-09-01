@@ -123,9 +123,15 @@ router.get('/marke/id/:id', (req, res) => {
 })
 
 router.post('/admin/marke/create', (req, res) => {
-  const {name, description, date, price, image, creators} = req.body
-  console.log(creators)
-  db.Marke.create({name, description, date, price, image, createdBy: creators}, (marke) => {
+  const {name, description, date, price, image, creators, orders, selectedTags} = req.body
+  console.log(orders)
+  console.log(selectedTags)
+
+  // let tagIDs
+  // tagIDs = selectedTags.map(x => db.mongoose.Types.ObjectId(x._id))
+  // console.log(tagIDs)
+
+  db.Marke.create({name, description, date, price, image, createdBy: creators, orders, tags: selectedTags}, (marke) => {
     console.log(marke)
     res.json({"success":"true"})
   })

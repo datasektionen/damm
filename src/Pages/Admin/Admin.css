@@ -74,6 +74,21 @@
     align-items: center;
 }
 
+.Admin .Form h3 {
+    font-size: 1.4em;
+}
+
+.Admin .Form h4 {
+    color: #757575;
+    font-size: 1em;
+}
+
+.Admin .Form  h3,
+.Admin .Form  h4 {
+    /* padding-left: 4%; */
+    text-align: center;
+}
+
 .Admin .Form form {
     /* margin: 50px; */
     padding: 40px;
@@ -153,12 +168,16 @@
     content: " ";
 }
 
-.Admin .Form .file-input .preview i.fa-times {
+.Admin .Form .fa-times {
     color: red;
+    cursor: pointer;
+}
+
+.Admin .Form .file-input .preview i.fa-times {
+    /* color: red; */
     opacity: 1;
     position: relative;
     left: 49%;
-    cursor: pointer;
 }
 
 .Admin .Form .file-input .preupload .title,
@@ -215,26 +234,69 @@
     color: #155724;
 }
 
+.Admin form input#name {
+    margin: 10px;
+}
+
+.Admin form .price {
+    width: 100%;
+    text-align: center;
+}
+
+.Admin form .creators {
+    width: 100%;
+}
+
+.Admin form .creators .add {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center; 
+    flex-wrap: nowrap;
+    width: 100%;
+}
+.Admin form .creators .add input {
+    width: 30%;
+}
+
+.Admin form .creators .creator {
+    text-align: center;
+    padding: 5px;
+}
+
 .Admin form .creators button {
     background-color: #E5C100;
 }
 
-.Admin form .creators .creator {
-    /* font-size: 3em; */
-    padding: 5px;
-}
-
-.Admin form .creators .fa-times::before {
+.Admin form .creators .fa-times::before,
+.Admin form .orders .fa-times::before {
     padding-left: 10px;
 }
 
-.Admin form .creators .fa-times {
-    color: red;
+.Admin form .creators .fa-times,
+.Admin form .orders .fa-times {
     font-size: 1.5em;
     position: relative;
     top: 4px;
 }
 
-.Admin form .creators .fa-times:hover {
-    cursor: pointer;
+.Admin form .orders .input{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.Admin form .orders input {
+    width: 30%;
+}
+
+.Admin form .orders button {
+    background-color: #E5C100;
+}
+
+.Admin form .orders .order {
+    width: 100%;
+    text-align: center;
+    padding: 5px;
 }

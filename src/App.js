@@ -12,6 +12,7 @@ import Museum from './Pages/Museum/Museum'
 import MärkesArkiv from './Pages/MarkesArkiv/MärkesArkiv'
 import MärkePage from './Pages/MarkesArkiv/MärkePage'
 import AdminMärke from './Pages/Admin/AdminMärke'
+import NotFound from './Pages/NotFound'
 
 class App extends Component {
   constructor(props) {
@@ -91,7 +92,7 @@ class App extends Component {
             // return <Redirect to={ROUTES.HOME} />
           }} />
           {/* TODO: Fixa en dammig 404-komponent */}
-          <Route path="*" render={match => <div>Sidan hittades ej</div>} />
+          <Route path="*" render={match => <NotFound />} />
         </Switch>
       </div>
     )

@@ -17,16 +17,19 @@ class Admin extends React.Component {
             title: "Lägg till märke",
             description: "Lägg till ett nytt (eller gammalt) märke till arkivet för dOsq att beskåda.",
             link: ROUTES.SKAPA_MÄRKE,
+            buttonText: "Lägg till märke"
         },
         {
             title: "Hantera märkestaggar",
             description: "Lägg till, redigera eller ta bort märkestaggar.",
             link: ROUTES.MÄRKESTAGGAR,
+            buttonText: "Hantera märkestaggar"
         },
         {
             title: "Lägg till händelse",
             description: "Registrera generell historia du tycker är värdig att förevigas.",
-            link: ROUTES.SKAPA_HÄNDELSE
+            link: ROUTES.SKAPA_HÄNDELSE,
+            buttonText: "Lägg till händelse"
         },
         // {
         //     title: "Lägg till händelse",

@@ -102,9 +102,8 @@
 
 }
 
-.Admin .Form .file-input {
+.Admin .Form .file-input{
     width: 90%;
-    
 }
 
 .Admin .Form .file-input label {
@@ -202,4 +201,40 @@
 
 .Admin .Form .BottomButtons button.rensa {
     background-color: #ddd;
+}
+
+.Admin form .success {
+    width: 90%;
+    margin-bottom: 20px;
+    padding: 20px;
+    /* text-align: center; */
+    border: solid 1px #C2E6CB;
+    border-radius: 3px;
+
+    background-color: #D4EDDA;
+    color: #155724;
+}
+
+.Admin form .creators button {
+    background-color: #E5C100;
+}
+
+.Admin form .creators .creator {
+    /* font-size: 3em; */
+    padding: 5px;
+}
+
+.Admin form .creators .fa-times::before {
+    padding-left: 10px;
+}
+
+.Admin form .creators .fa-times {
+    color: red;
+    font-size: 1.5em;
+    position: relative;
+    top: 4px;
+}
+
+.Admin form .creators .fa-times:hover {
+    cursor: pointer;
 }

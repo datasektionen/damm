@@ -10,3 +10,10 @@ Kör ```npm run start-server``` så byggs körs Node.js-applikationen (servern) 
 
 ## Environment tables
 Du behöver LOGIN2_API_KEY, MONGO_URL
+
+The following environment variables are required to run the project:
+
+| Variable              | Description                           | Default                       |
+|-----------------------|---------------------------------------|-------------------------------|
+| LOGIN2_API_KEY        | Login2 api-nyckel                     | ---                           |
+| MONGO_URL             | URL till mongodatabasen               | ---                           |

@@ -2,6 +2,7 @@ import React from 'react'
 import logo from '../../skold.png'
 import './MärkesArkiv.css'
 import Märke from './Märke'
+import * as ROUTES from '../../routes'
 
 import Sektionmärket from './Sektionsmärket.jpg'
 import Sjöslaget from './Sjöslaget 2010.jpg'
@@ -43,7 +44,7 @@ class MärkesArkiv extends React.Component {
 
     componentDidMount() {
         const fetchTags = () => {
-            fetch('/api/tags')
+            fetch(ROUTES.API_GET_TAGS)
             .then(res => res.json())
             .then(res => {
                 console.log(res)
@@ -55,7 +56,7 @@ class MärkesArkiv extends React.Component {
         }
 
         const fetchMärken = () => {
-            fetch('/api/marken')
+            fetch(ROUTES.API_GET_MÄRKEN)
             .then(res => res.json())
             .then(res => {
                 console.log(res)

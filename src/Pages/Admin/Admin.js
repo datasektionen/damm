@@ -16,27 +16,27 @@ class Admin extends React.Component {
         {
             title: "Lägg till märke",
             description: "Lägg till ett nytt (eller gammalt) märke till arkivet för dOsq att beskåda.",
-            link: ROUTES.SKAPA_MARKE,
+            link: ROUTES.SKAPA_MÄRKE,
         },
         {
             title: "Hantera märkestaggar",
             description: "Lägg till, redigera eller ta bort märkestaggar.",
-            link: ROUTES.MARKESTAGGAR,
+            link: ROUTES.MÄRKESTAGGAR,
         },
         {
             title: "Lägg till händelse",
             description: "Registrera generell historia du tycker är värdig att förevigas.",
-            link: ROUTES.SKAPA_HANDELSE
+            link: ROUTES.SKAPA_HÄNDELSE
         },
         // {
         //     title: "Lägg till händelse",
         //     description: "Registrera generell historia du tycker är värdig att förevigas.",
-        //     link: ROUTES.SKAPA_HANDELSE
+        //     link: ROUTES.SKAPA_HÄNDELSE
         // },
         // {
         //     title: "Lägg till händelse",
         //     description: "Registrera generell historia du tycker är värdig att förevigas.",
-        //     link: ROUTES.SKAPA_HANDELSE
+        //     link: ROUTES.SKAPA_HÄNDELSE
         // },
 
             // {title: "Hantera förslag", description: "Hantera "},

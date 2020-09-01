@@ -123,8 +123,9 @@ router.get('/marke/id/:id', (req, res) => {
 })
 
 router.post('/admin/marke/create', (req, res) => {
-  const {name, description, date, price, image} = req.body
-  db.Marke.create({name, description, date, price, image}, (marke) => {
+  const {name, description, date, price, image, creators} = req.body
+  console.log(creators)
+  db.Marke.create({name, description, date, price, image, createdBy: creators}, (marke) => {
     console.log(marke)
     res.json({"success":"true"})
   })

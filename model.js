@@ -93,7 +93,10 @@ var markeSchema = new mongoose.Schema({
     orderNo: [String],
     price: String,
     tags: [{text: String}],
-    createdBy: [String],
+    createdBy: [{
+        firstName: String,
+        lastName: String,
+    }],
     uploadedBy: String,
     uploadDate: String
 })
@@ -108,7 +111,8 @@ markeSchema.statics.create = function(x, callback) {
         image: x.image,
         orderNo: [],
         price: x.price,
-        tags: x.tags ? x.tags : []
+        tags: x.tags ? x.tags : [],
+        createdBy: x.createdBy
     })
     märke.save().then(artefakt => callback(artefakt))
 }

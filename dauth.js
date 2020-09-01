@@ -78,6 +78,9 @@ exports.isAdmin = (token) => {
             })
 
         })
-        .catch(err => reject(err))
+        .catch(err => {
+            console.log(err)
+            reject(err)
+        })
     })
 }

@@ -137,5 +137,15 @@ router.post('/admin/marke/create', (req, res) => {
   })
 })
 
+router.post('/admin/tag/update', (req, res) => {
+  const {text, hoverText, color, backgroundColor, _id} = req.body
+
+  db.Tag.updateOne({_id}, {$set: {text, hoverText, color, backgroundColor}}, (err, result) => {
+    if (err) {
+      return res.json({"error":err})
+    } else return res.json({"status":"success"})
+  })
+})
+
 
 module.exports = router

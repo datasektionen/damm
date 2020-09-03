@@ -163,7 +163,7 @@ div > .märken {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2)
 }
 
-.settings .clearImg {
+ .clearImg {
     width: 15px;
     height: 15px;
     transform: rotate(45deg);
@@ -172,7 +172,7 @@ div > .märken {
     opacity: 0.7;
 }
 
-.settings .clearImg:hover {
+ .clearImg:hover {
     cursor: pointer;
 }
 

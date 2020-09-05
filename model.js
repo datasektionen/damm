@@ -64,6 +64,8 @@ artefaktSchema.statics.create = function(x, callback) {
 //----------
 // Märken och grejer
 
+const MAX_TAG_TEXT_LENGTH = 18
+
 var tagSchema = new mongoose.Schema({
     text: String,
     color: String,
@@ -73,7 +75,7 @@ var tagSchema = new mongoose.Schema({
 
 tagSchema.statics.create = function(x, callback) {
     var tag = new this({
-        text: x.text.substring(0,18),
+        text: x.text.substring(0,MAX_TAG_TEXT_LENGTH),
         color: x.color,
         backgroundColor: x.backgroundColor,
         hoverText: x.hoverText,
@@ -82,7 +84,7 @@ tagSchema.statics.create = function(x, callback) {
 }
 
 tagSchema.statics.updateTag = function(_id, text, hoverText, color, backgroundColor, callback) {
-    Tag.updateOne({_id}, {$set: {text: text.substring(0,18), hoverText, color, backgroundColor}}, (err, _) => {
+    Tag.updateOne({_id}, {$set: {text: text.substring(0,MAX_TAG_TEXT_LENGTH), hoverText, color, backgroundColor}}, (err, _) => {
         callback(err)
     })
 }
@@ -135,6 +137,8 @@ markeSchema.statics.create = function(x, callback) {
 //Updates the specified tag in a patch. Used when updating the tags db to make the tags in patches match the new changes.
 //ugly
 markeSchema.statics.updateTags = function(patchID, newTag, callback) {
+    
+    newTag.text = newTag.text.substring(0,MAX_TAG_TEXT_LENGTH)
     //Find patch by id
     Marke.findById(patchID, (err, res) => {
         let tags = res.tags

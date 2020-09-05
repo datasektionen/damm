@@ -2,7 +2,7 @@ import React from 'react'
 import moment from 'moment'
 import '../../App.css'
 import logo from '../../skold.png'
-import ScrollLegend from '../../ScrollLegend'
+import ScrollLegend from './ScrollLegend'
 import templates from '../../config/templates'
 
 import General from './cards/General'

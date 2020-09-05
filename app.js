@@ -34,17 +34,17 @@ app.use(function(req, res, next) {
 });
 
 app.use('/', express.static('build'))
-app.get('/refresh', (req, res) => { 
-  const limit = lastCached.clone()
-  limit.add(1, 'minute')
-  if (moment().isBefore(limit)) {
-    res.send('{"response": "error", "message":"Already refreshed"}') 
-  } else {
-    res.send('{"response": "ok"}')
-    cachedData = init()()
-    lastCached = moment()
-  }
-})
+// app.get('/refresh', (req, res) => { 
+//   const limit = lastCached.clone()
+//   limit.add(1, 'minute')
+//   if (moment().isBefore(limit)) {
+//     res.send('{"response": "error", "message":"Already refreshed"}') 
+//   } else {
+//     res.send('{"response": "ok"}')
+//     cachedData = init()()
+//     lastCached = moment()
+//   }
+// })
 
 //För sökrutan, finns i mobilläge. Eventuellt lägga till dessa globalt (åtminstone en för damm)
 const fuzzes = [

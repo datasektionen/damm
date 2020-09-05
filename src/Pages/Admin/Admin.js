@@ -31,6 +31,15 @@ class Admin extends React.Component {
             link: ROUTES.SKAPA_HÄNDELSE,
             buttonText: "Lägg till händelse"
         },
+        {
+            title: "Ladda om data",
+            description: "Laddar om data till tidslinjen (protokoll, val och mandat). Kan vara bra vid en eventuell mörkläggning :)",
+            link: ROUTES.HOME,
+            buttonText: "Ladda om",
+            onClick: () => {
+                console.log("LADDAR OM, INTE IMPLEMENTERAT ÄN")
+            }
+        },
         // {
         //     title: "Lägg till händelse",
         //     description: "Registrera generell historia du tycker är värdig att förevigas.",

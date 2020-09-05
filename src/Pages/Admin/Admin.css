@@ -332,6 +332,7 @@
 
 .Admin .Tags .bar .tags .tagClickable {
     margin: 5px;
+    font-size: 0.9em;
 }
 
 .Admin .Tags .content {
@@ -359,7 +360,8 @@
 }
 
 .Admin .Tags .content .preview .tagClickable {
-    width: 30%;
+    width: 50%;
+    text-align: center;
 }
 
 .Admin .Tags .content input#text,
@@ -525,7 +527,7 @@
 
 }
 
-@media screen and (max-width: 900px) and (min-width: 601px) {
+@media screen and (max-width: 1000px) and (min-width: 601px) {
     .Admin .Form form {
         width: 90%;
     }

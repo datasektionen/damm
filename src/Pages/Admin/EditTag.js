@@ -132,7 +132,7 @@ class EditTag extends React.Component {
                         </div>
                         <div className="name">
                             <span>Namn</span>
-                            <input name="text" autoComplete="off" id="text" type="text" value={this.state.text} onChange={e => handleChange(e)} />
+                            <input maxLength={18} name="text" autoComplete="off" id="text" type="text" value={this.state.text} onChange={e => handleChange(e)} />
                         </div>
                         <div className="hover">
                             <span>Svävartext</span>

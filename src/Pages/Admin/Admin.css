@@ -16,17 +16,6 @@
     /* font-weight: 700; */
 }
 
-.Admin .HeaderLeft {
-    position: absolute;
-    left: 20%;
-}
-
-.Admin .HeaderLeft a {
-    font-weight: 300;
-    color: #fff;
-    font-size: 17px;
-}
-
 .Admin .Content {
     display: flex;
     flex-direction: row;
@@ -301,6 +290,112 @@
     padding: 5px;
 }
 
+.Admin .Tags {
+    display: flex;
+    flex-direction: row;
+}
+
+.Admin .Tags .bar {
+    width: 30%;
+    overflow: auto;
+    padding-top: 5px;
+    background-color: #f9f9f9f9;
+    text-align: center;
+    /* font-size: 0.9em; */
+}
+
+.Admin .Tags .bar .sök input {
+    width: 95%;
+    padding: 10px;
+    height: 50px;
+    margin-bottom: 5px;
+}
+
+.Admin .Tags .bar .sök {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    /* margin-bottom: 5px; */
+}
+
+.Admin .Tags .bar button {
+    width: 95%;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.Admin .Tags .bar button#nytagg {
+    background-color: #E5C100;
+}
+
+.Admin .Tags .bar .tags .tagClickable {
+    margin: 5px;
+    font-size: 0.9em;
+}
+
+.Admin .Tags .content {
+    width: 100%;
+    /* padding: 30px; */
+}
+
+.Admin .Tags .content .notag {
+    padding: 50px;
+}
+
+.Admin .Tags .content .edittagcard {
+    background-color: #f9f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 30px;
+    padding: 20px;
+}
+
+.Admin .Tags .content form > div {
+    margin: 20px 20px 20px 0;
+}
+
+.Admin .Tags .content .preview {
+    max-width: 100%;
+}
+
+.Admin .Tags .content .preview .tagClickable {
+    width: 50%;
+    text-align: center;
+}
+
+.Admin .Tags .content input#text,
+.Admin .Tags .content input#hoverText {
+    height: 50px;
+    width: 300px;
+    padding: 10px;
+}
+
+.Admin .Tags .content input {
+    margin-left: 10px;
+}
+
+.Admin .Tags .content .buttons button{
+    margin: 10px;
+}
+
+.Admin .Tags .content .buttons button#save {
+    background-color: #E5C100;
+}
+
+.Admin .Tags .content .buttons i.fa-trash {
+    margin-left: 10px;
+    font-size: 2em;
+    position: relative;
+    top: 5px;
+    cursor: pointer;
+    color: rgba(0, 0, 0, 0.3);
+}
+
+.Admin .Tags .content .buttons i.fa-trash:hover {
+    color: rgb(0,0,0,0.8)
+}
+
 @media screen and (max-width: 600px) {
     .Admin .Form form {
         width: 100%;
@@ -346,25 +441,178 @@
         flex-direction: column;
     }
 
-    .Admin .HeaderLeft {
-        /* position: absolute; */
-        /* left: 20%; */
-        position: absolute;
-        top: 50px;
-        left: 0;
-        background-color: #e83d84;
+    .Admin .Tags {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .Admin .Tags .bar {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
         width: 100%;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .Admin .Tags .bar .sök {
+        width: 100%;
+    }
+
+    .Admin .Tags .bar button {
+        width: 956;
+    }
+
+    .Admin .Tags .bar .tags {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+    }
+
+
+    .Admin .Tags .content {
+        width: 100%;
+    }
+
+    .Admin .Tags .content form > div {
+        margin: 20px;
+    }
+
+    .Admin .Tags .content .notag {
+        text-align: center;
+    }
+
+    .Admin .Tags .content .edittagcard .preview {
+        text-align: center;
+    }
+
+    .Admin .Tags .content .edittagcard .tagClickable {
+        width: 100%;
+        text-align: center;
+    }
+
+    .Admin .Tags .content input {
+        margin: 0;
+    }
+
+    .Admin .Tags .content input#text,
+    .Admin .Tags .content input#hoverText {
+        width: 100%;
+    }
+
+    .Admin .Tags .content .edittagcard {
+        margin: 15px;
+    }
+
+    .Admin .Tags .content .edittagcard .color span,
+    .Admin .Tags .content .edittagcard .bgcolor span{
+        margin-right: 15px;
+    }
+
+    .Admin .Tags .content .edittagcard .buttons {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+    }
+
+    .Admin .Tags .content .edittagcard .buttons button {
+        margin: 5px;
+    }
+
+    .Admin .Tags .content .edittagcard .buttons i {
+        text-align: center;
     }
 
 }
 
-@media screen and (max-width: 900px) and (min-width: 601px) {
+@media screen and (max-width: 1000px) and (min-width: 601px) {
     .Admin .Form form {
         width: 90%;
     }
 
-    .Admin .HeaderLeft {
-        position: relative;
-        left: -10%;
+    .Admin .Tags {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .Admin .Tags .bar {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .Admin .Tags .bar .sök {
+        width: 100%;
+    }
+
+    .Admin .Tags .bar button {
+        width: 956;
+    }
+
+    .Admin .Tags .bar .tags {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+    }
+
+
+    .Admin .Tags .content {
+        width: 100%;
+    }
+
+    .Admin .Tags .content form > div {
+        margin: 20px;
+    }
+
+    .Admin .Tags .content .notag {
+        text-align: center;
+    }
+
+    .Admin .Tags .content .edittagcard .preview {
+        text-align: center;
+    }
+
+    .Admin .Tags .content .edittagcard .tagClickable {
+        width: 100%;
+        text-align: center;
+    }
+
+    .Admin .Tags .content input {
+        margin: 0;
+    }
+
+    .Admin .Tags .content input#text,
+    .Admin .Tags .content input#hoverText {
+        width: 100%;
+    }
+
+    .Admin .Tags .content .edittagcard {
+        margin: 20px;
+    }
+
+    .Admin .Tags .content .edittagcard .color span,
+    .Admin .Tags .content .edittagcard .bgcolor span{
+        margin-right: 15px;
+    }
+
+    .Admin .Tags .content .edittagcard .buttons {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+    }
+
+    .Admin .Tags .content .edittagcard .buttons button {
+        margin: 5px;
+    }
+
+    .Admin .Tags .content .edittagcard .buttons i {
+        text-align: center;
     }
 }

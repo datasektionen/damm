@@ -4,19 +4,9 @@ import './MärkesArkiv.css'
 import Märke from './Märke'
 import * as ROUTES from '../../routes'
 
-import Sektionmärket from './Sektionsmärket.jpg'
-import Sjöslaget from './Sjöslaget 2010.jpg'
-import metadorerna from './metadorerna.jpg'
-import pung from './PUNG.jpg'
-import starkt from './starkt.jpg'
-
 import moment from 'moment'
 import Add from './add.png'
 import TagClickable from './TagClickable'
-
-//TODO:
-//More advanced filtering/sort by
-//Sort by: name asc/desc, price asc/desc, year asc/desc,
 
 class MärkesArkiv extends React.Component {
     constructor(props) {
@@ -230,54 +220,7 @@ class MärkesArkiv extends React.Component {
                     }
                 </div>
                 <div className="märken">
-                    {/* <Märke
-                        image={Sektionmärket}
-                        name="Konglig Datasektionens sektionsmärke"
-                        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer augue lacus, congue et ex euismod, malesuada consectetur elit. Ut euismod, ligula eu egestas aliquet, tellus ipsum luctus tortor, in rutrum mi tortor ac sem. Vestibulum tempor varius ultricies. Quisque vitae erat dolor. Etiam ac risus et mi eleifend scelerisque. Sed volutpat venenatis erat in pellentesque. Donec eros lorem, dapibus et purus sed, faucibus fermentum lorem."
-                        date={moment(Date.now())}
-                        numProduced={100}
-                        price="10"
-                        tags={this.state.tags}
-                    />
-                    <Märke
-                        image={Sjöslaget}
-                        name="Sjöslaget 2010 testar ett extra långt namn långt ord Flaggstångsknoppsputsmedel testar ett extra långt namn långt ord Flaggstångsknoppsputsmedel"
-                        description=""
-                        date={moment(new Date('October 17, 2010 03:24:00'))}
-                        numProduced={100}
-                    />
-                    <Märke
-                        image={pung}
-                        name="PUNG"
-                        description=""
-                        date={moment(new Date('March 17, 2008 03:24:00'))}
-                        numProduced={100}
-                        price="15"
-                    />
-                    <Märke
-                        image={metadorerna}
-                        name="Metadorerna"
-                        description=""
-                        date={moment(new Date('May 3, 2013 03:24:00'))}
-                        price="20"
-                        numProduced={100}
-                    />
-                    <Märke
-                        image={starkt}
-                        name="Starkt är vackert"
-                        description=""
-                        date={moment(new Date('September 24, 2009 03:24:00'))}
-                        price="15"
-                        numProduced={100}
-                    />
-                    <Märke
-                        image={Sjöslaget}
-                        name="Sjöslaget 2010"
-                        description=""
-                        date={moment(new Date('October 17, 2010 03:24:00'))}
-                        numProduced={100}
-                    /> */}
-                    {sortResults(this.state.märken).map((x,i) => (patchTagsMatchesSelected(x) && matchesSearch(x)) ? <Märke key={i} {...x} /*date={moment(Date.now())}*/ /> : undefined)}
+                    {sortResults().map((x,i) => (patchTagsMatchesSelected(x) && matchesSearch(x)) ? <Märke key={i} {...x} /> : undefined)}
                 </div>
             </div>
         )

@@ -53,12 +53,12 @@ router.post('/admin/upload', upload.single('file'), (req, res) => {
 })
 
 router.get('/file/:filename', (req, res) => {
-    console.log(req.params.filename)
+    // console.log(req.params.filename)
     // gfs.collection('fs.files')
-    console.log(gfs.files.find())
+    // console.log(gfs.files.find())
     gfs.files.find({filename: req.params.filename}).toArray((err, files) => {
 
-        console.log(files)
+        // console.log(files)
         if (err) console.log(err)
         if (!files || files.length === 0) {
             return res.status(404).json({"error":"File not found"})
@@ -134,6 +134,71 @@ router.post('/admin/marke/create', (req, res) => {
   db.Marke.create({name, description, date, price, image, createdBy: creators, orders, tags: selectedTags}, (marke) => {
     console.log(marke)
     res.json({"success":"true"})
+  })
+})
+
+router.post('/admin/tag/update', (req, res) => {
+  const {text, hoverText, color, backgroundColor, _id} = req.body
+
+  db.Tag.updateTag(_id, text, hoverText, color, backgroundColor, (err) => {
+    if (err) {
+      return res.json({"error":err})
+    } else {
+      db.Marke.find((err, rows) => {
+        if (err) {
+          return res.json({"error": err})
+        }
+        let promises = []
+        rows.map(patch => {
+          patch.tags.map(_ => {
+            promises.concat(new Promise((resolve, reject) => {
+              db.Marke.updateTags(patch._id, {_id, text, hoverText, color, backgroundColor}, (err, x) => {
+                if (err) {
+                  reject(err)
+                } else {
+                  resolve(x)
+                }
+              })
+            }))
+          })
+        })
+        Promise.all(promises).then((value) => {
+          return res.json({"status":"success"})
+        }, (rejected) => {
+          return res.json({"error": err})
+        })
+      })
+    }
+  })
+})
+
+router.post('/admin/tag/create', (req, res) => {
+  const {text, hoverText, color, backgroundColor} = req.body
+  console.log(req.body)
+  db.Tag.create({text, hoverText, color, backgroundColor}, (tag) => {
+    console.log(tag)
+    return res.json({"status":"success"})
+  })
+})
+
+router.post('/admin/tag/delete', (req, res) => {
+  const {_id} = req.body
+  console.log(req.body)
+  db.Tag.deleteOne({_id}, (err) => {
+    if (err) {
+      return res.json({"error": err})
+    } else return res.json({"status":"success"})
+  })
+  db.Marke.find((err, rows) => {
+    if (err) {} else {
+      rows.map(patch => {
+        patch.tags.map(tag => {
+          db.Marke.removeTags(patch._id, _id, (err, result) => {
+            console.log(result)
+          })
+        })
+      })
+    }
   })
 })
 

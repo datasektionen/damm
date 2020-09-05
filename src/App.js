@@ -13,6 +13,7 @@ import MärkesArkiv from './Pages/MarkesArkiv/MärkesArkiv'
 import MärkePage from './Pages/MarkesArkiv/MärkePage'
 import AdminMärke from './Pages/Admin/AdminMärke'
 import NotFound from './Pages/NotFound'
+import AdminTags from './Pages/Admin/AdminTags'
 
 class App extends Component {
   constructor(props) {
@@ -33,7 +34,6 @@ class App extends Component {
           localStorage.removeItem('token')
           window.location=ROUTES.HOME
         } else {
-          // localStorage.setItem('isAdmin', json.isAdmin)
           this.setState({admin: json.isAdmin})
         }
       })
@@ -54,7 +54,7 @@ class App extends Component {
       ]
       
       if (localStorage.getItem('token')) links.push(<Link to={ROUTES.SKAPA_HÄNDELSE}>Skapa händelse</Link>)
-      if (this.state.admin === true && localStorage.getItem('token')) links.push(<Link to={ROUTES.ADMIN}>Administrera</Link>)
+      if (true/*this.state.admin === true && localStorage.getItem('token')*/) links.push(<Link to={ROUTES.ADMIN}>Administrera</Link>)
 
       links.push(<Link to={ROUTES.HELP}>Hjälp</Link>)
       return links
@@ -78,6 +78,7 @@ class App extends Component {
           <Route exact path={ROUTES.MÄRKESARKIV} render={match => <MärkesArkiv {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.MÄRKE} render={match => <MärkePage /> } />
           <Route exact path={ROUTES.SKAPA_MÄRKE} render={match => <AdminMärke {...this.props} {...this.state} />} />
+          <Route exact path={ROUTES.MÄRKESTAGGAR} render={match => <AdminTags {...this.props} {...this.state} />} />
           <Route exact path={ROUTES.SKAPA_HÄNDELSE} render={match => <SkapaHändelse {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.ADMIN} render={match => <Admin {...this.props} {...this.state} />} />
           <Route exact path={ROUTES.LOGIN} render={match => {window.location = `https://login2.datasektionen.se/login?callback=${encodeURIComponent(window.location.origin)}/token/` }} />

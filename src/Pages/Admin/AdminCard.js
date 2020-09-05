@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import * as ROUTES from '../../routes'
 import './Admin.css'
 
-const AdminCard = ({title, description, link, buttonText}) => {
+const AdminCard = ({title, description, link, buttonText, onClick = () => {}}) => {
 
     return(
         <div className="AdminCard">
@@ -14,7 +14,7 @@ const AdminCard = ({title, description, link, buttonText}) => {
                 {description}
             </div>
             {/* <div className="Button"> */}
-                <Link to={link}>{buttonText ? buttonText : "Kör"}</Link>
+                <Link onClick={() => onClick()} to={link}>{buttonText ? buttonText : "Kör"}</Link>
             {/* </div> */}
         </div>
     )

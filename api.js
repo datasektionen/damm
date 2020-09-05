@@ -184,10 +184,21 @@ router.post('/admin/tag/create', (req, res) => {
 router.post('/admin/tag/delete', (req, res) => {
   const {_id} = req.body
   console.log(req.body)
-  db.Tag.remove({_id}, (err) => {
+  db.Tag.deleteOne({_id}, (err) => {
     if (err) {
       return res.json({"error": err})
     } else return res.json({"status":"success"})
+  })
+  db.Marke.find((err, rows) => {
+    if (err) {} else {
+      rows.map(patch => {
+        patch.tags.map(tag => {
+          db.Marke.removeTags(patch._id, _id, (err, result) => {
+            console.log(result)
+          })
+        })
+      })
+    }
   })
 })
 

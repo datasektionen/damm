@@ -17,6 +17,7 @@ const INITIAL_STATE = {
     selectedTag: INIT_TAG,
     search: "",
     newTag: false,
+    sortState: 0,
 }
 
 class AdminTags extends React.Component {
@@ -60,6 +61,34 @@ class AdminTags extends React.Component {
             })
         }
 
+        const setSortState = state => {
+            this.setState({sortState: state})
+        }
+
+        const sortStates = ["Sortera: A-Ö", "Sortera: Ö-A"]
+
+        const sort = () => {
+            if (this.state.sortState === 0) {
+                return this.state.tags.sort((a, b) => {
+                    const A = a.text.toLowerCase()
+                    const B = b.text.toLowerCase()
+                    if (A < B) return -1
+                    if (A > B) return 1
+                    return 0
+                })
+            }
+
+            if (this.state.sortState === 1) {
+                return this.state.tags.sort((a, b) => {
+                    const A = a.text.toLowerCase()
+                    const B = b.text.toLowerCase()
+                    if (A > B) return -1
+                    if (A < B) return 1
+                    return 0
+                })
+            }
+        }
+
         return (
             <div className="Admin">
                 <div className="Header">
@@ -69,19 +98,22 @@ class AdminTags extends React.Component {
                 <div className="Tags">
                     <div className="bar">
                         <div className="sök">
-                            <input name="search" type="text" placeholder="Sök" onChange={e => handleChange(e)} value={this.state.search} />
+                            <input name="search" autoComplete="off" type="text" placeholder="Sök" onChange={e => handleChange(e)} value={this.state.search} />
                             {/* <img className="clearImg" src={Add} onClick={() => {this.setState({search: ""})}}/> */}
                         </div>
-                        <button onClick={e => newTag(e)}>Skapa ny tagg</button>
+                        <button id="sort" onClick={() => this.setState({sortState: this.state.sortState === 0 ? 1 : 0})}>{sortStates[this.state.sortState]}</button>
+                        <button id="nytagg" onClick={e => newTag(e)}>Skapa ny tagg</button>
                         <div className="tags">
-                            {this.state.tags.map((x,i) => x.text.toLowerCase().match(new RegExp(this.state.search.toLowerCase(), "g")) ? <div className="barTag" key={i}><TagClickable {...x} onClick={e => {selectTag(e, i)}} selectedTags={[this.state.selectedTag]}/></div> : undefined)}
+                            {sort(this.state.tags).map((x,i) => x.text.toLowerCase().match(new RegExp(this.state.search.toLowerCase(), "g")) ? <div className="barTag" key={i}><TagClickable {...x} onClick={e => {selectTag(e, i)}} selectedTags={[this.state.selectedTag]}/></div> : undefined)}
                         </div>
                     </div>
                     <div className="content">
                         {this.state.selectedTag.text !== "" || this.state.newTag ?
                             <EditTag {...this.state.selectedTag} fetchTags={() => this.fetchTags()} edit={!this.state.newTag} />
                         :
-                            <div>Klicka på en existerande tagg eller "Ny tagg"</div>
+                            <div className="notag">
+                                Klicka på en existerande tagg eller "Ny tagg"
+                            </div>
                         }
                     </div>
                 </div>

@@ -12,6 +12,7 @@ class EditTag extends React.Component {
             color: "",
             backgroundColor: "",
             hoverText: "",
+            fetching: false
         }
     }
 
@@ -35,45 +36,51 @@ class EditTag extends React.Component {
             
             if (this.props.edit) {
                 const body = {...this.state, _id: this.props._id}
-                fetch(ROUTES.API_UPDATE_TAG, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(body)
-                })
-                .then(res => res.json())
-                .then(res => {
-                    if (res.error) {
-                        console.log(res.error)
-                    } else {
-                        console.log(res)
-                        this.props.fetchTags()
-                    }
-                })
-                .catch(err => {
-                    console.log(err)
+                this.setState({fetching: true}, () => {
+                    fetch(ROUTES.API_UPDATE_TAG, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(body)
+                    })
+                    .then(res => res.json())
+                    .then(res => {
+                        if (res.error) {
+                            console.log(res.error)
+                        } else {
+                            console.log(res)
+                            this.props.fetchTags()
+                            this.setState({fetching: false})
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
                 })
             } else {
                 const body = {...this.state}
-                fetch(ROUTES.API_CREATE_TAG, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(body)
-                })
-                .then(res => res.json())
-                .then(res => {
-                    console.log(res)
-                    if (res.error) {
-
-                    } else {
-                        this.props.fetchTags()
-                    }
-                })
-                .catch(err => {
-                    
+                this.setState({fetching: true}, () => {
+                    fetch(ROUTES.API_CREATE_TAG, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(body)
+                    })
+                    .then(res => res.json())
+                    .then(res => {
+                        console.log(res)
+                        if (res.error) {
+    
+                        } else {
+                            this.props.fetchTags()
+                            this.setState({fetching: false})
+                        }
+                    })
+                    .catch(err => {
+                        
+                    })
                 })
             }
 
@@ -90,25 +97,28 @@ class EditTag extends React.Component {
         }
 
         const deleteTag = e => {
-            const body = {_id: this.props._id}
-            fetch(`${window.location.origin}${ROUTES.API_DELETE_TAG}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(body)
-            })
-            .then(res => res.json())
-            .then(res => {
-                console.log(res)
-                if (res.error) {
-                    console.log(res.error)
-                } else {
-                    this.props.fetchTags()
-                }
-            })
-            .catch(err => {
-                console.log(err)
+            this.setState({fetching: true}, () => {
+                const body = {_id: this.props._id}
+                fetch(`${window.location.origin}${ROUTES.API_DELETE_TAG}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(body)
+                })
+                .then(res => res.json())
+                .then(res => {
+                    console.log(res)
+                    if (res.error) {
+                        console.log(res.error)
+                    } else {
+                        this.props.fetchTags()
+                        this.setState({fetching: false})
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                })
             })
         }
         
@@ -126,7 +136,7 @@ class EditTag extends React.Component {
                         </div>
                         <div className="hover">
                             <span>Svävartext</span>
-                            <input name="hoverText" id="hoverText" type="text" value={this.state.hoverText} onChange={e => handleChange(e)} />
+                            <input name="hoverText" autoComplete="off" id="hoverText" type="text" value={this.state.hoverText} onChange={e => handleChange(e)} />
                         </div>
                         <div className="color">
                             <span>Textfärg</span>
@@ -137,9 +147,9 @@ class EditTag extends React.Component {
                             <input name="backgroundColor" type="color" value={this.state.backgroundColor} onChange={e => handleChange(e)} />
                         </div>
                         <div className="buttons">
-                            <button onClick={e => reset(e)}>Återställ</button>
-                            <button id="save" onClick={e => save(e)} disabled={noChange()}>Spara</button>
-                            {this.props.edit ? <i onClick={e => deleteTag(e)} title="Ta bort" className="fas fa-trash"></i> : undefined}
+                            <button onClick={e => reset(e)}>Ångra ändringar</button>
+                            <button id="save" onClick={e => save(e)} disabled={noChange() || this.state.fetching}>Spara</button>
+                            {this.props.edit ? <i onClick={e => deleteTag(e)} title="Ta bort" disabled={this.state.fetching} className="fas fa-trash"></i> : undefined}
                         </div>
                     </form>
                 </div>

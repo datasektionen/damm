@@ -312,6 +312,7 @@
     padding-top: 5px;
     background-color: #f9f9f9f9;
     text-align: center;
+    /* font-size: 0.9em; */
 }
 
 .Admin .Tags .bar .sök input {
@@ -332,8 +333,12 @@
 
 .Admin .Tags .bar button {
     width: 95%;
-    background-color: #E5C100;
+    margin-bottom: 5px;
     cursor: pointer;
+}
+
+.Admin .Tags .bar button#nytagg {
+    background-color: #E5C100;
 }
 
 .Admin .Tags .bar .tags .tagClickable {
@@ -343,6 +348,10 @@
 .Admin .Tags .content {
     width: 100%;
     /* padding: 30px; */
+}
+
+.Admin .Tags .content .notag {
+    padding: 50px;
 }
 
 .Admin .Tags .content .edittagcard {

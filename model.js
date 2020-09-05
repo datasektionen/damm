@@ -155,6 +155,28 @@ markeSchema.statics.updateTags = function(patchID, newTag, callback) {
     })
 }
 
+markeSchema.statics.removeTags = function(patchID, tagtoRemoveID, callback) {
+    Marke.findById(patchID, (err, res) => {
+        let tags = res.tags
+        console.log("BEFORE_------------------------")
+        console.log(tags)
+        let updatedTags = tags.map(tag => {
+            console.log(tagtoRemoveID)
+            console.log(tag.id)
+            console.log(mongoose.Types.ObjectId(tagtoRemoveID).equals(mongoose.Types.ObjectId(tag._id)))
+            if (mongoose.Types.ObjectId(tagtoRemoveID).equals(mongoose.Types.ObjectId(tag._id))) {
+                return null
+            } else return tag
+        })
+        updatedTags = updatedTags.filter(x => x !== null)
+        console.log("AFTER------------------------")
+        console.log(updatedTags)
+        Marke.update({_id: patchID}, {$set: {tags: updatedTags}}, (err, x) => {
+            callback(err, x)
+        })
+    })
+}
+
 var Marke = mongoose.model('Marke', markeSchema)
 
 var User = mongoose.model('User', userSchema)

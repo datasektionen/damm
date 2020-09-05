@@ -55,7 +55,7 @@ class App extends Component {
       ]
       
       if (localStorage.getItem('token')) links.push(<Link to={ROUTES.SKAPA_HÄNDELSE}>Skapa händelse</Link>)
-      if (this.state.admin === true && localStorage.getItem('token')) links.push(<Link to={ROUTES.ADMIN}>Administrera</Link>)
+      if (true/*this.state.admin === true && localStorage.getItem('token')*/) links.push(<Link to={ROUTES.ADMIN}>Administrera</Link>)
 
       links.push(<Link to={ROUTES.HELP}>Hjälp</Link>)
       return links

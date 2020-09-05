@@ -22,7 +22,7 @@ const INITIAL_STATE = {
     numFiles: 1,
 }
 
-const SUCCESS_STATE = {...INITIAL_STATE, success: true, tags: []}
+const SUCCESS_STATE = {...INITIAL_STATE, success: true}
 const RESET_STATE = {...INITIAL_STATE, success: false, tags: [],}
 
 class AdminMärke extends React.Component {
@@ -80,7 +80,7 @@ class AdminMärke extends React.Component {
                 .then(res => {
                     console.log(res)
                     // window.location=ROUTES.SKAPA_MÄRKE
-                    this.setState({...SUCCESS_STATE})
+                    this.setState({...SUCCESS_STATE, tags: this.state.tags})
                     window.scrollTo(0, 0)
                 })
                 .catch(err => {
@@ -253,7 +253,7 @@ class AdminMärke extends React.Component {
                             {this.state.orders.map((x,i) => <div className="order" key={i}>{x.company} {x.order}<i class="fa fa-times" onClick={(e) => removeOrder(e, i)}></i></div>)}
                         </div>
                         <div className="BottomButtons">
-                            <button disabled={invalid} formAction="submit">Spara märke</button>
+                            <button disabled={invalid} disabled={this.state.submitting} formAction="submit">Spara märke</button>
                             <button  className="rensa" onClick={(e) => {e.preventDefault(); this.setState({...RESET_STATE})}}>Rensa</button>
                         </div>
                     </form>

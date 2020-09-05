@@ -220,7 +220,7 @@ class MärkesArkiv extends React.Component {
                     }
                 </div>
                 <div className="märken">
-                    {sortResults().map((x,i) => (patchTagsMatchesSelected(x) && matchesSearch(x)) ? <Märke key={i} {...x} /*date={moment(Date.now())}*/ /> : undefined)}
+                    {sortResults().map((x,i) => (patchTagsMatchesSelected(x) && matchesSearch(x)) ? <Märke key={i} {...x} /> : undefined)}
                 </div>
             </div>
         )

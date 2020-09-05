@@ -1,8 +1,6 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
 import * as ROUTES from '../../routes'
 import TagClickable from '../MarkesArkiv/TagClickable'
-import Add from '../MarkesArkiv/add.png'
 import EditTag from './EditTag'
 
 const INIT_TAG = {
@@ -27,6 +25,8 @@ class AdminTags extends React.Component {
         this.state = {...INITIAL_STATE}
 
         this.fetchTags = this.fetchTags.bind(this)
+
+        this.editFocus = React.createRef()
     }
 
     componentDidMount() {
@@ -48,21 +48,31 @@ class AdminTags extends React.Component {
     render() {
 
         const selectTag = (e, i) => {
-            this.setState({selectedTag: this.state.tags[i], newTag: false})
+            this.setState({selectedTag: this.state.tags[i], newTag: false}, () => {
+                if(this.editFocus.current){
+                    this.editFocus.current.scrollIntoView({ 
+                       behavior: "smooth", 
+                       block: "nearest"
+                    })
+                }
+            })
         }
 
         const newTag = e => {
-            this.setState({newTag: true, selectedTag: INIT_TAG})
+            this.setState({newTag: true, selectedTag: INIT_TAG}, () => {
+                if(this.editFocus.current){
+                    this.editFocus.current.scrollIntoView({ 
+                       behavior: "smooth", 
+                       block: "nearest"
+                    })
+                }
+            })
         }
 
         const handleChange = (e) => {
             this.setState({
                 [e.target.name]: e.target.value
             })
-        }
-
-        const setSortState = state => {
-            this.setState({sortState: state})
         }
 
         const sortStates = ["Sortera: A-Ö", "Sortera: Ö-A"]
@@ -92,7 +102,6 @@ class AdminTags extends React.Component {
         return (
             <div className="Admin">
                 <div className="Header">
-                    <div className="HeaderLeft"><Link to={ROUTES.ADMIN}>« Tillbaka</Link></div>
                     <div><h2>Hantera märkestaggar</h2></div>
                 </div>
                 <div className="Tags">
@@ -109,10 +118,10 @@ class AdminTags extends React.Component {
                     </div>
                     <div className="content">
                         {this.state.selectedTag.text !== "" || this.state.newTag ?
-                            <EditTag {...this.state.selectedTag} fetchTags={() => this.fetchTags()} edit={!this.state.newTag} />
+                            <div ref={this.editFocus}><EditTag {...this.state.selectedTag} fetchTags={() => this.fetchTags()} edit={!this.state.newTag} /></div>
                         :
                             <div className="notag">
-                                Klicka på en existerande tagg eller "Ny tagg"
+                                Klicka på en existerande tagg eller "Skapa ny tagg"
                             </div>
                         }
                     </div>

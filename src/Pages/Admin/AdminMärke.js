@@ -1,5 +1,4 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
 import * as ROUTES from '../../routes'
 import TagClickable from '../MarkesArkiv/TagClickable'
 
@@ -170,7 +169,6 @@ class AdminMärke extends React.Component {
         return (
             <div className="Admin">
                 <div className="Header">
-                    <div className="HeaderLeft"><Link to={ROUTES.ADMIN}>« Tillbaka</Link></div>
                     <div><h2>Lägg till märke</h2></div>
                 </div>
                 <div className="Form">

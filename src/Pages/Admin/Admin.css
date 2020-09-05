@@ -342,7 +342,54 @@
 
 .Admin .Tags .content {
     width: 100%;
-    padding: 30px;
+    /* padding: 30px; */
+}
+
+.Admin .Tags .content .edittagcard {
+    background-color: #f9f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 30px;
+    padding: 20px;
+}
+
+.Admin .Tags .content form > div {
+    margin: 20px 20px 20px 0;
+}
+
+.Admin .Tags .content .preview {
+    max-width: 30%;
+}
+
+.Admin .Tags .content input#text,
+.Admin .Tags .content input#hoverText {
+    height: 50px;
+    width: 300px;
+    padding: 10px;
+}
+
+.Admin .Tags .content input {
+    margin-left: 10px;
+}
+
+.Admin .Tags .content .buttons button{
+    margin: 10px;
+}
+
+.Admin .Tags .content .buttons button#save {
+    background-color: #E5C100;
+}
+
+.Admin .Tags .content .buttons i.fa-trash {
+    margin-left: 10px;
+    font-size: 2em;
+    position: relative;
+    top: 5px;
+    cursor: pointer;
+    color: rgba(0, 0, 0, 0.3);
+}
+
+.Admin .Tags .content .buttons i.fa-trash:hover {
+    color: rgb(0,0,0,0.8)
 }
 
 @media screen and (max-width: 600px) {

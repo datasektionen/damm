@@ -19,7 +19,7 @@ exports.authenticate = (token, callback) => {
 }
 
 exports.adminAuth = (req, res, next) => {
-    console.log(req.body)
+    // console.log(req.body)
     //If token provided
     if (req.body.token) {
         //Verify token with login2

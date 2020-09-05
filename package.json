@@ -8,6 +8,7 @@
     "express": "^4.16.2",
     "gridfs-stream": "^1.1.1",
     "markdown-react-js": "^1.0.2",
+    "memoize-one": "^5.1.1",
     "methone": "^0.3.5",
     "moment": "^2.20.1",
     "mongodb": "^3.6.0",
@@ -24,6 +25,7 @@
   },
   "scripts": {
     "start": "node app.js",
+    "dev": "nodemon app.js",
     "start-client": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",

@@ -5,14 +5,16 @@ import TagClickable from '../MarkesArkiv/TagClickable'
 import Add from '../MarkesArkiv/add.png'
 import EditTag from './EditTag'
 
+const INIT_TAG = {
+    text: "",
+    color: "",
+    backgroundColor: "",
+    hoverText: ""
+}
+
 const INITIAL_STATE = {
     tags: [],
-    selectedTag: {
-        text: "",
-        color: "",
-        backgroundColor: "",
-        hoverText: ""
-    },
+    selectedTag: INIT_TAG,
     search: "",
     newTag: false,
 }
@@ -35,7 +37,7 @@ class AdminTags extends React.Component {
         .then(res => res.json())
         .then(res => {
             console.log(res)
-            this.setState({tags: res, selectedTag: this.state.selectedTag})
+            this.setState({tags: res, selectedTag: INIT_TAG})
         })
         .catch(err => {
             console.log(err)
@@ -45,11 +47,11 @@ class AdminTags extends React.Component {
     render() {
 
         const selectTag = (e, i) => {
-            this.setState({selectedTag: this.state.tags[i], selectedIndex: i})
+            this.setState({selectedTag: this.state.tags[i], newTag: false})
         }
 
         const newTag = e => {
-            this.setState({selectedTag: {}})
+            this.setState({newTag: true, selectedTag: INIT_TAG})
         }
 
         const handleChange = (e) => {
@@ -70,16 +72,16 @@ class AdminTags extends React.Component {
                             <input name="search" type="text" placeholder="Sök" onChange={e => handleChange(e)} value={this.state.search} />
                             {/* <img className="clearImg" src={Add} onClick={() => {this.setState({search: ""})}}/> */}
                         </div>
-                        <button onClick={e => newTag(e)}>Ny tagg</button>
+                        <button onClick={e => newTag(e)}>Skapa ny tagg</button>
                         <div className="tags">
                             {this.state.tags.map((x,i) => x.text.toLowerCase().match(new RegExp(this.state.search.toLowerCase(), "g")) ? <div className="barTag" key={i}><TagClickable {...x} onClick={e => {selectTag(e, i)}} selectedTags={[this.state.selectedTag]}/></div> : undefined)}
                         </div>
                     </div>
                     <div className="content">
-                        {this.state.selectedTag.text !== "" ?
-                            <EditTag {...this.state.selectedTag} fetchTags={() => this.fetchTags()} />
+                        {this.state.selectedTag.text !== "" || this.state.newTag ?
+                            <EditTag {...this.state.selectedTag} fetchTags={() => this.fetchTags()} edit={!this.state.newTag} />
                         :
-                            <div>Klicka på en tagg</div>
+                            <div>Klicka på en existerande tagg eller "Ny tagg"</div>
                         }
                     </div>
                 </div>

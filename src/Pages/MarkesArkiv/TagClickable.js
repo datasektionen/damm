@@ -9,7 +9,7 @@ const TagClickable = ({color = "#000", backgroundColor = "#e83d84", text = "", h
     // const clicked = selectedTags.includes(text)
 
     return (
-        <div className="tagClickable" title={hoverText === "" ? "Ingen beskrivning" : hoverText} onClick={() => onClick()} style={clicked ? {backgroundColor, color} : {}} >
+        <div className="tagClickable" title={hoverText === "" ? "Ingen beskrivning" : hoverText} onClick={() => onClick()} style={clicked ? {backgroundColor: backgroundColor === "" ? "#e83d84" : backgroundColor, color: color === "" ? "#000" : color} : {}} >
             <span>{text}</span>
             <img src={clicked ? Added : Add} />
         </div>

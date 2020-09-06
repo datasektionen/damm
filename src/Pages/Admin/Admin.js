@@ -20,6 +20,12 @@ class Admin extends React.Component {
             buttonText: "Lägg till märke"
         },
         {
+            title: "Redigera märke",
+            description: "Redigera ett märke genom att gå till dess detaljsida genom att klicka på den.",
+            link: ROUTES.MÄRKESARKIV,
+            buttonText: "Märkesarkiv"
+        },
+        {
             title: "Hantera märkestaggar",
             description: "Lägg till, redigera eller ta bort märkestaggar.",
             link: ROUTES.MÄRKESTAGGAR,

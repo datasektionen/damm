@@ -34,7 +34,7 @@ class App extends Component {
           localStorage.removeItem('token')
           window.location=ROUTES.HOME
         } else {
-          this.setState({admin: json.isAdmin})
+        this.setState({admin: true/*json.isAdmin*/})
         }
       })
       .catch(err => {
@@ -54,7 +54,7 @@ class App extends Component {
       ]
       
       if (localStorage.getItem('token')) links.push(<Link to={ROUTES.SKAPA_HÄNDELSE}>Skapa händelse</Link>)
-      if (true/*this.state.admin === true && localStorage.getItem('token')*/) links.push(<Link to={ROUTES.ADMIN}>Administrera</Link>)
+      if (this.state.admin === true && localStorage.getItem('token')) links.push(<Link to={ROUTES.ADMIN}>Administrera</Link>)
 
       links.push(<Link to={ROUTES.HELP}>Hjälp</Link>)
       return links

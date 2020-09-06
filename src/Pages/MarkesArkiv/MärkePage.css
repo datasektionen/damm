@@ -1,0 +1,89 @@
+.MarkeInfo {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.MarkeInfo .patch {
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    padding: 40px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background: #fff;
+}
+
+.MarkeInfo .patch .patchimg img {
+    width: 300px;
+}
+
+.MarkeInfo .patch .patchimg .files {
+    margin-top: 5px;
+}
+
+.MarkeInfo .patch .patchimg .file {
+    padding: 5px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 300px;
+}
+
+.MarkeInfo .patch .patchimg .file a:hover {
+    cursor: pointer;
+}
+
+.MarkeInfo .patch .patchimg .file i {
+    font-size: 2em;
+    position: relative;
+    top: 5px;
+}
+
+.MarkeInfo .patch .patchcontent {
+    display: flex;
+    flex-direction: column;
+    margin-left: 30px;
+    width: 100%;
+}
+
+.MarkeInfo .patch .patchcontent .name {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.MarkeInfo .patch .patchcontent .name .adminedit {
+    background-color: #E5C100;
+    max-height: 42px;
+}
+
+.MarkeInfo .patch .patchcontent .name h1 {
+    margin: 0;
+    width: 100%;
+}
+
+.MarkeInfo .patch .patchcontent .meta {
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.MarkeInfo .patch .patchcontent .meta i.fa-circle {
+    font-size: 0.5em;
+    position: relative;
+    top: -2px;
+    padding: 0 5px 0 5px;
+    color: rgba(0, 0, 0, 0.3);
+}
+
+.MarkeInfo .patch .patchcontent .description {
+    margin: 25px 0 25px 0;
+    white-space: pre-wrap;
+}
+
+.MarkeInfo .patch .patchcontent .tags {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}

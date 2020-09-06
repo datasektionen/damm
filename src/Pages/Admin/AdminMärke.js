@@ -209,7 +209,7 @@ class AdminMärke extends React.Component {
                         </div>
                         <div className="price">
                             <h3>Pris</h3>
-                            <h4>Lämna tomt om gratis, "-" om det ej säljs och "Gratis" om gratis</h4>
+                            <h4>Lämna tomt om okänt, "-" om det ej säljs och "Gratis" om gratis</h4>
                             <input name="price" type="text" placeholder="Pris" value={this.state.price} onChange={(e) => handleChange(e)}/>
                         </div>
                         <div className="creators">
@@ -246,7 +246,7 @@ class AdminMärke extends React.Component {
                             <div className="input">
                                 <input name="company" type="text" placeholder="Företag" value={this.state.company} onChange={(e) => handleChange(e)} />
                                 <input name="order" type="text" placeholder="Referens" value={this.state.order} onChange={(e) => handleChange(e)} />
-                                <button onClick={(e) => addOrder(e)}>Lägg till</button>
+                                <button onClick={(e) => addOrder(e)} disabled={this.state.company === "" || this.state.order === ""}>Lägg till</button>
                             </div>
                             {this.state.orders.map((x,i) => <div className="order" key={i}>{x.company} {x.order}<i class="fa fa-times" onClick={(e) => removeOrder(e, i)}></i></div>)}
                         </div>

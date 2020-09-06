@@ -76,7 +76,7 @@ class App extends Component {
           <Route exact path={ROUTES.HOME} render={match => <Historia {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.MUSEUM} render={match => <Museum {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.MÄRKESARKIV} render={match => <MärkesArkiv {...this.props} {...this.state} /> } />
-          <Route exact path={ROUTES.MÄRKE} render={match => <MärkePage /> } />
+          <Route exact path={ROUTES.MÄRKE} render={match => <MärkePage {...this.props} {...this.state} {...match} /> } />
           <Route exact path={ROUTES.SKAPA_MÄRKE} render={match => <AdminMärke {...this.props} {...this.state} />} />
           <Route exact path={ROUTES.MÄRKESTAGGAR} render={match => <AdminTags {...this.props} {...this.state} />} />
           <Route exact path={ROUTES.SKAPA_HÄNDELSE} render={match => <SkapaHändelse {...this.props} {...this.state} /> } />

@@ -13,9 +13,7 @@ const AdminCard = ({title, description, link, buttonText, onClick = () => {}}) =
             <div className="Description">
                 {description}
             </div>
-            {/* <div className="Button"> */}
                 <Link onClick={() => onClick()} to={link}>{buttonText ? buttonText : "Kör"}</Link>
-            {/* </div> */}
         </div>
     )
 }

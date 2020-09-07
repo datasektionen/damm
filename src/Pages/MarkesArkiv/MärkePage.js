@@ -53,6 +53,7 @@ class MärkePage extends React.Component {
                             {this.props.admin ? 
                                 <div className="files">
                                     {this.state.files.map(file => <div className="file"><i class="far fa-file"></i><a href={file.url} target="_blank" rel="noopener noreferrer">{file.name}</a></div>)}
+                                    {this.props.admin && <button className="adminedit">Redigera</button>}
                                 </div>
                             : undefined                    
                             }
@@ -60,7 +61,6 @@ class MärkePage extends React.Component {
                         <div className="patchcontent">
                             <div className="name">
                                 <h1>{this.state.name}</h1>
-                                {this.props.admin && <button className="adminedit">Redigera</button>}
                             </div>
                             <div className="meta">
                                 {this.state.date ? moment(this.state.date).format("DD MMM YYYY") : "????-??-??"}

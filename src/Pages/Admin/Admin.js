@@ -46,18 +46,6 @@ class Admin extends React.Component {
                 console.log("LADDAR OM, INTE IMPLEMENTERAT ÄN")
             }
         },
-        // {
-        //     title: "Lägg till händelse",
-        //     description: "Registrera generell historia du tycker är värdig att förevigas.",
-        //     link: ROUTES.SKAPA_HÄNDELSE
-        // },
-        // {
-        //     title: "Lägg till händelse",
-        //     description: "Registrera generell historia du tycker är värdig att förevigas.",
-        //     link: ROUTES.SKAPA_HÄNDELSE
-        // },
-
-            // {title: "Hantera förslag", description: "Hantera "},
         ]
 
         if (this.props.admin && localStorage.getItem('token')) {

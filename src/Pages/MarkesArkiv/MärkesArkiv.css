@@ -81,6 +81,7 @@
     align-items: center;
     justify-content: center;
     display: flex;
+    word-break: break-word;
 }
 
 .märke .desc {
@@ -93,7 +94,7 @@
 .märke .title h2 {
     font-size: 1.2em;
     text-align: center;
-    margin: 10px 0 10px 0;
+    margin: 10px;
 }
 
 .märke .tags {

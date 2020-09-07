@@ -24,7 +24,7 @@ class EditTag extends React.Component {
 
     render() {
 
-        const test = this.getProps(this.props)
+        const updateProps = this.getProps(this.props)
         
         const handleChange = e => {
             this.setState({[e.target.name]: e.target.value})
@@ -99,7 +99,7 @@ class EditTag extends React.Component {
         const deleteTag = e => {
             this.setState({fetching: true}, () => {
                 const body = {_id: this.props._id}
-                fetch(`${window.location.origin}${ROUTES.API_DELETE_TAG}`, {
+                fetch(`${window.location.origin}${ROUTES.API_DELETE_TAG}?token=${localStorage.getItem('token')}`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"

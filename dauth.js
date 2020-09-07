@@ -3,27 +3,12 @@ const fetch = require('node-fetch')
 require('dotenv').config()
 var db = require('./model')
 
-//Authenticate user
-exports.authenticate = (token, callback) => {
-    fetch(`https://login2.datasektionen.se/verify/${token}.json?api_key=${process.env.LOGIN2_API_KEY}`)
-    .then(res => res.json())
-    .then(json => {
-        console.log(json)
-
-        return json
-    })
-    .catch(err => {
-        console.log(err)
-        return new Error('Authentication error')
-    })
-}
-
 exports.adminAuth = (req, res, next) => {
-    // console.log(req.body)
+    const token = req.query.token
     //If token provided
-    if (req.body.token) {
+    if (token) {
         //Verify token with login2
-        fetch(`https://login2.datasektionen.se/verify/${req.body.token}.json?api_key=${process.env.LOGIN2_API_KEY}`)
+        fetch(`https://login2.datasektionen.se/verify/${token}.json?api_key=${process.env.LOGIN2_API_KEY}`)
         .then(x => x.json())
         .then(json => {
             console.log(json)
@@ -37,7 +22,7 @@ exports.adminAuth = (req, res, next) => {
                     return
                 } else {
                     next()
-                    return
+                    // return
                 }
             })
             .catch(err => {

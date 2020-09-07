@@ -70,7 +70,7 @@ class AdminMärke extends React.Component {
             console.log(body)
 
             this.setState({submitting: true}, () => {
-                fetch(`${window.location.origin}${ROUTES.API_CREATE_PATCH}`, {
+                fetch(`${window.location.origin}${ROUTES.API_CREATE_PATCH}?token=${localStorage.getItem('token')}`, {
                     method: "POST",
                     headers: {"Content-Type": "application/json"},
                     body: JSON.stringify(body)
@@ -92,7 +92,7 @@ class AdminMärke extends React.Component {
         const uploadImage = () => {
             const formData = new FormData()
             formData.append('file', this.state.image)
-            fetch(ROUTES.API_UPLOAD_IMG_PATH, {
+            fetch(`${ROUTES.API_UPLOAD_IMG_PATH}?token=${localStorage.getItem('token')}`, {
                 method: "POST",
                 body: formData
             })
@@ -101,10 +101,13 @@ class AdminMärke extends React.Component {
                 console.log(res)
                 if (res.status === "success") {
                     this.setState({imageSrc: res.filename, uploading: false})
+                } else {
+                    //TODO: Visa "något gick fel, försök igen"
                 }
             })
             .catch(err => {
                 console.log(err)
+                //TODO: Visa "något gick fel, försök igen"
             })
         }
 

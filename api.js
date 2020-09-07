@@ -34,9 +34,7 @@ let upload = multer({
     storage
 })
 
-//COMMENT LINE BELOW TO SKIP ADMIN AUTH IN DEV
-//TODO: MOVE TOKEN TO PARAM INSTEAD OF JSON
-// router.use('/admin', dAuth.adminAuth)
+router.use('/admin', dAuth.adminAuth)
 router.post('/admin/upload', upload.single('file'), (req, res) => {
     console.log(req.file)
     if (!req.file) return res.json({"error":"No file provided."})

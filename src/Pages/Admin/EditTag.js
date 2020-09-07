@@ -37,7 +37,7 @@ class EditTag extends React.Component {
             if (this.props.edit) {
                 const body = {...this.state, _id: this.props._id}
                 this.setState({fetching: true}, () => {
-                    fetch(ROUTES.API_UPDATE_TAG, {
+                    fetch(`${ROUTES.API_UPDATE_TAG}?token=${localStorage.getItem('token')}`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json"
@@ -61,7 +61,7 @@ class EditTag extends React.Component {
             } else {
                 const body = {...this.state}
                 this.setState({fetching: true}, () => {
-                    fetch(ROUTES.API_CREATE_TAG, {
+                    fetch(`${ROUTES.API_CREATE_TAG}?token=${localStorage.getItem('token')}`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json"

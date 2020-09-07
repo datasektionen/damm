@@ -60,7 +60,7 @@ class Admin extends React.Component {
             // {title: "Hantera förslag", description: "Hantera "},
         ]
 
-        if (true /*this.props.admin && localStorage.getItem('token')*/) {
+        if (this.props.admin && localStorage.getItem('token')) {
             return (
                 <div className="Admin">
                     <div className="Header">

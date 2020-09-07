@@ -34,7 +34,7 @@ class App extends Component {
           localStorage.removeItem('token')
           window.location=ROUTES.HOME
         } else {
-        this.setState({admin: true/*json.isAdmin*/})
+        this.setState({admin: json.isAdmin})
         }
       })
       .catch(err => {

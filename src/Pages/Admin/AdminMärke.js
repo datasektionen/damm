@@ -4,7 +4,6 @@ import TagClickable from '../MarkesArkiv/TagClickable'
 
 const INITIAL_STATE = {
     image: undefined,
-    uploading: false,
     imageSrc: "",
     selectedTags: [],
     name: "",
@@ -53,54 +52,33 @@ class AdminMärke extends React.Component {
         const submit = (e) => {
             e.preventDefault()
 
-            const {name, description, date, price, imageSrc, creators, selectedTags, orders} = this.state
+            const {name, description, date, price, creators, selectedTags, orders} = this.state
 
             const body = {
-                token: localStorage.getItem('token'),
                 name,
                 description,
                 date,
                 price,
-                image: `${ROUTES.API_MÄRKE_GET_IMG_PATH}/${imageSrc}`,
                 creators,
                 selectedTags,
                 orders,
             }
 
+            //TODO: UPLOAD FILE
+
             console.log(body)
-
-            this.setState({submitting: true}, () => {
-                fetch(`${window.location.origin}${ROUTES.API_CREATE_PATCH}?token=${localStorage.getItem('token')}`, {
-                    method: "POST",
-                    headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify(body)
-                })
-                .then(res => res.json())
-                .then(res => {
-                    console.log(res)
-                    // window.location=ROUTES.SKAPA_MÄRKE
-                    this.setState({...SUCCESS_STATE, tags: this.state.tags})
-                    window.scrollTo(0, 0)
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-            })
-            console.log("SUBMIT")
-        }
-
-        const uploadImage = () => {
             const formData = new FormData()
             formData.append('file', this.state.image)
-            fetch(`${ROUTES.API_UPLOAD_IMG_PATH}?token=${localStorage.getItem('token')}`, {
+            formData.append('body', JSON.stringify(body))
+            fetch(`${window.location.origin}${ROUTES.API_CREATE_PATCH}?token=${localStorage.getItem('token')}`, {
                 method: "POST",
                 body: formData
             })
             .then(res => res.json())
-            .then(res => {
-                console.log(res)
-                if (res.status === "success") {
-                    this.setState({imageSrc: res.filename, uploading: false})
+            .then(json => {
+                if (json.success) {
+                    this.setState({...SUCCESS_STATE, tags: this.state.tags})
+                    window.scrollTo(0, 0)
                 } else {
                     //TODO: Visa "något gick fel, försök igen"
                 }
@@ -109,23 +87,13 @@ class AdminMärke extends React.Component {
                 console.log(err)
                 //TODO: Visa "något gick fel, försök igen"
             })
+            console.log("SUBMIT")
         }
 
         const handleImageChange = (e) => {
-            this.setState({image: e.target.files[0], imageSrc: "", uploading: true}, () => {
-                uploadImage()
-            })
+            if (e.target.files.length > 0)
+            this.setState({image: e.target.files[0], imageSrc: URL.createObjectURL(e.target.files[0])})
         }
-
-        // const toggleTag = (tag) => {
-        //     //Remove from list
-        //     if (this.state.selectedTags.includes(tag.text)) {
-        //         this.setState({selectedTags: this.state.selectedTags.filter(x => x !== tag.text)})
-        //      //Add it to the list
-        //     } else {
-        //         this.setState({selectedTags: this.state.selectedTags.concat(tag.text)})
-        //     }
-        // }
 
         const selectedTagsIncludesTag = (tagName) => {
             return this.state.selectedTags.filter((x,i) => x.text === tagName).length > 0
@@ -194,10 +162,10 @@ class AdminMärke extends React.Component {
                                     <div className="preview">
                                         <i class="fa fa-times" onClick={() => this.setState({image: undefined, imageSrc: ""})}></i>
                                         <div>
-                                            {this.state.uploading ? <i class="fa fa-spinner"></i> : <i class="fa fa-check" style={{color: "green"}}></i>}
-                                            <span className="filename" style={this.state.uploading ? {color: "#000"} : {color: "green"}}>{this.state.uploading ? "Laddar upp..." :  this.state.image.name}</span>
+                                            <i class="fa fa-check" style={{color: "green"}}></i>
+                                            <span className="filename" style={{color: "green"}}>{this.state.image.name}</span>
                                         </div>
-                                        {this.state.imageSrc && <img src={`${ROUTES.API_MÄRKE_GET_IMG_PATH}/${this.state.imageSrc}`} />}
+                                        {this.state.imageSrc && <img src={`${this.state.imageSrc}`} />}
                                     </div>
                                 }
                             </label>

@@ -120,16 +120,13 @@ router.get('/marke/id/:id', (req, res) => {
   })
 })
 
-router.post('/admin/marke/create', (req, res) => {
-  const {name, description, date, price, image, creators, orders, selectedTags} = req.body
-  console.log(orders)
-  console.log(selectedTags)
+router.post('/admin/marke/create', upload.single('file'), (req, res) => {
+  const {name, description, date, price, creators, orders, selectedTags} = JSON.parse(req.body.body)
+  console.log(JSON.parse(req.body.body))
 
-  // let tagIDs
-  // tagIDs = selectedTags.map(x => db.mongoose.Types.ObjectId(x._id))
-  // console.log(tagIDs)
+  if (!req.file) return res.json({"error":"Ingen fil medskickad."})
 
-  db.Marke.create({name, description, date, price, image, createdBy: creators, orders, tags: selectedTags}, (marke) => {
+  db.Marke.create({name, description, date, price, image: "/api/file/" + req.file.filename, createdBy: creators, orders, tags: selectedTags}, (marke) => {
     console.log(marke)
     res.json({"success":"true"})
   })

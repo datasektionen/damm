@@ -70,10 +70,10 @@ class MärkePage extends React.Component {
                             <div className="description">
                                 {this.state.description ? this.state.description : "Ingen beskrivning"}
                             </div>
-                            <div className="creators">
+                            {/* <div className="creators">
                                 <span>{this.state.createdBy.length !== 0 ? "Skapat av: " : ""}</span>
                                 {this.state.createdBy.map((creator, i) => <span id="creator">{creator.firstName}{creator.lastName ? " " + creator.lastName : ""}{i === this.state.createdBy.length - 1 ? "" : ", "}</span>)}
-                            </div>
+                            </div> */}
                             <div className="tags">
                                 {this.state.tags.map(tag => <Tag {...tag} />)}
                             </div>

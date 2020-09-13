@@ -11,9 +11,6 @@ const INITIAL_STATE = {
     date: "",
     price: "",
     submitting: false,
-    firstName: "",
-    lastName: "",
-    creators: [],
     orders: [],
     company: "",
     order: "",
@@ -52,14 +49,13 @@ class AdminMärke extends React.Component {
         const submit = (e) => {
             e.preventDefault()
 
-            const {name, description, date, price, creators, selectedTags, orders} = this.state
+            const {name, description, date, price, selectedTags, orders} = this.state
 
             const body = {
                 name,
                 description,
                 date,
                 price,
-                creators,
                 selectedTags,
                 orders,
             }
@@ -111,17 +107,17 @@ class AdminMärke extends React.Component {
             this.setState({[e.target.name]: e.target.value})
         }
 
-        const addCreator = (e) => {
-            e.preventDefault()
-            this.setState({creators: this.state.creators.concat({firstName: this.state.firstName, lastName: this.state.lastName})}, () => {
-                this.setState({firstName: "", lastName: ""})
-            })
-        }
+        // const addCreator = (e) => {
+        //     e.preventDefault()
+        //     this.setState({creators: this.state.creators.concat({firstName: this.state.firstName, lastName: this.state.lastName})}, () => {
+        //         this.setState({firstName: "", lastName: ""})
+        //     })
+        // }
 
-        const removeCreator = (e, index) => {
-            e.preventDefault()
-            this.setState({creators: this.state.creators.filter((x,i) => index !== i)})
-        }
+        // const removeCreator = (e, index) => {
+        //     e.preventDefault()
+        //     this.setState({creators: this.state.creators.filter((x,i) => index !== i)})
+        // }
 
         const addOrder = e => {
             e.preventDefault()
@@ -183,7 +179,7 @@ class AdminMärke extends React.Component {
                             <h4>Lämna tomt om okänt, "-" om det ej säljs och "Gratis" om gratis</h4>
                             <input name="price" type="text" placeholder="Pris" value={this.state.price} onChange={(e) => handleChange(e)}/>
                         </div>
-                        <div className="creators">
+                        {/* <div className="creators">
                                 <h3>Skapare</h3>
                                 <h4>Namn på den/de som skapat märket (om känt)</h4>
                                 <div className="add">
@@ -192,7 +188,7 @@ class AdminMärke extends React.Component {
                                     <button onClick={(e) => addCreator(e)} disabled={this.state.firstName === ""}>Lägg till</button>
                                 </div>
                                 {this.state.creators.map((x,i) => <div className="creator" key={i}>{x.firstName} {x.lastName}<i class="fa fa-times" onClick={(e) => removeCreator(e, i)}></i></div>)}
-                        </div>
+                        </div> */}
                         <div className="tagsection">
                             <h3>Taggar</h3>
                             <h4>Lägg till passande taggar till märket. Underlättar sökning.</h4>

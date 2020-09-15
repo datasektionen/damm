@@ -103,3 +103,27 @@ exports.isAdmin = (token) => {
         })
     })
 }
+
+//Check the user's pls access rights
+exports.getPls = (token) => {
+    return new Promise((resolve, reject) => {
+        fetch(`https://login2.datasektionen.se/verify/${token}.json?api_key=${process.env.LOGIN2_API_KEY}`)
+        .then(res => res.json())
+        .then(json => {
+            console.log(json)
+
+                fetch(`https://pls.datasektionen.se/api/user/${json.user}/damm`)
+                .then(res => res.json())
+                .then(json => resolve(json))
+                .catch(err => {
+                    console.log("Error fetching: ", err)
+                    return reject(err)
+                })
+
+        })
+        .catch(err => {
+            console.log(err)
+            reject(err)
+        })
+    })
+}

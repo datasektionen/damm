@@ -5,8 +5,13 @@ const {Tag} = require('../models/Tag')
 const Märke = require('../models/Märke')
 
 router.get('/isAdmin', (req, res) => {
-    dAuth.isAdmin(req.query.token)
-    .then(x => res.json({"isAdmin": x}))
+    // dAuth.isAdmin(req.query.token)
+    dAuth.getPls(req.query.token)
+    .then(x => {
+        console.log(x)
+        // res.json({"isAdmin": x})
+        res.json({"pls": x})
+    })
     .catch(err => {
         console.log("Invalid token")
         res.status(404).json({"error": err})

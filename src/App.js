@@ -20,7 +20,8 @@ class App extends Component {
     super(props)
 
     this.state = {
-      admin: false
+      admin: false,
+      prylis: false
     }
   }
 
@@ -34,7 +35,8 @@ class App extends Component {
           localStorage.removeItem('token')
           window.location=ROUTES.HOME
         } else {
-        this.setState({admin: json.isAdmin})
+          this.setState({admin: json.pls.includes('admin'), prylis: json.pls.includes('prylis')})
+          // this.setState({admin: json.isAdmin})
         }
       })
       .catch(err => {
@@ -54,7 +56,7 @@ class App extends Component {
       ]
       
       if (localStorage.getItem('token')) links.push(<Link to={ROUTES.SKAPA_HÄNDELSE}>Skapa händelse</Link>)
-      if (this.state.admin === true && localStorage.getItem('token')) links.push(<Link to={ROUTES.ADMIN}>Administrera</Link>)
+      if ((this.state.admin || this.state.prylis) && localStorage.getItem('token')) links.push(<Link to={ROUTES.ADMIN}>Administrera</Link>)
 
       links.push(<Link to={ROUTES.HELP}>Hjälp</Link>)
       return links

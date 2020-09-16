@@ -198,6 +198,10 @@
     flex-wrap: wrap;
 }
 
+.Admin .Form .tags span.notags {
+    color: #757575;
+}
+
 .Admin .Form .tags .tagClickable {
     margin: 5px;
 }

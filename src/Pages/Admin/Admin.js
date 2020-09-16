@@ -87,7 +87,7 @@ class Admin extends React.Component {
             },
         ])
 
-        if (this.props.admin && localStorage.getItem('token')) {
+        if (this.props.pls.includes("admin") && localStorage.getItem('token')) {
             return (
                 <div className="Admin">
                     <div className="Header">
@@ -98,7 +98,7 @@ class Admin extends React.Component {
                     </div>
                 </div>
             )
-        } else if (this.props.prylis && localStorage.getItem('token')) {
+        } else if (this.props.pls.includes("prylis") && localStorage.getItem('token')) {
             return (
                 <div className="Admin">
                     <div className="Header">

@@ -12,6 +12,7 @@ const INITIAL_STATE = {
     price: "",
     submitting: false,
     orders: [],
+    orderdate: "",
     company: "",
     order: "",
     numFiles: 1,
@@ -49,7 +50,7 @@ class AdminMärke extends React.Component {
         const submit = (e) => {
             e.preventDefault()
 
-            const {name, description, date, price, selectedTags, orders} = this.state
+            const {name, description, date, price, selectedTags, orders, orderdate} = this.state
 
             const body = {
                 name,
@@ -58,6 +59,7 @@ class AdminMärke extends React.Component {
                 price,
                 selectedTags,
                 orders,
+                orderdate
             }
 
             //TODO: UPLOAD FILE
@@ -121,8 +123,8 @@ class AdminMärke extends React.Component {
 
         const addOrder = e => {
             e.preventDefault()
-            this.setState({orders: this.state.orders.concat({company: this.state.company, order: this.state.order})}, () => {
-                this.setState({order: "", company: ""})
+            this.setState({orders: this.state.orders.concat({company: this.state.company, order: this.state.order, date: this.state.orderdate})}, () => {
+                this.setState({order: "", company: "", orderdate: ""})
             })
         }
 
@@ -192,9 +194,14 @@ class AdminMärke extends React.Component {
                         <div className="tagsection">
                             <h3>Taggar</h3>
                             <h4>Lägg till passande taggar till märket. Underlättar sökning.</h4>
+                            {this.state.tags.length === 0 ?
+                                <div className="tags">
+                                    <span className="notags">Inga taggar finns</span>
+                                </div>
+                            :
                             <div className="tags">
                                 {this.state.tags.map((x,i) =>  <TagClickable key={i} onClick={() => {toggleTag(x)}} {...x} selectedTags={this.state.selectedTags}/> )}
-                            </div>
+                            </div>}
                         </div>
                         {/* <div className="files">
                             <h3>Filer</h3>
@@ -213,6 +220,7 @@ class AdminMärke extends React.Component {
                             <div className="input">
                                 <input name="company" type="text" placeholder="Företag" value={this.state.company} onChange={(e) => handleChange(e)} />
                                 <input name="order" type="text" placeholder="Referens" value={this.state.order} onChange={(e) => handleChange(e)} />
+                                <input name="orderdate" type="date" value={this.state.orderdate} onChange={(e) => handleChange(e)} />
                                 <button onClick={(e) => addOrder(e)} disabled={this.state.company === "" || this.state.order === ""}>Lägg till</button>
                             </div>
                             {this.state.orders.map((x,i) => <div className="order" key={i}>{x.company} {x.order}<i class="fa fa-times" onClick={(e) => removeOrder(e, i)}></i></div>)}

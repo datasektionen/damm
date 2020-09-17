@@ -126,10 +126,6 @@ class EditTag extends React.Component {
                 <div className="edittagcard">
                     <h1>{this.props.edit ? "Redigera tagg" : "Skapa ny tagg"}</h1>
                     <form>
-                        <div className="preview">
-                            <span>Förhandsgranskning</span>
-                            <TagClickable {...this.state} selectedTags={[{text: this.state.text}]} onClick={() => {}} />
-                        </div>
                         <div className="name">
                             <span>Namn</span>
                             <input maxLength={18} name="text" autoComplete="off" id="text" type="text" value={this.state.text} onChange={e => handleChange(e)} />
@@ -145,6 +141,10 @@ class EditTag extends React.Component {
                         <div className="bgcolor">
                             <span>Bakgrundsfärg</span>
                             <input name="backgroundColor" type="color" value={this.state.backgroundColor} onChange={e => handleChange(e)} />
+                        </div>
+                        <div className="preview">
+                            <span>Förhandsgranskning</span>
+                            <TagClickable {...this.state} selectedTags={[{text: this.state.text}]} onClick={() => {}} />
                         </div>
                         <div className="buttons">
                             <button onClick={e => reset(e)}>Ångra ändringar</button>

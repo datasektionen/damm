@@ -183,7 +183,7 @@ class MärkesArkiv extends React.Component {
         }
 
         return (
-            <div>
+            <div className="MärkesArkiv">
                 <div className="Header">
                     <div>
                         <img src={logo} alt="Datasektionens sköld" className="Logo" />

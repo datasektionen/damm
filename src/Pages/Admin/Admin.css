@@ -344,6 +344,10 @@
     /* padding: 30px; */
 }
 
+.Admin .Tags .content > div {
+    transition: none !important;
+}
+
 .Admin .Tags .content .notag {
     padding: 50px;
 }
@@ -366,6 +370,7 @@
 .Admin .Tags .content .preview .tagClickable {
     width: 50%;
     text-align: center;
+    cursor: auto;
 }
 
 .Admin .Tags .content input#text,

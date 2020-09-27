@@ -12,7 +12,7 @@ import Museum from './Pages/Museum/Museum'
 import MärkesArkiv from './Pages/MarkesArkiv/MärkesArkiv'
 import MärkePage from './Pages/MarkesArkiv/MärkePage'
 import AdminMärke from './Pages/Admin/AdminMärke'
-import NotFound from './Pages/NotFound'
+import NotFound from './components/NotFound'
 import AdminTags from './Pages/Admin/AdminTags'
 
 class App extends Component {

@@ -2,7 +2,7 @@ import React from 'react'
 import { Redirect } from 'react-router-dom'
 import * as ROUTES from '../../routes'
 import './Admin.css'
-import AdminCard from './AdminCard'
+import AdminCard from './components/AdminCard'
 
 class Admin extends React.Component {
     constructor(props) {

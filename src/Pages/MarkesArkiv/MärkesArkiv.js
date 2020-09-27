@@ -1,7 +1,7 @@
 import React from 'react'
 import logo from '../../skold.png'
 import './MärkesArkiv.css'
-import Märke from './Märke'
+import Märke from './components/Märke'
 import * as ROUTES from '../../routes'
 
 import moment from 'moment'

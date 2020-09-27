@@ -1,6 +1,6 @@
 import React from 'react'
 import * as ROUTES from '../../routes'
-import TagClickable from '../MarkesArkiv/TagClickable'
+import TagClickable from '../../components/TagClickable'
 import Alert from '../../components/Alert'
 
 const INITIAL_STATE = {

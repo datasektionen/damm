@@ -1,6 +1,6 @@
 import React from 'react'
 import * as ROUTES from '../../routes'
-import TagClickable from '../MarkesArkiv/TagClickable'
+import TagClickable from '../../components/TagClickable'
 import Alert from '../../components/Alert'
 import memoize from "memoize-one";
 
@@ -51,7 +51,7 @@ class EditTag extends React.Component {
                     fetchURL = `${ROUTES.API_CREATE_TAG}?token=${localStorage.getItem('token')}`
                     body = {...this.state}
                 }
-                
+
                 fetch(fetchURL, {
                     method: "POST",
                     headers: {

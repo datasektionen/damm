@@ -5,8 +5,8 @@ import Märke from './Märke'
 import * as ROUTES from '../../routes'
 
 import moment from 'moment'
-import Add from './add.png'
-import TagClickable from './TagClickable'
+import Add from '../../components/add.png'
+import TagClickable from '../../components/TagClickable'
 
 class MärkesArkiv extends React.Component {
     constructor(props) {

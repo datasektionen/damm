@@ -2,7 +2,7 @@ import React from 'react'
 import * as ROUTES from '../../routes'
 import moment from 'moment'
 import './MärkePage.css'
-import Tag from './Tag'
+import Tag from '../../components/Tag'
 
 class MärkePage extends React.Component {
 

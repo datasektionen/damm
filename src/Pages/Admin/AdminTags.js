@@ -1,6 +1,6 @@
 import React from 'react'
 import * as ROUTES from '../../routes'
-import TagClickable from '../MarkesArkiv/TagClickable'
+import TagClickable from '../../components/TagClickable'
 import EditTag from './EditTag'
 
 const INIT_TAG = {

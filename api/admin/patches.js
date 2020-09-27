@@ -38,6 +38,7 @@ router.post('/create', upload.single('file'), (req, res) => {
     console.log(JSON.parse(req.body.body))
   
     if (!req.file) return res.json({"error":"Ingen fil medskickad."})
+    if (name.length < 1) return res.json({"error":"Namnet är för kort."})
   
     Märke.create({name, description, date, price, image: "/api/file/" + req.file.filename, orders, tags: selectedTags}, (marke) => {
       console.log(marke)

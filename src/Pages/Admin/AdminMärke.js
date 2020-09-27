@@ -1,6 +1,7 @@
 import React from 'react'
 import * as ROUTES from '../../routes'
 import TagClickable from '../MarkesArkiv/TagClickable'
+import Alert from '../../components/Alert'
 
 const INITIAL_STATE = {
     image: undefined,
@@ -9,6 +10,7 @@ const INITIAL_STATE = {
     name: "",
     description: "",
     date: "",
+    radioPrice: "okänt",
     price: "",
     submitting: false,
     orders: [],
@@ -16,6 +18,7 @@ const INITIAL_STATE = {
     company: "",
     order: "",
     numFiles: 1,
+    error: "",
 }
 
 const SUCCESS_STATE = {...INITIAL_STATE, success: true}
@@ -50,7 +53,18 @@ class AdminMärke extends React.Component {
         const submit = (e) => {
             e.preventDefault()
 
-            const {name, description, date, price, selectedTags, orders, orderdate} = this.state
+            const {name, description, date, selectedTags, orders, orderdate} = this.state
+            let price = this.state.price
+
+            if (this.state.radioPrice === "gratis") {
+                price = "Gratis"
+            } else if (this.state.radioPrice === "säljsej"){
+                price = "-"
+            } else if (this.state.radioPrice === "okänt"){
+                price = ""
+            } else if (this.state.radioPrice === "angepris"){
+                price = this.state.price
+            }
 
             const body = {
                 name,
@@ -79,6 +93,8 @@ class AdminMärke extends React.Component {
                     window.scrollTo(0, 0)
                 } else {
                     //TODO: Visa "något gick fel, försök igen"
+                    this.setState({error: json.error})
+                    window.scrollTo(0, 0)
                 }
             })
             .catch(err => {
@@ -107,6 +123,11 @@ class AdminMärke extends React.Component {
 
         const handleChange = (e) => {
             this.setState({[e.target.name]: e.target.value})
+            this.setState({success: false})
+        }
+
+        const handleRadioChange = e => {
+            this.setState({radioPrice: e.target.id})
         }
 
         // const addCreator = (e) => {
@@ -142,7 +163,9 @@ class AdminMärke extends React.Component {
                 </div>
                 <div className="Form">
                     <form onSubmit={(e) => submit(e)}>
-                        {this.state.success && <div className="success">Märket sparat!</div>}
+                        {this.state.success && <Alert type="success">Märket sparat!</Alert>}
+                        {this.state.error && <Alert type="error">{this.state.error}</Alert>}
+
                         <div className="file-input">
                             <label>
                                 <input id="image" name="image" type="file" onChange={(e) => handleImageChange(e)} />
@@ -179,7 +202,25 @@ class AdminMärke extends React.Component {
                         <div className="price">
                             <h3>Pris</h3>
                             <h4>Lämna tomt om okänt, "-" om det ej säljs och "Gratis" om gratis</h4>
-                            <input name="price" type="text" placeholder="Pris" value={this.state.price} onChange={(e) => handleChange(e)}/>
+                            <h4>Är märket till salu eller ej? Ange pris isåfall</h4>
+                            <div className="radio">
+                                <input id="okänt" type="radio" checked={this.state.radioPrice === "okänt"} onChange={e => handleRadioChange(e)}/>
+                                <label htmlFor="okänt">Okänt</label>
+                            </div>
+                            <div className="radio">
+                                <input id="gratis" type="radio" checked={this.state.radioPrice === "gratis"} onChange={e => handleRadioChange(e)} />
+                                <label htmlFor="gratis">Gratis</label>
+                            </div>
+                            <div className="radio">
+                                <input id="säljsej" type="radio" checked={this.state.radioPrice === "säljsej"} onChange={e => handleRadioChange(e)}/>
+                                <label htmlFor="säljsej">Säljs ej</label>
+                            </div>
+                            <div className="radio">
+                                <input id="angepris" type="radio" checked={this.state.radioPrice === "angepris"} onChange={e => handleRadioChange(e)}/>
+                                <label htmlFor="angepris">Ange pris</label>
+                            </div>
+                            {this.state.radioPrice === "angepris" && <input name="price" type="text" placeholder="Pris" value={this.state.price} onChange={(e) => handleChange(e)}/>}
+                            
                         </div>
                         {/* <div className="creators">
                                 <h3>Skapare</h3>

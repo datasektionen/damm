@@ -215,30 +215,6 @@
     background-color: #ddd;
 }
 
-.Admin form .success {
-    width: 90%;
-    margin-bottom: 20px;
-    padding: 20px;
-    /* text-align: center; */
-    border: solid 1px #C2E6CB;
-    border-radius: 3px;
-
-    background-color: #D4EDDA;
-    color: #155724;
-}
-
-.Admin form .error {
-    width: 90%;
-    margin-bottom: 20px;
-    padding: 20px;
-    /* text-align: center; */
-    border: solid 1px #f9c6cb;
-    border-radius: 3px;
-
-    background-color: #fbd7da;
-    color: #771c26;
-}
-
 .Admin form input#name {
     margin: 10px;
 }

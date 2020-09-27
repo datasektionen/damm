@@ -13,7 +13,6 @@ export const SKAPA_MÄRKE = '/admin/marke/skapa'
 export const MÄRKESTAGGAR = '/admin/markestaggar/hantera'
 
 //API
-export const API_UPLOAD_IMG_PATH = '/api/admin/upload'
 export const API_CREATE_PATCH = '/api/admin/marke/create'
 export const API_MÄRKE_GET_IMG_PATH = '/api/file'
 export const API_GET_TAGS = '/api/tags'

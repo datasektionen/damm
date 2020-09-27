@@ -1,28 +1,28 @@
 import React from 'react'
 import * as ROUTES from '../../routes'
-import TagClickable from '../MarkesArkiv/TagClickable'
+import TagClickable from '../../components/TagClickable'
+import Alert from '../../components/Alert'
 
 const INITIAL_STATE = {
     image: undefined,
-    uploading: false,
     imageSrc: "",
     selectedTags: [],
     name: "",
     description: "",
     date: "",
+    radioPrice: "okänt",
     price: "",
     submitting: false,
-    firstName: "",
-    lastName: "",
-    creators: [],
     orders: [],
+    orderdate: "",
     company: "",
     order: "",
     numFiles: 1,
+    error: "",
 }
 
 const SUCCESS_STATE = {...INITIAL_STATE, success: true}
-const RESET_STATE = {...INITIAL_STATE, success: false, tags: [],}
+const RESET_STATE = {...INITIAL_STATE, success: false, selectedTags: [],}
 
 class AdminMärke extends React.Component {
     constructor(props) {
@@ -53,79 +53,61 @@ class AdminMärke extends React.Component {
         const submit = (e) => {
             e.preventDefault()
 
-            const {name, description, date, price, imageSrc, creators, selectedTags, orders} = this.state
+            const {name, description, date, selectedTags, orders, orderdate} = this.state
+            let price = this.state.price
+
+            if (this.state.radioPrice === "gratis") {
+                price = "Gratis"
+            } else if (this.state.radioPrice === "säljsej"){
+                price = "-"
+            } else if (this.state.radioPrice === "okänt"){
+                price = ""
+            } else if (this.state.radioPrice === "angepris"){
+                price = this.state.price
+            }
 
             const body = {
-                token: localStorage.getItem('token'),
                 name,
                 description,
                 date,
                 price,
-                image: `${ROUTES.API_MÄRKE_GET_IMG_PATH}/${imageSrc}`,
-                creators,
                 selectedTags,
                 orders,
+                orderdate
             }
 
+            //TODO: UPLOAD FILE
+
             console.log(body)
-
-            this.setState({submitting: true}, () => {
-                fetch(`${window.location.origin}${ROUTES.API_CREATE_PATCH}?token=${localStorage.getItem('token')}`, {
-                    method: "POST",
-                    headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify(body)
-                })
-                .then(res => res.json())
-                .then(res => {
-                    console.log(res)
-                    // window.location=ROUTES.SKAPA_MÄRKE
-                    this.setState({...SUCCESS_STATE, tags: this.state.tags})
-                    window.scrollTo(0, 0)
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-            })
-            console.log("SUBMIT")
-        }
-
-        const uploadImage = () => {
             const formData = new FormData()
             formData.append('file', this.state.image)
-            fetch(`${ROUTES.API_UPLOAD_IMG_PATH}?token=${localStorage.getItem('token')}`, {
+            formData.append('body', JSON.stringify(body))
+            fetch(`${window.location.origin}${ROUTES.API_CREATE_PATCH}?token=${localStorage.getItem('token')}`, {
                 method: "POST",
                 body: formData
             })
             .then(res => res.json())
-            .then(res => {
-                console.log(res)
-                if (res.status === "success") {
-                    this.setState({imageSrc: res.filename, uploading: false})
+            .then(json => {
+                if (json.success) {
+                    this.setState({...SUCCESS_STATE, tags: this.state.tags})
+                    window.scrollTo(0, 0)
                 } else {
                     //TODO: Visa "något gick fel, försök igen"
+                    this.setState({error: json.error})
+                    window.scrollTo(0, 0)
                 }
             })
             .catch(err => {
                 console.log(err)
                 //TODO: Visa "något gick fel, försök igen"
             })
+            console.log("SUBMIT")
         }
 
         const handleImageChange = (e) => {
-            this.setState({image: e.target.files[0], imageSrc: "", uploading: true}, () => {
-                uploadImage()
-            })
+            if (e.target.files.length > 0)
+            this.setState({image: e.target.files[0], imageSrc: URL.createObjectURL(e.target.files[0])})
         }
-
-        // const toggleTag = (tag) => {
-        //     //Remove from list
-        //     if (this.state.selectedTags.includes(tag.text)) {
-        //         this.setState({selectedTags: this.state.selectedTags.filter(x => x !== tag.text)})
-        //      //Add it to the list
-        //     } else {
-        //         this.setState({selectedTags: this.state.selectedTags.concat(tag.text)})
-        //     }
-        // }
 
         const selectedTagsIncludesTag = (tagName) => {
             return this.state.selectedTags.filter((x,i) => x.text === tagName).length > 0
@@ -141,24 +123,29 @@ class AdminMärke extends React.Component {
 
         const handleChange = (e) => {
             this.setState({[e.target.name]: e.target.value})
+            this.setState({success: false})
         }
 
-        const addCreator = (e) => {
-            e.preventDefault()
-            this.setState({creators: this.state.creators.concat({firstName: this.state.firstName, lastName: this.state.lastName})}, () => {
-                this.setState({firstName: "", lastName: ""})
-            })
+        const handleRadioChange = e => {
+            this.setState({radioPrice: e.target.id})
         }
 
-        const removeCreator = (e, index) => {
-            e.preventDefault()
-            this.setState({creators: this.state.creators.filter((x,i) => index !== i)})
-        }
+        // const addCreator = (e) => {
+        //     e.preventDefault()
+        //     this.setState({creators: this.state.creators.concat({firstName: this.state.firstName, lastName: this.state.lastName})}, () => {
+        //         this.setState({firstName: "", lastName: ""})
+        //     })
+        // }
+
+        // const removeCreator = (e, index) => {
+        //     e.preventDefault()
+        //     this.setState({creators: this.state.creators.filter((x,i) => index !== i)})
+        // }
 
         const addOrder = e => {
             e.preventDefault()
-            this.setState({orders: this.state.orders.concat({company: this.state.company, order: this.state.order})}, () => {
-                this.setState({order: "", company: ""})
+            this.setState({orders: this.state.orders.concat({company: this.state.company, order: this.state.order, date: this.state.orderdate})}, () => {
+                this.setState({order: "", company: "", orderdate: ""})
             })
         }
 
@@ -176,7 +163,9 @@ class AdminMärke extends React.Component {
                 </div>
                 <div className="Form">
                     <form onSubmit={(e) => submit(e)}>
-                        {this.state.success && <div className="success">Märket sparat!</div>}
+                        {this.state.success && <Alert type="success">Märket sparat!</Alert>}
+                        {this.state.error && <Alert type="error">{this.state.error}</Alert>}
+
                         <div className="file-input">
                             <label>
                                 <input id="image" name="image" type="file" onChange={(e) => handleImageChange(e)} />
@@ -194,10 +183,10 @@ class AdminMärke extends React.Component {
                                     <div className="preview">
                                         <i class="fa fa-times" onClick={() => this.setState({image: undefined, imageSrc: ""})}></i>
                                         <div>
-                                            {this.state.uploading ? <i class="fa fa-spinner"></i> : <i class="fa fa-check" style={{color: "green"}}></i>}
-                                            <span className="filename" style={this.state.uploading ? {color: "#000"} : {color: "green"}}>{this.state.uploading ? "Laddar upp..." :  this.state.image.name}</span>
+                                            <i class="fa fa-check" style={{color: "green"}}></i>
+                                            <span className="filename" style={{color: "green"}}>{this.state.image.name}</span>
                                         </div>
-                                        {this.state.imageSrc && <img src={`${ROUTES.API_MÄRKE_GET_IMG_PATH}/${this.state.imageSrc}`} />}
+                                        {this.state.imageSrc && <img src={`${this.state.imageSrc}`} />}
                                     </div>
                                 }
                             </label>
@@ -213,9 +202,27 @@ class AdminMärke extends React.Component {
                         <div className="price">
                             <h3>Pris</h3>
                             <h4>Lämna tomt om okänt, "-" om det ej säljs och "Gratis" om gratis</h4>
-                            <input name="price" type="text" placeholder="Pris" value={this.state.price} onChange={(e) => handleChange(e)}/>
+                            <h4>Är märket till salu eller ej? Ange pris isåfall</h4>
+                            <div className="radio">
+                                <input id="okänt" type="radio" checked={this.state.radioPrice === "okänt"} onChange={e => handleRadioChange(e)}/>
+                                <label htmlFor="okänt">Okänt</label>
+                            </div>
+                            <div className="radio">
+                                <input id="gratis" type="radio" checked={this.state.radioPrice === "gratis"} onChange={e => handleRadioChange(e)} />
+                                <label htmlFor="gratis">Gratis</label>
+                            </div>
+                            <div className="radio">
+                                <input id="säljsej" type="radio" checked={this.state.radioPrice === "säljsej"} onChange={e => handleRadioChange(e)}/>
+                                <label htmlFor="säljsej">Säljs ej</label>
+                            </div>
+                            <div className="radio">
+                                <input id="angepris" type="radio" checked={this.state.radioPrice === "angepris"} onChange={e => handleRadioChange(e)}/>
+                                <label htmlFor="angepris">Ange pris</label>
+                            </div>
+                            {this.state.radioPrice === "angepris" && <input name="price" type="text" placeholder="Pris" value={this.state.price} onChange={(e) => handleChange(e)}/>}
+                            
                         </div>
-                        <div className="creators">
+                        {/* <div className="creators">
                                 <h3>Skapare</h3>
                                 <h4>Namn på den/de som skapat märket (om känt)</h4>
                                 <div className="add">
@@ -224,13 +231,18 @@ class AdminMärke extends React.Component {
                                     <button onClick={(e) => addCreator(e)} disabled={this.state.firstName === ""}>Lägg till</button>
                                 </div>
                                 {this.state.creators.map((x,i) => <div className="creator" key={i}>{x.firstName} {x.lastName}<i class="fa fa-times" onClick={(e) => removeCreator(e, i)}></i></div>)}
-                        </div>
+                        </div> */}
                         <div className="tagsection">
                             <h3>Taggar</h3>
                             <h4>Lägg till passande taggar till märket. Underlättar sökning.</h4>
+                            {this.state.tags.length === 0 ?
+                                <div className="tags">
+                                    <span className="notags">Inga taggar finns</span>
+                                </div>
+                            :
                             <div className="tags">
                                 {this.state.tags.map((x,i) =>  <TagClickable key={i} onClick={() => {toggleTag(x)}} {...x} selectedTags={this.state.selectedTags}/> )}
-                            </div>
+                            </div>}
                         </div>
                         {/* <div className="files">
                             <h3>Filer</h3>
@@ -249,6 +261,7 @@ class AdminMärke extends React.Component {
                             <div className="input">
                                 <input name="company" type="text" placeholder="Företag" value={this.state.company} onChange={(e) => handleChange(e)} />
                                 <input name="order" type="text" placeholder="Referens" value={this.state.order} onChange={(e) => handleChange(e)} />
+                                <input name="orderdate" type="date" value={this.state.orderdate} onChange={(e) => handleChange(e)} />
                                 <button onClick={(e) => addOrder(e)} disabled={this.state.company === "" || this.state.order === ""}>Lägg till</button>
                             </div>
                             {this.state.orders.map((x,i) => <div className="order" key={i}>{x.company} {x.order}<i class="fa fa-times" onClick={(e) => removeOrder(e, i)}></i></div>)}

@@ -1,5 +1,5 @@
 import React from 'react'
-import Tag from './Tag'
+import Tag from '../../../components/Tag'
 import moment from 'moment'
 
 const Märke = ({image, date, name, description, numProduced = "?", tags = [], price, ...rest}) => {

@@ -198,6 +198,10 @@
     flex-wrap: wrap;
 }
 
+.Admin .Form .tags span.notags {
+    color: #757575;
+}
+
 .Admin .Form .tags .tagClickable {
     margin: 5px;
 }
@@ -211,25 +215,18 @@
     background-color: #ddd;
 }
 
-.Admin form .success {
-    width: 90%;
-    margin-bottom: 20px;
-    padding: 20px;
-    /* text-align: center; */
-    border: solid 1px #C2E6CB;
-    border-radius: 3px;
-
-    background-color: #D4EDDA;
-    color: #155724;
-}
-
 .Admin form input#name {
     margin: 10px;
 }
 
 .Admin form .price {
     width: 100%;
-    text-align: center;
+    /* text-align: center; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; 
+
 }
 
 .Admin form .creators {
@@ -340,6 +337,10 @@
     /* padding: 30px; */
 }
 
+.Admin .Tags .content > div {
+    transition: none !important;
+}
+
 .Admin .Tags .content .notag {
     padding: 50px;
 }
@@ -362,6 +363,7 @@
 .Admin .Tags .content .preview .tagClickable {
     width: 50%;
     text-align: center;
+    cursor: auto;
 }
 
 .Admin .Tags .content input#text,

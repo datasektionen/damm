@@ -12,7 +12,7 @@ import Museum from './Pages/Museum/Museum'
 import MärkesArkiv from './Pages/MarkesArkiv/MärkesArkiv'
 import MärkePage from './Pages/MarkesArkiv/MärkePage'
 import AdminMärke from './Pages/Admin/AdminMärke'
-import NotFound from './Pages/NotFound'
+import NotFound from './components/NotFound'
 import AdminTags from './Pages/Admin/AdminTags'
 
 class App extends Component {
@@ -20,7 +20,7 @@ class App extends Component {
     super(props)
 
     this.state = {
-      admin: false
+      pls: [],
     }
   }
 
@@ -34,7 +34,8 @@ class App extends Component {
           localStorage.removeItem('token')
           window.location=ROUTES.HOME
         } else {
-        this.setState({admin: json.isAdmin})
+          this.setState({pls: json.pls})
+          // this.setState({admin: json.isAdmin})
         }
       })
       .catch(err => {
@@ -54,7 +55,7 @@ class App extends Component {
       ]
       
       if (localStorage.getItem('token')) links.push(<Link to={ROUTES.SKAPA_HÄNDELSE}>Skapa händelse</Link>)
-      if (this.state.admin === true && localStorage.getItem('token')) links.push(<Link to={ROUTES.ADMIN}>Administrera</Link>)
+      if ((this.state.pls.includes("admin") || this.state.pls.includes("prylis")) && localStorage.getItem('token')) links.push(<Link to={ROUTES.ADMIN}>Administrera</Link>)
 
       links.push(<Link to={ROUTES.HELP}>Hjälp</Link>)
       return links
@@ -92,7 +93,6 @@ class App extends Component {
             window.location=ROUTES.HOME
             // return <Redirect to={ROUTES.HOME} />
           }} />
-          {/* TODO: Fixa en dammig 404-komponent */}
           <Route path="*" render={match => <NotFound />} />
         </Switch>
       </div>

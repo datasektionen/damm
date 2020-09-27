@@ -3,19 +3,23 @@ const app = express()
 const cors = require('cors')
 const moment = require('moment')
 
+var mongoose = require('mongoose');
+
 // Adapters
 const dfunkt = require('./adapters/dfunkt')
 const sm = require('./adapters/sm')
 const database = require('./adapters/database')
 
-const dAuth = require('./dauth')
-const db = require('./model')
-const api = require('./api')
+
+
+const api = require('./api/api')
+const adminTags = require('./api/admin/tags')
+const adminPatches = require('./api/admin/patches')
 
 const bodyParser = require('body-parser')
 
 const dataGenerator = require('./generator')
-const { model } = require('mongoose')
+// const { model } = require('mongoose')
 const init = _ => dataGenerator([
   dfunkt,
   sm,
@@ -46,6 +50,14 @@ app.use('/', express.static('build'))
 //   }
 // })
 
+mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true,  useUnifiedTopology: true })
+.then(console.log("DB connected"))
+.catch(err => {
+    console.log("DB connection error: " + err)
+})
+
+mongoose.Promise = global.Promise
+
 //För sökrutan, finns i mobilläge. Eventuellt lägga till dessa globalt (åtminstone en för damm)
 const fuzzes = [
   {
@@ -72,6 +84,10 @@ app.get('/fuzzyfile', (req, res) => { res.send(`{"@type":"fuzzyfile","fuzzes":${
 app.get('/api', (req, res) => {
   res.send(cachedData)
 })
+
+//API
+app.use('/api/admin/tag', adminTags)
+app.use('/api/admin/marke', adminPatches)
 app.use('/api', api)
 
 console.log(`${__dirname}/build/index.html`)

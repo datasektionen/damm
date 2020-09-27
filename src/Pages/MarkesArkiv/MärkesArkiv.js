@@ -1,12 +1,12 @@
 import React from 'react'
 import logo from '../../skold.png'
 import './MärkesArkiv.css'
-import Märke from './Märke'
+import Märke from './components/Märke'
 import * as ROUTES from '../../routes'
 
 import moment from 'moment'
-import Add from './add.png'
-import TagClickable from './TagClickable'
+import Add from '../../components/add.png'
+import TagClickable from '../../components/TagClickable'
 
 class MärkesArkiv extends React.Component {
     constructor(props) {
@@ -183,7 +183,7 @@ class MärkesArkiv extends React.Component {
         }
 
         return (
-            <div>
+            <div className="MärkesArkiv">
                 <div className="Header">
                     <div>
                         <img src={logo} alt="Datasektionens sköld" className="Logo" />

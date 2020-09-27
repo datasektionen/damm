@@ -6,6 +6,8 @@ const Märke = require('../models/Märke')
 
 router.get('/isAdmin', (req, res) => {
     // dAuth.isAdmin(req.query.token)
+    if (req.query.token === undefined) return res.status(403).json({"error":"No token provided."})
+
     dAuth.getPls(req.query.token)
     .then(x => {
         console.log(x)
@@ -49,8 +51,8 @@ router.get('/marken', (req, res) => {
 router.get('/marke/id/:id', (req, res) => {
     Märke.find({_id: req.params.id}, (err, data) => {
         if (err) {
-            console.log(err)
-            res.send(err)
+            console.log(`Couldn't find märke with id: \"${req.params.id}\"`)
+            res.status(404).json({"error":"Patch not found."})
         } else {
             console.log(data)
             res.send(data)
@@ -89,6 +91,10 @@ router.get('/file/:filename', (req, res) => {
         res.set('Content-Type', files[0].contentType)
         return rs.pipe(res)
     })
+})
+
+router.get('/*', (req, res) => {
+    res.json({"error":"Invalid API path"})
 })
 
 module.exports = router

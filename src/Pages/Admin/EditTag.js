@@ -1,6 +1,7 @@
 import React from 'react'
 import * as ROUTES from '../../routes'
 import TagClickable from '../MarkesArkiv/TagClickable'
+import Alert from '../../components/Alert'
 import memoize from "memoize-one";
 
 class EditTag extends React.Component {
@@ -12,7 +13,9 @@ class EditTag extends React.Component {
             color: "",
             backgroundColor: "",
             hoverText: "",
-            fetching: false
+            fetching: false,
+            error: "",
+            success: "",
         }
     }
 
@@ -24,66 +27,55 @@ class EditTag extends React.Component {
 
     render() {
 
+        //För att uppdatera props, fungerar på ett konstigt sätt. Ta ej bort...
         const updateProps = this.getProps(this.props)
         
         const handleChange = e => {
             this.setState({[e.target.name]: e.target.value})
+            this.setState({success: "", error: ""})
         }
         
         const save = e => {
             e.preventDefault()
             console.log("Saving...")
-            
-            if (this.props.edit) {
-                const body = {...this.state, _id: this.props._id}
-                this.setState({fetching: true}, () => {
-                    fetch(`${ROUTES.API_UPDATE_TAG}?token=${localStorage.getItem('token')}`, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify(body)
-                    })
-                    .then(res => res.json())
-                    .then(res => {
-                        if (res.error) {
-                            console.log(res.error)
-                        } else {
-                            console.log(res)
-                            this.props.fetchTags()
-                            this.setState({fetching: false})
-                        }
-                    })
-                    .catch(err => {
-                        console.log(err)
-                    })
-                })
-            } else {
-                const body = {...this.state}
-                this.setState({fetching: true}, () => {
-                    fetch(`${ROUTES.API_CREATE_TAG}?token=${localStorage.getItem('token')}`, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify(body)
-                    })
-                    .then(res => res.json())
-                    .then(res => {
-                        console.log(res)
-                        if (res.error) {
-    
-                        } else {
-                            this.props.fetchTags()
-                            this.setState({fetching: false})
-                        }
-                    })
-                    .catch(err => {
-                        
-                    })
-                })
-            }
 
+            let body
+            let fetchURL
+            
+            this.setState({fetching: true}, () => {
+                //Edit or create url and body
+                if (this.props.edit) {
+                    fetchURL = `${ROUTES.API_UPDATE_TAG}?token=${localStorage.getItem('token')}`
+                    body = {...this.state, _id: this.props._id}
+                } else {
+                    fetchURL = `${ROUTES.API_CREATE_TAG}?token=${localStorage.getItem('token')}`
+                    body = {...this.state}
+                }
+                
+                fetch(fetchURL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(body)
+                })
+                .then(res => res.json())
+                .then(res => {
+                    this.setState({fetching: false})
+
+                    if (res.error) {
+                        console.log(res.error)
+                        this.setState({"error": res.error})
+                    } else {
+                        console.log(res)
+                        this.props.fetchTags()
+                        this.setState({"success":"Tagg sparad!"})
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+            })
         }
 
         const noChange = () => {
@@ -109,11 +101,13 @@ class EditTag extends React.Component {
                 .then(res => res.json())
                 .then(res => {
                     console.log(res)
+                    this.setState({fetching: false})
+
                     if (res.error) {
                         console.log(res.error)
+                        this.setState({error:"error"})
                     } else {
                         this.props.fetchTags()
-                        this.setState({fetching: false})
                     }
                 })
                 .catch(err => {
@@ -124,6 +118,8 @@ class EditTag extends React.Component {
         
         return (
                 <div className="edittagcard">
+                    {this.state.success && <Alert type="success">{this.state.success}</Alert>}
+                    {this.state.error && <Alert type="error">{this.state.error}</Alert>}
                     <h1>{this.props.edit ? "Redigera tagg" : "Skapa ny tagg"}</h1>
                     <form>
                         <div className="name">

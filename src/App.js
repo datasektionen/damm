@@ -93,7 +93,6 @@ class App extends Component {
             window.location=ROUTES.HOME
             // return <Redirect to={ROUTES.HOME} />
           }} />
-          {/* TODO: Fixa en dammig 404-komponent */}
           <Route path="*" render={match => <NotFound />} />
         </Switch>
       </div>

@@ -5,13 +5,13 @@
     border-radius: 3px;
 }
 
-.AlertComponent .success {
+.AlertComponent.success {
     border: solid 1px #C2E6CB;
     background-color: #D4EDDA;
     color: #155724;
 }
 
-.AlertComponent .error {
+.AlertComponent.error {
     border: solid 1px #f9c6cb;
     border-radius: 3px;
     background-color: #fbd7da;

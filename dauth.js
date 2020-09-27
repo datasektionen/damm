@@ -80,30 +80,6 @@ exports.patchesAuth = (req, res, next) => {
     }
 }
 
-//Check if the user has admin access via pls
-exports.isAdmin = (token) => {
-    return new Promise((resolve, reject) => {
-        fetch(`https://login2.datasektionen.se/verify/${token}.json?api_key=${process.env.LOGIN2_API_KEY}`)
-        .then(res => res.json())
-        .then(json => {
-            console.log(json)
-
-                fetch(`https://pls.datasektionen.se/api/user/${json.user}/damm`)
-                .then(res => res.json())
-                .then(json => resolve(json.includes('admin') ? true : false))
-                .catch(err => {
-                    console.log("Error fetching: ", err)
-                    return reject(err)
-                })
-
-        })
-        .catch(err => {
-            console.log(err)
-            reject(err)
-        })
-    })
-}
-
 //Check the user's pls access rights
 exports.getPls = (token) => {
     return new Promise((resolve, reject) => {

@@ -7,7 +7,14 @@ const Märke = require('../../models/Märke')
 //Middleware for patch access rights, admin and prylis
 router.use(dauth.patchesAuth)
 
-router.post('/update', (req, res) => {
+const checkName = (req, res, next) => {
+    const {text} = req.body
+    if (text === undefined) return res.json({"error":"Inget namn medskickat."})
+    if (text.length < 1) return res.json({"error":"För kort namn."})
+    next()
+}
+
+router.post('/update', checkName, (req, res) => {
     const {text, hoverText, color, backgroundColor, _id} = req.body
 
     Tag.updateTag(_id, text, hoverText, color, backgroundColor, (err) => {
@@ -42,8 +49,9 @@ router.post('/update', (req, res) => {
     })
 })
   
-router.post('/create', (req, res) => {
+router.post('/create', checkName, (req, res) => {
     const {text, hoverText, color, backgroundColor} = req.body
+
     console.log(req.body)
     Tag.create({text, hoverText, color, backgroundColor}, (tag) => {
         console.log(tag)
@@ -53,6 +61,9 @@ router.post('/create', (req, res) => {
   
 router.post('/delete', (req, res) => {
     const {_id} = req.body
+
+    if (_id === undefined) return res.json({"error":"Inget id medskickat."})
+
     console.log(req.body)
     Tag.deleteOne({_id}, (err) => {
         if (err) {

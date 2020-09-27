@@ -143,10 +143,18 @@
 
 @media screen and (max-width: 900px) {
 
+    .MarkeInfo {
+        margin-top: 10px;
+    }
+
     .MarkeInfo .patch {
+        width: 95%;
+    }
+
+    .MarkeInfo .patch .patchbody {
         display: flex;
         flex-direction: column;
-        width: 95%;
+        width: 100%;
     }
 
     .MarkeInfo .patch .patchimg,
@@ -167,5 +175,13 @@
     .MarkeInfo .patch .patchcontent .tags {
         justify-content: center;
         align-items: center;
+    }
+
+    .MarkeInfo .patch .patchadmincontent {
+        display: none;
+    }
+
+    button.adminedit {
+        display: none;
     }
 }

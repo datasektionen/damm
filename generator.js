@@ -1,8 +1,7 @@
 const moment = require('moment')
 
-const events = []
-
 const generator = (adapters) => {
+	const events = []
 	console.log('Generator init', adapters)
 	adapters.forEach(adapter => adapter().then(adapterEvents => {
 		adapterEvents.sort((a, b) => {

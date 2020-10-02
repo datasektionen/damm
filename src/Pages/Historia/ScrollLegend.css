@@ -2,7 +2,7 @@
 	position: fixed;
 	width: 50px;
 	right: 0;
-	top: 50px;
+	top: 0;
 	bottom: 0;
 	background: rgba(255, 255, 255, 0.5);
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -41,6 +41,9 @@
 		width: 70px;
 		font-size: 1em;
 		padding: 0 10px;
+	}
+	.Filter {
+		padding: 20px 0 10px 0;
 	}
 }
 @media screen and (max-width: 600px) {

@@ -93,7 +93,7 @@ class ScrollLegend extends Component {
     let year = ''
     for (let i = 0; i < this.props.years.length - 1; i++) {
       year = this.props.years[i].year
-      if (this.state.positions[this.props.years[i + 1].year] - 50 > this.state.scrollTop) {
+      if (this.state.positions[this.props.years[i + 1].year] - 50 > this.state.scrollTop + 50) {
         break
       }
     }
@@ -165,9 +165,9 @@ class ScrollLegend extends Component {
     const { year, positions, documentHeight, scrollTop } = this.state
     return (
       <div className="ScrollLegend">
-        <div className="ShowYear" id="ShowYear" style={{top: scrollTop / documentHeight * 95 + '%'}}>{ year }</div>
+        <div className="ShowYear" id="ShowYear" style={{top: "calc(50px + " + scrollTop / documentHeight * 95 + '%)'}}>{ year }</div>
         { this.props.years.map(year => (
-          <div key={'year-' + year.year} className="Year" onClick={e => this.goTo(year.year)} style={{top: positions[year.year] / documentHeight * 95 + '%'}}>{ year.year }</div> 
+          <div key={'year-' + year.year} className="Year" onClick={e => this.goTo(year.year)} style={{top: "calc(50px + " + positions[year.year] / documentHeight * 95 + '%)'}}>{ year.year }</div> 
         )) }
       </div>
     )

@@ -19,9 +19,21 @@ const Märke = ({image, date, name, description, numProduced = "?", tags = [], p
                 </div>
                 <div className="title"><h2>{name}</h2></div>
                 {/* <div className="desc">{description ? description : "Ingen beskrivning"}</div> */}
-                <div className="tags">
-                    {tags.length === 0 ? "Inga taggar" : tags.map((x,i) => <Tag key={i} color={x.color} backgroundColor={x.backgroundColor} hoverText={x.hoverText} text={x.text} />)}
-                </div>
+                {/* <div className="tags"> */}
+                    {tags.length === 0 ?
+                        <div className="tags">Inga taggar</div>
+                    :
+                        tags.length <= 5 ?
+                        <div className="tags">
+                            {tags.map((x,i) => <Tag key={i} color={x.color} backgroundColor={x.backgroundColor} hoverText={x.hoverText} text={x.text} />)}
+                        </div>
+                        :
+                        <div className="tags">
+                            {tags.filter((x,i) => i < 5).map((x,i) => <Tag key={i} color={x.color} backgroundColor={x.backgroundColor} hoverText={x.hoverText} text={x.text} />)}
+                            med flera...
+                        </div>
+                    }
+                {/* </div> */}
         </div>
     )
 }

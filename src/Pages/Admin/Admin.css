@@ -70,6 +70,8 @@
 .Admin .Form h4 {
     color: #757575;
     font-size: 1em;
+    font-weight: 300;
+    margin-top: -3px;
 }
 
 .Admin .Form  h3,

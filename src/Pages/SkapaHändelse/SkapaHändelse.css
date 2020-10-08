@@ -68,11 +68,6 @@
     margin: 20px;
 }
 
-.SkapaHändelse .Body .Box h3#obligatorisk::after {
-    content: " *";
-    color: red;
-}
-
 .SkapaHändelse .Body .Box h4 {
     font-weight: 300;
     font-size: 0.7em;

@@ -10,7 +10,7 @@ const INITIAL_STATE = {
     name: "",
     description: "",
     date: "",
-    radioPrice: "okänt",
+    radioPrice: "",
     price: "",
     submitting: false,
     orders: [],
@@ -73,6 +73,7 @@ class AdminMärke extends React.Component {
                 description,
                 date,
                 price,
+                radioPrice: this.state.radioPrice,
                 selectedTags,
                 orders,
                 orderdate
@@ -168,6 +169,8 @@ class AdminMärke extends React.Component {
                         {this.state.success && <Alert type="success">Märket sparat!</Alert>}
                         {this.state.error && <Alert type="error">{this.state.error}</Alert>}
 
+                        <h3 id="obligatorisk">Bild på märket</h3>
+                        <h4>Ta en så bra bild av märket som möjligt. Skriv en lätt instruktion alternativt länka till en sida med instruktioner</h4>
                         <div className="file-input">
                             <label>
                                 <input id="image" name="image" type="file" onChange={(e) => handleImageChange(e)} />
@@ -193,8 +196,9 @@ class AdminMärke extends React.Component {
                                 }
                             </label>
                         </div>
-                        <h3>Namn och beskrivning</h3>
+                        <h3 id="obligatorisk">Namn</h3>
                         <input id="name" name="name" type="text" autoComplete={false} placeholder="Namn" value={this.state.name} onChange={(e) => handleChange(e)} />
+                        <h3>Beskrivning</h3>
                         <textarea id="description" name="description" placeholder="Beskrivning" value={this.state.description} onChange={(e) => handleChange(e)} />
                         <div className="date">
                             <h3>Datum</h3>
@@ -202,15 +206,16 @@ class AdminMärke extends React.Component {
                             <input name="date" type="date" value={this.state.date} onChange={(e) => handleChange(e)}/>
                         </div>
                         <div className="price">
-                            <h3>Pris</h3>
-                            <h4>Lämna tomt om okänt, "-" om det ej säljs och "Gratis" om gratis</h4>
-                            <h4>Är märket till salu eller ej? Ange pris isåfall</h4>
-                            {radioValues.map(x =>
-                                <div className="radio">
-                                    <input id={x} type="radio" checked={this.state.radioPrice === x} onChange={e => handleRadioChange(e)}/>
-                                    <label htmlFor={x}>{x}</label>
-                                </div>    
-                            )}
+                            <h3 id="obligatorisk">Pris</h3>
+                            <h4>Ange pris för märket</h4>
+                            <div>
+                                {radioValues.map(x =>
+                                    <div className="radio">
+                                        <input id={x} type="radio" checked={this.state.radioPrice === x} onChange={e => handleRadioChange(e)}/>
+                                        <label htmlFor={x}>{x}</label>
+                                    </div>    
+                                )}
+                            </div>
                             {this.state.radioPrice === radioValues[3] && <input name="price" type="text" placeholder="Pris" value={this.state.price} onChange={(e) => handleChange(e)}/>}
                             
                         </div>
@@ -259,7 +264,7 @@ class AdminMärke extends React.Component {
                             {this.state.orders.map((x,i) => <div className="order" key={i}>{x.company} {x.order}<i class="fa fa-times" onClick={(e) => removeOrder(e, i)}></i></div>)}
                         </div>
                         <div className="BottomButtons">
-                            <button disabled={invalid} disabled={this.state.submitting} formAction="submit">Spara märke</button>
+                            <button disabled={this.state.submitting} formAction="submit">Spara märke</button>
                             <button  className="rensa" onClick={(e) => {e.preventDefault(); this.setState({...RESET_STATE})}}>Rensa</button>
                         </div>
                     </form>

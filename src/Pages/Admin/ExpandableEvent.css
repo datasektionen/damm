@@ -1,0 +1,35 @@
+.ExpandablEvent {
+    margin: 5px;
+    user-select: none;
+}
+
+.ExpandablEvent .row {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+    border: 1px solid #eee;
+}
+
+.ExpandablEvent .row .col {
+    margin: 10px;
+    margin-right: auto
+}
+
+.ExpandablEvent .body {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #eeeeee;
+    border-radius: 2px;
+    border: 1px solid #eee;
+}
+
+.ExpandablEvent .body .bodyRow {
+    display: flex;
+    
+}
+
+.ExpandablEvent .Timeline {
+    margin-bottom: 10px;
+}

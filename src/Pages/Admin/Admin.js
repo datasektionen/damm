@@ -49,7 +49,7 @@ class Admin extends React.Component {
             {
                 title: "Hantera händelser",
                 description: "Hantera generell historia",
-                link: ROUTES.HOME,
+                link: ROUTES.HANTERA_HÄNDELSER,
                 buttonText: "Hantera händelser"
             },
             {

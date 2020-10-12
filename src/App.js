@@ -14,6 +14,7 @@ import MärkePage from './Pages/MarkesArkiv/MärkePage'
 import AdminMärke from './Pages/Admin/AdminMärke'
 import NotFound from './components/NotFound'
 import AdminTags from './Pages/Admin/AdminTags'
+import AdminEvents from './Pages/Admin/AdminEvents'
 
 class App extends Component {
   constructor(props) {
@@ -82,6 +83,7 @@ class App extends Component {
           <Route exact path={ROUTES.SKAPA_MÄRKE} render={match => <AdminMärke {...this.props} {...this.state} />} />
           <Route exact path={ROUTES.MÄRKESTAGGAR} render={match => <AdminTags {...this.props} {...this.state} />} />
           <Route exact path={ROUTES.SKAPA_HÄNDELSE} render={match => <SkapaHändelse {...this.props} {...this.state} /> } />
+          <Route exact path={ROUTES.HANTERA_HÄNDELSER} render={match => <AdminEvents {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.ADMIN} render={match => <Admin {...this.props} {...this.state} />} />
           <Route exact path={ROUTES.LOGIN} render={match => {window.location = `https://login2.datasektionen.se/login?callback=${encodeURIComponent(window.location.origin)}/token/` }} />
           <Route exact path={ROUTES.LOGOUT} render={({match}) => {

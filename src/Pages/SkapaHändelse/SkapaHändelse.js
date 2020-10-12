@@ -213,7 +213,8 @@ class SkapaHändelse extends React.Component {
                                                     content: this.state.description == "" ? "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer convallis facilisis dui quis luctus. Donec eget metus non felis sodales sodales ac nec odio. Curabitur lacus velit, rutrum a eros eget, eleifend euismod metus. Aliquam molestie ut nibh sed porttitor. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Curabitur euismod metus in massa suscipit gravida. Duis sit amet nulla massa. Duis mollis, enim ac posuere luctus, leo orci laoreet tellus, a tempus purus orci quis tortor. In iaculis pulvinar tempor. Nullam commodo finibus ornare. Cras quis purus tempor, fringilla justo nec, ullamcorper nulla. Duis dignissim, turpis ut suscipit sagittis, arcu metus commodo odio, semper suscipit urna augue tincidunt felis." : this.state.description,
                                                     date: this.state.date === "" ? moment() : moment(this.state.date)
                                                 }}
-                                            />}
+                                            />
+                                        }
                                         {this.state.checked === radios[1] &&
                                             <Anniversary
                                                 order={0}
@@ -222,7 +223,8 @@ class SkapaHändelse extends React.Component {
                                                     content: "",
                                                     date: this.state.date === "" ? moment() : moment(this.state.date)
                                                 }}
-                                            />}
+                                            />
+                                        }
                                     </div>
                                 </div>
                             </div>

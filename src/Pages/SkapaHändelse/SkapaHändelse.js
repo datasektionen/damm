@@ -6,6 +6,7 @@ import Alert from '../../components/Alert'
 
 import moment from 'moment'
 import General from '../Historia/cards/General'
+import Anniversary from '../Historia/cards/Anniversary'
 
 const INITIAL_STATE = {
     title: "",
@@ -163,7 +164,8 @@ class SkapaHändelse extends React.Component {
                                 <div key={'year-heading-' + this.state.date.split("-")[0]} id={'year-' + this.state.date.split("-")[0]}>
                                     <time className="Year">{ this.state.date.split("-")[0] }</time>
                                     <div className="cards">
-                                        <General order={0} data={{title: this.state.title, content: this.state.description, date: moment(this.state.date)}} />
+                                        {this.state.checked === radios[0] && <General order={0} data={{title: this.state.title, content: this.state.description, date: moment(this.state.date)}} />}
+                                        {this.state.checked === radios[1] && <Anniversary order={0} data={{title: this.state.title, content: this.state.description, date: moment(this.state.date)}} />}
                                     </div>
                                 </div>
                             </div>

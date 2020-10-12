@@ -76,6 +76,18 @@
     font-size: 1em;
 }
 
+.SkapaHändelse .Body .Box .info {
+    margin-top: 20px;
+    text-align: center;
+}
+.SkapaHändelse .Body .Box .info h4 {
+    font-weight: normal;
+}
+
+.SkapaHändelse .Body .Timeline {
+    width: 90%;
+}
+
 @media screen and (max-width: 600px) {
     .SkapaHändelse .Body .Box {
         width: 95%;

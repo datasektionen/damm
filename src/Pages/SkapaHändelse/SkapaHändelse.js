@@ -4,12 +4,16 @@ import * as ROUTES from '../../routes'
 import './SkapaHändelse.css'
 import Alert from '../../components/Alert'
 
+import moment from 'moment'
+import General from '../Historia/cards/General'
+
 const INITIAL_STATE = {
     title: "",
     description: "",
     date: "",
     checked: "",
     fetching: false,
+    togglePreview: false
 }
 
 const SUCCESS_STATE = {
@@ -27,7 +31,8 @@ class SkapaHändelse extends React.Component {
 
     render() {
 
-        const radios = ["Generell historia", "SM och DM", "Årsdagar"]
+        // const radios = ["Generell historia", "SM och DM", "Årsdagar"]
+        const radios = ["Generell historia", "Årsdagar"]
 
         const handleRadioChange = e => {
             this.setState({checked: e.target.id})
@@ -54,9 +59,11 @@ class SkapaHändelse extends React.Component {
                 let template
                 if (checked === radios[0]) {
                     template = "general"
-                } else if (checked === radios[1]) {
-                    template = "sm"
-                } else if (checked === radios[2]) {
+                }
+                // else if (checked === radios[1]) {
+                //     template = "sm"
+                // }
+                else if (checked === radios[1]) {
                     template = "anniversary"
                 } else template = "general"
 
@@ -88,6 +95,10 @@ class SkapaHändelse extends React.Component {
 
         }
 
+        const togglePreview = _ => {
+            this.setState({togglePreview: !this.state.togglePreview})
+        }
+
         const invalid = this.state.title === "" || this.state.date === "" || this.state.checked === ""
         const clearDisabled = this.state.title !== "" || this.state.date !== "" || this.state.checked !== ""
 
@@ -110,6 +121,7 @@ class SkapaHändelse extends React.Component {
                                 onChange={e => handleChange(e)}
                             />
                             <h3>Beskrivning</h3>
+                            <h4>Du kan använda markdown</h4>
                             <textarea
                                 name="description"
                                 placeholder="TODO: Markdowneditor"
@@ -133,15 +145,29 @@ class SkapaHändelse extends React.Component {
                                     </div>   
                                 )}
                             </div>
+                            <div className="info">
+                                <h4>Innan ditt förslag kommer upp på tidslinjen måste en administratör godkänna ditt förslag. Genom att skicka in ditt förslag godkänner du att automatiska e-postmeddelanden skickas till dig för att uppdatera dig om din händelse.</h4>
+                            </div>
                             <div className="Skapa">
                                 <button
                                     id="Skapa"
                                     onClick={e => onSubmit(e)}
                                     disabled={invalid}
                                 >Skapa händelseförslag</button>
+                                <button onClick={togglePreview} >Förhandsgranska</button>
                                 <button onClick={_ => clear()} disabled={!clearDisabled}>Återställ</button>
                             </div>
                         </div>
+                        {this.state.togglePreview && 
+                            <div className="Timeline">
+                                <div key={'year-heading-' + this.state.date.split("-")[0]} id={'year-' + this.state.date.split("-")[0]}>
+                                    <time className="Year">{ this.state.date.split("-")[0] }</time>
+                                    <div className="cards">
+                                        <General order={0} data={{title: this.state.title, content: this.state.description, date: moment(this.state.date)}} />
+                                    </div>
+                                </div>
+                            </div>
+                        }
                     </div>
 
                 </div>

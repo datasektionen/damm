@@ -51,14 +51,14 @@ setInterval(_ => {
 }, 1000*3600*24)
 
 //Endpoint for manual refresh
-app.get('/api/refresh', dAuth.adminAuth, (req, res) => { 
+app.get('/api/admin/refresh', dAuth.adminAuth, (req, res) => { 
   const limit = lastCached.clone()
   limit.add(1, 'minute')
   if (moment().isBefore(limit)) {
-    res.send('{"response": "error", "message":"Already refreshed"}') 
+    res.send('{"response": "error", "message":"Already refreshed. Wait a minute..."}') 
   } else {
     console.log("Refreshing...")
-    res.send('{"response": "ok"}')
+    res.send('{"response": "Data refreshed"}')
     cachedData = init()()
     lastCached = moment()
   }

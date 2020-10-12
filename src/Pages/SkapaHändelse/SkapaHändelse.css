@@ -19,7 +19,8 @@
     margin: 0;
 }
 
-.SkapaHändelse .Body {
+.SkapaHändelse .Body,
+.SkapaHändelse .Body .Box .dynamicForm {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -79,6 +80,7 @@
 .SkapaHändelse .Body .Box .info {
     margin-top: 20px;
     text-align: center;
+    width: 60%;
 }
 .SkapaHändelse .Body .Box .info h4 {
     font-weight: normal;
@@ -86,6 +88,7 @@
 
 .SkapaHändelse .Body .Timeline {
     width: 90%;
+    margin-bottom: 30px;
 }
 
 @media screen and (max-width: 600px) {
@@ -93,14 +96,27 @@
         width: 95%;
     }
 
+    .SkapaHändelse .Body .Box .dynamicForm
     .SkapaHändelse .Body .Box input,
     .SkapaHändelse .Body .Box textarea {
         width: 100%;
     }
+
+    .SkapaHändelse .Body .Box .info {
+        width: 90%;
+    }
 }
 
 @media screen and (max-width: 1000px) and (min-width: 601px) {
+    .SkapaHändelse .Body .Box {
+        width: 70%;
+    }
+
     .SkapaHändelse .Body .Box textarea {
         width: 90%;
+    }
+
+    .SkapaHändelse .Body .Box .info {
+        width: 80%;
     }
 }

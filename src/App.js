@@ -52,12 +52,13 @@ class App extends Component {
         <Link to={ROUTES.HOME}>Tidslinje</Link>,
         <Link to={ROUTES.MUSEUM}>Historiska artefakter</Link>,
         <Link to={ROUTES.MÄRKESARKIV}>Märkesarkiv</Link>,
+        <Link to={ROUTES.SKAPA_HÄNDELSE}>Skapa händelse</Link>
       ]
       
-      if (localStorage.getItem('token')) links.push(<Link to={ROUTES.SKAPA_HÄNDELSE}>Skapa händelse</Link>)
+      // if (localStorage.getItem('token')) links.push(<Link to={ROUTES.SKAPA_HÄNDELSE}>Skapa händelse</Link>)
       if ((this.state.pls.includes("admin") || this.state.pls.includes("prylis")) && localStorage.getItem('token')) links.push(<Link to={ROUTES.ADMIN}>Administrera</Link>)
 
-      links.push(<Link to={ROUTES.HELP}>Hjälp</Link>)
+      // links.push(<Link to={ROUTES.HELP}>Hjälp</Link>)
       return links
     }
 

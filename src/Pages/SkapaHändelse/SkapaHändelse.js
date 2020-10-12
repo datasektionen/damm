@@ -26,7 +26,6 @@ class SkapaHändelse extends React.Component {
     }
 
     render() {
-        console.log(this.props)
 
         const radios = ["Generell historia", "SM och DM", "Årsdagar"]
 
@@ -51,9 +50,19 @@ class SkapaHändelse extends React.Component {
             this.setState({fetching: true}, () => {
 
                 const { title, description, date, checked } = this.state
-                const body = { title, description, date, checked }
+
+                let template
+                if (checked === radios[0]) {
+                    template = "general"
+                } else if (checked === radios[1]) {
+                    template = "sm"
+                } else if (checked === radios[2]) {
+                    template = "anniversary"
+                } else template = "general"
+
+                const body = { title, description, date, template }
                 
-                fetch(ROUTES.API_CREATE_EVENT, {
+                fetch(`${ROUTES.API_CREATE_EVENT}?token=${localStorage.getItem("token")}`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -62,7 +71,12 @@ class SkapaHändelse extends React.Component {
                 })
                 .then(res => res.json())
                 .then(res => {
-                    this.setState({...SUCCESS_STATE})
+                    this.setState({fetching: false})
+                    if (res.error) {
+                        this.setState({error: res.error})
+                    } else {
+                        this.setState({...SUCCESS_STATE})
+                    }
                     window.scrollTo(0, 0)
                 })
                 .catch(err => {

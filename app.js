@@ -16,6 +16,7 @@ const dAuth = require('./dauth')
 const api = require('./api/api')
 const adminTags = require('./api/admin/tags')
 const adminPatches = require('./api/admin/patches')
+const adminEvents = require('./api/admin/events')
 
 const bodyParser = require('body-parser')
 
@@ -101,6 +102,7 @@ app.get('/api', (req, res) => {
 //API
 app.use('/api/admin/tag', adminTags)
 app.use('/api/admin/marke', adminPatches)
+app.use('/api/admin/event', adminEvents)
 app.use('/api', api)
 
 console.log(`${__dirname}/build/index.html`)

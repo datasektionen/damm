@@ -3,15 +3,14 @@ var router = express.Router()
 const dAuth = require('../dauth')
 const {Tag} = require('../models/Tag')
 const Märke = require('../models/Märke')
+const eventsNoAdmin = require('./events')
 
 router.get('/isAdmin', (req, res) => {
-    // dAuth.isAdmin(req.query.token)
     if (req.query.token === undefined) return res.status(403).json({"error":"No token provided."})
 
     dAuth.getPls(req.query.token)
     .then(x => {
         console.log(x)
-        // res.json({"isAdmin": x})
         res.json({"pls": x})
     })
     .catch(err => {
@@ -92,6 +91,8 @@ router.get('/file/:filename', (req, res) => {
         return rs.pipe(res)
     })
 })
+
+router.use('/event', eventsNoAdmin)
 
 router.get('/*', (req, res) => {
     res.json({"error":"Invalid API path"})

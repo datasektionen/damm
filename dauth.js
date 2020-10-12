@@ -2,6 +2,8 @@ const fetch = require('node-fetch')
 //Configure process.env
 require('dotenv').config()
 
+const User = require('./models/User')
+
 exports.adminAuth = (req, res, next) => {
     const token = req.query.token
     //If token provided
@@ -26,13 +28,13 @@ exports.adminAuth = (req, res, next) => {
             })
             .catch(err => {
                 console.log("Pls error: ", err)
-                res.status(500).send(err)
+                res.status(500).send("Invalid token")
                 return
             })
         })
         .catch(err => {
-            console.log("Token error")
-            res.status(500).send(err)
+            console.log("Login error", err)
+            res.status(500).send("Invalid token")
             return
         })
     //No token provided
@@ -87,15 +89,20 @@ exports.getPls = (token) => {
         .then(res => res.json())
         .then(json => {
             console.log(json)
+            const { first_name, last_name, user, ugkthid, emails } = json
 
-                fetch(`https://pls.datasektionen.se/api/user/${json.user}/damm`)
-                .then(res => res.json())
-                .then(json => resolve(json))
-                .catch(err => {
-                    console.log("Error fetching: ", err)
-                    return reject(err)
-                })
-
+            User.createFromLogin({first_name, last_name, user, ugkthid, emails}, (user) => {
+                // User created or already exists
+                // Users are used in our model when creating events.
+            })
+            
+            fetch(`https://pls.datasektionen.se/api/user/${json.user}/damm`)
+            .then(res => res.json())
+            .then(json => resolve(json))
+            .catch(err => {
+                console.log("Error fetching: ", err)
+                return reject(err)
+            })
         })
         .catch(err => {
             console.log(err)

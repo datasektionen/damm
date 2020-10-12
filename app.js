@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const moment = require('moment')
+const morgan = require('morgan')
 
 var mongoose = require('mongoose');
 
@@ -11,7 +12,7 @@ const sm = require('./adapters/sm')
 const database = require('./adapters/database')
 
 
-
+const dAuth = require('./dauth')
 const api = require('./api/api')
 const adminTags = require('./api/admin/tags')
 const adminPatches = require('./api/admin/patches')
@@ -37,18 +38,30 @@ app.use(function(req, res, next) {
    next();
 });
 
+app.use(morgan('dev'))
+
 app.use('/', express.static('build'))
-// app.get('/refresh', (req, res) => { 
-//   const limit = lastCached.clone()
-//   limit.add(1, 'minute')
-//   if (moment().isBefore(limit)) {
-//     res.send('{"response": "error", "message":"Already refreshed"}') 
-//   } else {
-//     res.send('{"response": "ok"}')
-//     cachedData = init()()
-//     lastCached = moment()
-//   }
-// })
+
+//Refresh automatically every 24 hours
+setInterval(_ => {
+  console.log("Performing automatic refresh...")
+  cachedData = init()()
+  lastCached = moment()
+}, 1000*3600*24)
+
+//Endpoint for manual refresh
+app.get('/api/refresh', dAuth.adminAuth, (req, res) => { 
+  const limit = lastCached.clone()
+  limit.add(1, 'minute')
+  if (moment().isBefore(limit)) {
+    res.send('{"response": "error", "message":"Already refreshed"}') 
+  } else {
+    console.log("Refreshing...")
+    res.send('{"response": "ok"}')
+    cachedData = init()()
+    lastCached = moment()
+  }
+})
 
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true,  useUnifiedTopology: true })
 .then(console.log("DB connected"))

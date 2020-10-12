@@ -14,16 +14,16 @@ const AdminCard = ({title, description, link, buttonText, onClick = () => {}, no
             </div>
             {nolink ?
                 <Link
-                    onClick={onClick}
-                    to={link}
-                    >{buttonText ? buttonText : "Kör"}
+                onClick={onClick}
+                >{buttonText ? buttonText : "Kör"}
                 </Link>
             :
                 <Link
-                    onClick={onClick}
-                    to=""
+                onClick={onClick}
+                to={link}
                 >{buttonText ? buttonText : "Kör"}
-                </Link>}
+                </Link>
+            }
             
         </div>
     )

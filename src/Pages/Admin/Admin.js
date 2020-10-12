@@ -1,5 +1,6 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
+import Alert from '../../components/Alert'
 import * as ROUTES from '../../routes'
 import './Admin.css'
 import AdminCard from './components/AdminCard'
@@ -7,6 +8,11 @@ import AdminCard from './components/AdminCard'
 class Admin extends React.Component {
     constructor(props) {
         super(props)
+
+        this.state = {
+            success: "",
+            error: ""
+        }
     }
 
     render() {
@@ -49,54 +55,50 @@ class Admin extends React.Component {
             {
                 title: "Ladda om data",
                 description: "Laddar om data till tidslinjen (protokoll, val och mandat). Kan vara bra vid en eventuell mörkläggning :)",
-                link: ROUTES.HOME,
+                // link: ROUTES.ADMIN,
+                nolink: true,
                 buttonText: "Ladda om",
                 onClick: () => {
                     console.log("LADDAR OM, INTE IMPLEMENTERAT ÄN")
+                    fetch(`/api/admin/refresh?token=${localStorage.getItem('token')}`)
+                    .then(res => res.json())
+                    .then(json => {
+                        if (json.response === "error") {
+                            this.setState({error: json.message})
+                        } else {
+                            this.setState({success: json.response})
+                        }
+                    })
+                    .catch(err => {
+                        this.setState({error: err.toString()})
+                    })
                 }
             },
         ])
 
-        if (this.props.pls.includes("admin") && localStorage.getItem('token')) {
-            return (
+        let content
+        if (this.props.pls.includes("admin")) {
+            content = adminCards.map(x => <AdminCard {...x} />)
+        } else if (this.props.pls.includes("prylis")) {
+            content = prylisCards.map(x => <AdminCard {...x} />)
+        }
+
+        if (localStorage.getItem('token')) {
+            return(
                 <div className="Admin">
                     <div className="Header">
-                       <h2>Administrera</h2>
+                        <h2>Administrera, TODO: Skriv om denna sida</h2>
                     </div>
+                    {this.state.success && <Alert>{this.state.success}</Alert>}
+                    {this.state.error && <Alert type="error">{this.state.error}</Alert>}
                     <div className="Content">
-                        {adminCards.map(x => <AdminCard {...x} />)}
-                    </div>
-                </div>
-            )
-        } else if (this.props.pls.includes("prylis") && localStorage.getItem('token')) {
-            return (
-                <div className="Admin">
-                    <div className="Header">
-                       <h2>Administrera</h2>
-                    </div>
-                    <div className="Content">
-                        {prylisCards.map(x => <AdminCard {...x} />)}
+                        {content}
                     </div>
                 </div>
             )
         } else {
             return (<Redirect to={ROUTES.HOME} />)
         }
-
-        // if ((this.props.admin || this.props.prylis) && localStorage.getItem('token')) {
-        //     return (
-        //         <div className="Admin">
-        //             <div className="Header">
-        //                <h2>Administrera</h2>
-        //             </div>
-        //             <div className="Content">
-        //                 {cards.map(x => <AdminCard {...x} />)}
-        //             </div>
-        //         </div>
-        //     )
-        // } else {
-        //     return (<Redirect to={ROUTES.HOME} />)
-        // }
     }
 }
 

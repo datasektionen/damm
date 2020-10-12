@@ -25,6 +25,11 @@
     width: 100%;
 }
 
+.Admin > .AlertComponent {
+    width: 90%;
+    margin: 10px;
+}
+
 .AdminCard {
     background-color: #f9f9f9f9;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);

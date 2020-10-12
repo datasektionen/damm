@@ -100,7 +100,7 @@ time.Year {
   margin-bottom: 0;
 }
 .Timeline .cards .card:nth-child(odd) {
-  margin-top: -50px;
+  /* margin-top: -50px; */
   margin-bottom: 50px;
 }
 .Timeline .cards .card:nth-child(odd):last-child {

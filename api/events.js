@@ -45,12 +45,12 @@ router.post('/create', (req, res) => {
 
 })
 
-router.get('/test', (req, res) => {
+router.get('/pending', (req, res) => {
     Event.find()
     .populate('author.user')
     .populate('accepted.user')
-    .exec((err, event) => {
-        res.send(event)
+    .exec((err, events) => {
+        res.json({events})
     })
 })
 

@@ -17,6 +17,7 @@ class AdminEvents extends React.Component {
         fetch(ROUTES.API_GET_UNACCEPTED_EVENTS)
         .then(res => res.json())
         .then(json => {
+            console.log(json.events)
             this.setState({events: json.events})
         })
         .catch(err => {
@@ -64,8 +65,8 @@ class AdminEvents extends React.Component {
                             )}
                             </tbody>
                         </table> */}
-                        {this.state.events.filter(e => e.accepted.status === false).map(e => 
-                            <ExpandableEvent {...e} />    
+                        {this.state.events.filter(e => e.accepted.status === false).map((e,i) => 
+                            <ExpandableEvent {...e} index={i}/>    
                         )}
                     </div>
                 </div>

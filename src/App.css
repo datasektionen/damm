@@ -561,8 +561,13 @@ time.Year {
   transition: .1s;
 }
 
-
-
+.radio input[type=radio]:disabled + label,
+.radio input[type=radio]:disabled + label:before,
+.radio input[type=radio]:disabled + label:after {
+  cursor: not-allowed;
+  color: gray;
+  
+}
 
 .Filter {
   margin: 0 auto;

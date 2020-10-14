@@ -18,6 +18,10 @@
     margin-right: auto
 }
 
+.ExpandablEvent .row .col.title {
+    width: 45%;
+}
+
 .ExpandablEvent .body {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     background-color: #eeeeee;
@@ -27,9 +31,25 @@
 
 .ExpandablEvent .body .bodyRow {
     display: flex;
-    
+    flex-direction: column;
+    padding: 20px;
+}
+
+.ExpandablEvent .body .bodyRow .radio {
+    margin-left: 10px;
+}
+
+.ExpandablEvent .body .bodyRow button {
+    width: 100px;
 }
 
 .ExpandablEvent .Timeline {
     margin-bottom: 10px;
+}
+
+@media screen and (max-width: 600px) {
+
+    .ExpandablEvent .row .col.title {
+        width: auto;
+    }
 }

@@ -553,6 +553,10 @@
         text-align: center;
     }
 
+    .Admin .Body .Box {
+        width: 100%;
+    }
+
 }
 
 @media screen and (max-width: 1000px) and (min-width: 601px) {

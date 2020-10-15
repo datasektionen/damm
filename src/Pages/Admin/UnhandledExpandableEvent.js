@@ -5,7 +5,7 @@ import * as ROUTES from '../../routes'
 import ExpandableEvent from './components/ExpandableEvent'
 import EventTimelineView from './components/EventTimelineView'
 
-const UnhandledExpandableEvent = ({event, index}) => {
+const UnhandledExpandableEvent = ({event, index, fetchEvents}) => {
     const [checked, setChecked] = useState("")
     const [fetching, setFetching] = useState(false)
     const [locked, setLocked] = useState(false)
@@ -29,8 +29,13 @@ const UnhandledExpandableEvent = ({event, index}) => {
         .then(res => res.json())
         .then(res => {
             setFetching(false)
-            setLocked(true)
-            console.log(res)
+            if (res.error) {
+                // Caught by catch block?
+            } else {
+                setLocked(true)
+                //Refetch events
+                fetchEvents()
+            }
         })
         .catch(err => {
             setFetching(false)
@@ -54,7 +59,8 @@ const UnhandledExpandableEvent = ({event, index}) => {
                         <input
                             // Id has to be unique, otherwise the radios won't work, hence the index + i
                             id={r + "-" + index + i}
-                            type="radio" checked={checked === r}
+                            type="radio"
+                            checked={checked === r}
                             onChange={e => setChecked(e.target.id.split("-")[0])}
                             disabled={locked}
                         />

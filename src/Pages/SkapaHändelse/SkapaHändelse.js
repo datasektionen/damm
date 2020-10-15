@@ -113,7 +113,7 @@ class SkapaHändelse extends React.Component {
                             <h4>Påverkar hur händelsen ser ut på tidslinjen</h4>
                             <div className="radios">
                                 {radios.map(x => 
-                                    <div className="radio">
+                                    <div className="radio" key={x}>
                                         <input id={x.value} type="radio" checked={this.state.checked === x.value} onChange={e => this.setState({checked: e.target.id})}/>
                                         <label htmlFor={x.value}>{x.text}</label>
                                     </div>   
@@ -123,7 +123,7 @@ class SkapaHändelse extends React.Component {
                             <ConditionalForm
                                 title={this.state.title}
                                 description={this.state.description}
-                                date={this.state.description}
+                                date={this.state.date}
                                 checked={this.state.checked}
                                 comment={this.state.comment}
                                 handleChange={handleChange}

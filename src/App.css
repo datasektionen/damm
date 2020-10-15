@@ -133,6 +133,7 @@ time.Year {
 }
 
 .Timeline .cards .card .Head {
+  word-break: break-all;
   min-height: 50px;
   background: #f9f9f9;
   border-bottom: 1px solid #eee;
@@ -196,6 +197,7 @@ time.Year {
   border-bottom-style: solid;
 }
 .Timeline .cards .card.Anniversary .Head {
+  word-break: break-all;
   background: #E5C100;
   padding: 20px 20px;
 }

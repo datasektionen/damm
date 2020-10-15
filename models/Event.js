@@ -25,6 +25,7 @@ var eventSchema = new Schema({
             ref: 'User',
         },
         date: String,
+        comment: String,
     },
     author: {
         user: {
@@ -51,7 +52,8 @@ eventSchema.statics.createFromUgkthid = function(x, callback) {
                     status: false,
                     accepted: undefined,
                     user: undefined,
-                    date: undefined
+                    date: undefined,
+                    comment: ""
                 },
                 author: {
                     user: user._id,

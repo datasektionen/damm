@@ -64,7 +64,7 @@ app.get('/api/admin/refresh', dAuth.adminAuth, (req, res) => {
   }
 })
 
-mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true,  useUnifiedTopology: true })
+mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true,  useUnifiedTopology: true, useFindAndModify: false })
 .then(console.log("DB connected"))
 .catch(err => {
     console.log("DB connection error: " + err)

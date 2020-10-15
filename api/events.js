@@ -51,6 +51,10 @@ router.get('/pending', (req, res) => {
     .populate('author.user')
     .populate('accepted.user')
     .exec((err, events) => {
+        if (err) {
+            console.log(err)
+            return res.json({"error": "Something went wrong", "events": []})
+        }
         res.json({events})
     })
 })

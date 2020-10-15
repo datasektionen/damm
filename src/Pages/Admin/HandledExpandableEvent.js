@@ -30,7 +30,14 @@ const HandledExpandableEvent = ({event}) => {
             }
             {event.accepted.accepted === false &&
                 <div>
-                    Avslagen av {event.accepted.user.first_name + " " + event.accepted.user.last_name} den {moment(event.accepted.date).format("YYYY-MM-DD hh:mm:ss")}
+                    <div>
+                        Avslagen av {event.accepted.user.first_name + " " + event.accepted.user.last_name} den {moment(event.accepted.date).format("YYYY-MM-DD hh:mm:ss")}
+                    </div>
+                    {event.accepted.comment &&
+                        <div>
+                            Kommentar: {event.accepted.comment}
+                        </div>
+                    }
                 </div>
             }
             <EventTimelineView

@@ -10,21 +10,53 @@ router.use(dauth.adminAuth)
 
 router.post('/accept', (req, res) => {
     const {token} = req.query
-    const { id, accept } = req.body
+    const { id, accept, comment, changes } = req.body
     console.log(req.body)
 
     if (id === undefined || id === "") return res.status(403).json({"error":"No token provided."})
-
+    
     dauth.getUser(token)
     .then(user => {
+
+        let acceptedObject
+        if (accept === "godkänn") {
+            acceptedObject = {
+                accepted: {
+                    status: true,
+                    accepted: true,
+                    user: user._id,
+                    date: moment(),
+                    comment: ""  
+                }
+            }
+        }
+        else if (accept === "avslå") {
+            acceptedObject = {
+                accepted: {
+                    status: true,
+                    accepted: false,
+                    user: user._id,
+                    date: moment(),
+                    comment  
+                }
+            }
+        }
+        else if (accept === "godkännmedändring") {
+            acceptedObject = {
+                accepted: {
+                    status: true,
+                    accepted: true,
+                    user: user._id,
+                    date: moment(),
+                    comment  
+                },
+                ...changes
+            }
+        }
+
         console.log(user)
         Event.findByIdAndUpdate(id, {
-            accepted: {
-                status: true,
-                accepted: accept,
-                user: user._id,
-                date: moment()
-            }
+            ...acceptedObject
         }, (err, _) => {
             if (err) {
                 return res.status(500).json({"error":"Something went wrong"})

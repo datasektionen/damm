@@ -47,9 +47,32 @@
     margin-bottom: 10px;
 }
 
+.ExpandablEvent .ApproveWithChanges {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.ExpandablEvent .ApproveWithChanges > *{
+    margin: 0 5px 5px 0;
+}
+
+.ExpandablEvent textarea {
+    resize: none;
+    padding: 10px;
+    border: 1px solid #f7f7f7;
+    box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.1);
+    width: 500px;
+    height: 150px;
+}
+
 @media screen and (max-width: 600px) {
 
     .ExpandablEvent .row .col.title {
         width: auto;
+    }
+
+    .ExpandablEvent textarea {
+        width: 100%;
     }
 }

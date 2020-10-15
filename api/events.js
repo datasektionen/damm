@@ -5,7 +5,7 @@ const Event = require('../models/Event')
 
 router.post('/create', (req, res) => {
     const token = req.query.token
-    const { title, description, date, template } = req.body
+    const { title, description, date, template, comment } = req.body
 
     // Validation
     if (!title || title === "" || title === undefined) return res.json({"error":"Title too short."})
@@ -29,6 +29,7 @@ router.post('/create', (req, res) => {
             content: description,
             date,
             template,
+            comment
         }, (event) => {
             if (!event.error) {
                 return res.json({"message":"success"})

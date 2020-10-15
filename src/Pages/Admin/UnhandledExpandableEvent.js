@@ -54,6 +54,10 @@ const UnhandledExpandableEvent = ({event, index, fetchEvents}) => {
             ]}
         >
             <div className="bodyRow">
+                <div>
+                    <span><b>Kommentar:</b> </span>
+                    {event.comment}
+                </div>
                 {radios.map((r,i) => 
                     <div className="radio" key={r}>
                         <input

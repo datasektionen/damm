@@ -33,6 +33,7 @@ var eventSchema = new Schema({
         },
         date: String,
     },
+    comment: String,
 })
 
 eventSchema.statics.createFromUgkthid = function(x, callback) {
@@ -55,7 +56,8 @@ eventSchema.statics.createFromUgkthid = function(x, callback) {
                 author: {
                     user: user._id,
                     date: moment()
-                }
+                },
+                comment: x.comment,
             })
 
             event.save().then(m => callback(m))

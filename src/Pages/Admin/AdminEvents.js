@@ -1,6 +1,6 @@
 import React from 'react'
-import moment from 'moment'
-import ExpandableEvent from './ExpandableEvent'
+import UnhandledExpandableEvent from './UnhandledExpandableEvent'
+import HandledExpandableEvent from './HandledExpandableEvent'
 
 import * as ROUTES from '../../routes'
 
@@ -46,9 +46,6 @@ class AdminEvents extends React.Component {
                             )}
                         </div>
                         <TabBody tabs={this.state.tabs} selectedTab={this.state.tab} events={this.state.events} />
-                        {/* {this.state.events.filter(e => e.accepted.status === false).map((e,i) => 
-                            <ExpandableEvent {...e} index={i}/>    
-                        )} */}
                     </div>
                 </div>
             </div>
@@ -58,16 +55,23 @@ class AdminEvents extends React.Component {
 
 const TabBody = ({tabs, selectedTab, events}) => {
     if (selectedTab === tabs[0]) {
-        return events.filter(e => e.accepted.status === false).map((e,i) => 
-            <ExpandableEvent {...e} index={i}/>    
-        )
+        if (events.filter(e => e.accepted.status === false).length === 0) {
+            return <div>Inga obehandlade händelser</div>
+        } else return (
+            events.filter(e => e.accepted.status === false).map((e,i) => 
+            <UnhandledExpandableEvent
+                index={i}
+                event={e}
+            />
+        ))
     } else if (selectedTab === tabs[1]) {
         return events.filter(e => e.accepted.status === true && e.accepted.accepted === true).map((e,i) => 
-            <ExpandableEvent {...e} index={i}/>    
+            // <ExpandableEvent {...e} index={i}/>
+            <HandledExpandableEvent event={e} />
         )
     } else if (selectedTab === tabs[2]) {
         return events.filter(e => e.accepted.status === true && e.accepted.accepted === false).map((e,i) => 
-            <ExpandableEvent {...e} index={i}/>    
+            <HandledExpandableEvent event={e}/>    
         ) 
     } else return <div></div>
 }

@@ -425,6 +425,7 @@
 }
 
 .Admin .Body .Box .tabs {
+    user-select: none;
     display: flex;
     width: 100%;
     justify-content: center;
@@ -444,6 +445,7 @@
 
 .Admin .Body .Box .tabs .tab:hover {
     background-color: #e6e6e6;
+    border-bottom: solid 4px #ea4d8f;
 }
 
 .Admin .Body .Box .tabs .tab h4 {
@@ -672,5 +674,9 @@
 
     .Admin .Tags .content .edittagcard .buttons i {
         text-align: center;
+    }
+
+    .Admin .Body .Box {
+        width: 100%;
     }
 }

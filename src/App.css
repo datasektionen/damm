@@ -566,7 +566,10 @@ time.Year {
 .radio input[type=radio]:disabled + label:after {
   cursor: not-allowed;
   color: gray;
-  
+}
+
+.radio input[type=radio]:checked:disabled + label:before {
+  background-color: gray;
 }
 
 .Filter {

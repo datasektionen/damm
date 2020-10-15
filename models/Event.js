@@ -16,7 +16,10 @@ var eventSchema = new Schema({
     date: String,
     template: String,
     accepted: {
+        // status: false if not yet "behandlad" by someone, else true
+        // accepted: Whether it was accepted or not by admin
         status: Boolean,
+        accepted: Boolean,
         user: {
             type: Schema.Types.ObjectId,
             ref: 'User',
@@ -45,8 +48,9 @@ eventSchema.statics.createFromUgkthid = function(x, callback) {
                 template: x.template,
                 accepted: {
                     status: false,
+                    accepted: undefined,
                     user: undefined,
-                    date: ""
+                    date: undefined
                 },
                 author: {
                     user: user._id,

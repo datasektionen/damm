@@ -9,7 +9,9 @@ class AdminEvents extends React.Component {
         super(props)
 
         this.state = {
-            events: []
+            events: [],
+            tabs: ["Obehandlade", "Godkända", "Avslagna"],
+            tab: "Obehandlade",
         }
     }
 
@@ -33,46 +35,41 @@ class AdminEvents extends React.Component {
                 </div>
                 <div className="Body">
                     <div className="Box">
-                        <h1>Väntande händelser</h1>
-                        {/* <table className="table">
-                            <thead>
-                            <tr>
-                                <th>Datum</th>
-                                <th>Användare</th>
-                                <th>Titel</th>
-                                <th>Typ</th>
-                                <th>Handling</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {this.state.events.filter(e => e.accepted.status === false).map(e =>
-                                <tr>
-                                    <td>{moment(e.author.date).format("YYYY-MM-DD HH:MM")}</td>
-                                    <td>{e.author.user.first_name + " " + e.author.user.last_name}</td>
-                                    <td>{e.title}</td>
-                                    <td>{e.template}</td>
-                                    <td>
-                                        <div className="radio">
-                                            <input id="godkänn" type="radio" checked={false} onChange={e => {}}/>
-                                            <label htmlFor="godkänn">Godkänn</label>
-                                        </div>
-                                        <div className="radio">
-                                            <input id="avslå" type="radio" checked={true} onChange={e => {}}/>
-                                            <label htmlFor="avslå">Avslå</label>
-                                        </div>
-                                    </td>
-                                </tr>
+                        <div className="tabs">
+                            {this.state.tabs.map(tab =>
+                                <div
+                                    className={"tab" + (this.state.tab === tab ? " selected" : "")}
+                                    onClick={() => this.setState({tab})}
+                                >
+                                    <h4>{tab}</h4>
+                                </div>
                             )}
-                            </tbody>
-                        </table> */}
-                        {this.state.events.filter(e => e.accepted.status === false).map((e,i) => 
+                        </div>
+                        <TabBody tabs={this.state.tabs} selectedTab={this.state.tab} events={this.state.events} />
+                        {/* {this.state.events.filter(e => e.accepted.status === false).map((e,i) => 
                             <ExpandableEvent {...e} index={i}/>    
-                        )}
+                        )} */}
                     </div>
                 </div>
             </div>
         )
     }
+}
+
+const TabBody = ({tabs, selectedTab, events}) => {
+    if (selectedTab === tabs[0]) {
+        return events.filter(e => e.accepted.status === false).map((e,i) => 
+            <ExpandableEvent {...e} index={i}/>    
+        )
+    } else if (selectedTab === tabs[1]) {
+        return events.filter(e => e.accepted.status === true && e.accepted.accepted === true).map((e,i) => 
+            <ExpandableEvent {...e} index={i}/>    
+        )
+    } else if (selectedTab === tabs[2]) {
+        return events.filter(e => e.accepted.status === true && e.accepted.accepted === false).map((e,i) => 
+            <ExpandableEvent {...e} index={i}/>    
+        ) 
+    } else return <div></div>
 }
 
 export default AdminEvents

@@ -9,7 +9,7 @@ import * as ROUTES from '../../routes'
 // Expandable component, designed for the "Hantera händelser" page.
 //Index is used for creating a unique id for each radio. Otherwise we will get multiple radios with
 //the same id, which won't work
-const ExpandableEvent = ({title, content, template, author, date, index, _id}) => {
+const ExpandableEvent = ({title, content, template, author, date, index, _id, accepted}) => {
 
     const [expanded, expand] = useState(false)
     const [checked, setChecked] = useState("")
@@ -66,7 +66,8 @@ const ExpandableEvent = ({title, content, template, author, date, index, _id}) =
                     {template === "general" ? <span style={{color: "#ea4d8f", fontWeight: "bold"}}>Generell historia</span> : <span style={{color: "#E5C100", fontWeight: "bold"}}>Årsdagar</span>}
                 </div>
                 <div className="col">
-                    {locked ? (checked === "Godkänn" ? "Godkänd" : "Avslagen") : "Ej bedömd"}
+                    {accepted.status === true ? (accepted.accepted ? <span style={{color: "green"}}><b>Godkänd</b></span> : <span style={{color: "red"}}><b>Avslagen</b></span> ) : "Ej behandlad"}
+                    {/* {locked ? (checked === "Godkänn" ? <span style={{color: "green"}}>Godkänd</span> : <span style={{color: "red"}}>Avslagen</span>) : "Ej bedömd"} */}
                 </div>
             </div>
             <div className="body" style={expanded ? {} : {display: "none"}}>
@@ -111,7 +112,7 @@ const ExpandableEvent = ({title, content, template, author, date, index, _id}) =
                                     data={{
                                         title: title,
                                         content: "",
-                                        date: moment()
+                                        date: moment(date)
                                     }}
                                 />
                             }

@@ -110,3 +110,19 @@ exports.getPls = (token) => {
         })
     })
 }
+
+exports.getUser = token => {
+    return new Promise((resolve, reject) => {
+        fetch(`https://login2.datasektionen.se/verify/${token}.json?api_key=${process.env.LOGIN2_API_KEY}`)
+        .then(res => res.json())
+        .then(json => {
+            User.findOne({ugkthid: json.ugkthid}, (err, res) => {
+                resolve(res)
+            })
+        })
+        .catch(err => {
+            console.log(err)
+            reject(err)
+        })
+    })
+}

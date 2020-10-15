@@ -424,6 +424,32 @@
     margin-bottom: 10px;
 }
 
+.Admin .Body .Box .tabs {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.Admin .Body .Box .tabs .tab {
+    margin: 10px 0 10px 0;
+    cursor: pointer;
+    padding: 10px 10px 0 10px;
+    border-bottom: solid 4px #ea4d8e00;
+}
+
+.Admin .Body .Box .tabs .tab.selected {
+    background-color: #e6e6e6;
+    border-bottom: solid 4px #ea4d8f;
+}
+
+.Admin .Body .Box .tabs .tab:hover {
+    background-color: #e6e6e6;
+}
+
+.Admin .Body .Box .tabs .tab h4 {
+    font-weight: 700;
+}
+
 @media screen and (max-width: 600px) {
     .Admin .Form form {
         width: 100%;

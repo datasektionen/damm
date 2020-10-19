@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import moment from 'moment'
 
 import * as ROUTES from '../../routes'
-import ExpandableEvent from './components/ExpandableEvent'
+import ExpandableItem from './components/ExpandableItem'
 import EventTimelineView from './components/EventTimelineView'
 
 const UnhandledExpandableEvent = ({event, index, fetchEvents}) => {
@@ -64,7 +64,7 @@ const UnhandledExpandableEvent = ({event, index, fetchEvents}) => {
     }
 
     return (
-        <ExpandableEvent
+        <ExpandableItem
             cols={[
                 <b>{event.title}</b>,
                 moment(event.author.date).format("YYYY-MM-DD kk:mm"),
@@ -97,7 +97,7 @@ const UnhandledExpandableEvent = ({event, index, fetchEvents}) => {
                 }
                 {/* If we checked to approve with changes */}
                 {checked === "godkännmedändring" &&
-                    <div className="ApproveWithChanges">
+                    <div className="Edit">
                         <input type="text" value={title} placeholder="Titel" onChange={e => setTitle(e.target.value)} />
                         <input type="date" value={date} onChange={e => setDate(e.target.value)} />
                         {event.template !== "anniversary" &&
@@ -133,9 +133,7 @@ const UnhandledExpandableEvent = ({event, index, fetchEvents}) => {
                             && date === event.date
                         )
                     }
-                >
-                    Spara
-                </button>                     
+                >Spara</button>                     
             </div>
             {/* Preview the local changes if we checked that radio, else render the original */}
             {checked === "godkännmedändring" ? 
@@ -150,7 +148,7 @@ const UnhandledExpandableEvent = ({event, index, fetchEvents}) => {
                     {...event}
                 />      
             }
-        </ExpandableEvent>
+        </ExpandableItem>
     )
 }
 

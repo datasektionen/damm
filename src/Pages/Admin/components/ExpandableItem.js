@@ -1,15 +1,13 @@
 import React, { useState } from 'react'
-import './ExpandableEvent.css'
+import './ExpandableItem.css'
 
 // Expandable component, designed for the "Hantera händelser" page.
-//Index is used for creating a unique id for each radio. Otherwise we will get multiple radios with
-//the same id, which won't work
-const ExpandableEvent = ({cols = [], children}) => {
+const ExpandableItem = ({cols = [], children}) => {
 
     const [expanded, expand] = useState(false)
 
     return (
-        <div className="ExpandablEvent">
+        <div className="ExpandableItem">
             <div className="row" onClick={_ => expand(!expanded)}>
                 <div className="col">
                     <i className="fas fa-chevron-down" style={expanded ? {transform: "rotate(180deg)"} : {}}></i>
@@ -27,4 +25,4 @@ const ExpandableEvent = ({cols = [], children}) => {
     )
 }
 
-export default ExpandableEvent
+export default ExpandableItem

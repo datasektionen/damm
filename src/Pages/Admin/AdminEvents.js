@@ -27,14 +27,17 @@ class AdminEvents extends React.Component {
     }
 
     fetchEvents() {
-        fetch(ROUTES.API_GET_UNACCEPTED_EVENTS)
-        .then(res => res.json())
-        .then(json => {
-            console.log(json.events)
-            this.setState({events: json.events})
-        })
-        .catch(err => {
-
+        return new Promise((resolve, reject) => {
+            fetch(ROUTES.API_GET_UNACCEPTED_EVENTS)
+            .then(res => res.json())
+            .then(json => {
+                console.log(json.events)
+                this.setState({events: json.events})
+                resolve()
+            })
+            .catch(err => {
+                reject()
+            })
         })
     }
 

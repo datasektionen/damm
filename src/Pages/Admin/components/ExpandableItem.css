@@ -1,9 +1,9 @@
-.ExpandablEvent {
+.ExpandableItem {
     margin: 5px;
     user-select: none;
 }
 
-.ExpandablEvent .row {
+.ExpandableItem .row {
     display: flex;
     justify-content: space-around;
     padding: 10px;
@@ -13,51 +13,41 @@
     border: 1px solid #eee;
 }
 
-.ExpandablEvent .row .col {
+.ExpandableItem .row .col {
     margin: 10px;
     margin-right: auto;
 }
 
-.ExpandablEvent .row .col.title {
+.ExpandableItem .row .col.title {
     width: 45%;
 }
 
-.ExpandablEvent .body {
+.ExpandableItem .body {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     background-color: #eeeeee;
     border-radius: 2px;
     border: 1px solid #eee;
 }
 
-.ExpandablEvent .body .bodyRow {
+.ExpandableItem .body .bodyRow {
     display: flex;
     flex-direction: column;
     padding: 20px;
 }
 
-.ExpandablEvent .body .bodyRow .radio {
+.ExpandableItem .body .bodyRow .radio {
     margin-left: 10px;
 }
 
-.ExpandablEvent .body .bodyRow button {
+.ExpandableItem .body .bodyRow button {
     width: 100px;
 }
 
-.ExpandablEvent .Timeline {
+.ExpandableItem .Timeline {
     margin-bottom: 10px;
 }
 
-.ExpandablEvent .ApproveWithChanges {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-}
-
-.ExpandablEvent .ApproveWithChanges > *{
-    margin: 0 5px 5px 0;
-}
-
-.ExpandablEvent textarea {
+.ExpandableItem textarea {
     resize: none;
     padding: 10px;
     border: 1px solid #f7f7f7;
@@ -66,14 +56,24 @@
     height: 150px;
 }
 
+.ExpandableItem .Edit {
+    display: flex;
+    flex-direction: column;
+}
+
+.ExpandableItem .Edit > * {
+    margin: 0 0 5px 0;
+}
+
+
 @media screen and (max-width: 600px) {
 
-    .ExpandablEvent .row .col.title {
+    .ExpandableItem .row .col.title {
         width: auto;
         word-break: break-all;
     }
 
-    .ExpandablEvent textarea {
+    .ExpandableItem textarea {
         width: 100%;
     }
 }

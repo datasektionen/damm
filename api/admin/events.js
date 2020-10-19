@@ -7,14 +7,18 @@ const mongoose = require('mongoose')
 const User = require('../../models/User')
 const Event = require('../../models/Event')
 
+const idMiddleware = (req, res, next) => {
+    const { id } = req.body
+    if (id === undefined || id === "") return res.status(403).json({"error":"No id provided."})
+    next()
+}
+
 router.use(dauth.adminAuth)
+router.use(idMiddleware)
 
 router.post('/accept', (req, res) => {
     const {token} = req.query
     const { id, accept, comment, changes } = req.body
-    console.log(req.body)
-
-    if (id === undefined || id === "") return res.status(403).json({"error":"No id provided."})
 
     // Get the event
     Event.findById(id, (err, event) => {
@@ -60,8 +64,16 @@ router.post('/accept', (req, res) => {
             })
         })
     })
-    
+})
 
+router.post('/delete', (req, res) => {
+    const { id } = req.body
+
+    Event.findByIdAndDelete(id, (err, result) => {
+        if (err) return res.status(500).json({"error": err})
+        if (result === null) return res.status(404).json({"error":"Couldn't find event."})
+        return res.status(200).json({"status":"Deleted event successfully."})
+    })
 })
 
 module.exports = router

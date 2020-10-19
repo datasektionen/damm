@@ -1,0 +1,122 @@
+.SkapaHändelse {
+    display: flex;
+    flex-direction: column;
+}
+
+.SkapaHändelse .Header {
+    min-height: 96px;
+    background: #ea4d8f;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.SkapaHändelse .Header h2 {
+    font-size: 40px;
+    margin: 0;
+}
+
+.SkapaHändelse .Body,
+.SkapaHändelse .Body .Box .dynamicForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.SkapaHändelse .Body .Box {
+    width: 60%;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.SkapaHändelse .Body .Box input {
+    width: 300px;
+    height: 50px;
+    padding: 10px;
+}
+
+.SkapaHändelse .Body .Box textarea {
+    resize: none;
+    padding: 10px;
+    border: 1px solid #f7f7f7;
+    -webkit-box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.1);
+    width: 500px;
+    height: 150px;
+}
+
+.SkapaHändelse .Body .Box button#Skapa {
+    background-color: #E5C100;
+}
+
+.SkapaHändelse .Body .Box button {
+    margin: 5px;
+}
+
+.SkapaHändelse .Body .Box .Skapa {
+    width: 100%;
+    text-align: center;
+    margin: 20px;
+}
+
+.SkapaHändelse .Body .Box h4 {
+    font-weight: 300;
+    font-size: 0.7em;
+    margin-top: -3px;
+    color: #757575;
+    font-size: 1em;
+}
+
+.SkapaHändelse .Body .Box .info {
+    margin-top: 20px;
+    text-align: center;
+    width: 60%;
+}
+.SkapaHändelse .Body .Box .info h4 {
+    font-weight: normal;
+}
+
+.SkapaHändelse .Body .Timeline {
+    width: 90%;
+    margin-bottom: 30px;
+}
+
+@media screen and (max-width: 600px) {
+    .SkapaHändelse .Body .Box {
+        width: 95%;
+    }
+
+    .SkapaHändelse .Body .Box .dynamicForm
+    .SkapaHändelse .Body .Box input,
+    .SkapaHändelse .Body .Box textarea {
+        width: 100%;
+    }
+
+    .SkapaHändelse .Body .Box .info {
+        width: 90%;
+    }
+}
+
+@media screen and (max-width: 1000px) and (min-width: 601px) {
+    .SkapaHändelse .Body .Box {
+        width: 70%;
+    }
+
+    .SkapaHändelse .Body .Box textarea {
+        width: 90%;
+    }
+
+    .SkapaHändelse .Body .Box .info {
+        width: 80%;
+    }
+}

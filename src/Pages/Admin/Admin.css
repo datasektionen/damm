@@ -25,6 +25,11 @@
     width: 100%;
 }
 
+.Admin > .AlertComponent {
+    width: 90%;
+    margin: 10px;
+}
+
 .AdminCard {
     background-color: #f9f9f9f9;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -70,6 +75,8 @@
 .Admin .Form h4 {
     color: #757575;
     font-size: 1em;
+    font-weight: 300;
+    margin-top: -3px;
 }
 
 .Admin .Form  h3,
@@ -398,6 +405,78 @@
     color: rgb(0,0,0,0.8)
 }
 
+.Admin .Body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.Admin .Body .Box {
+    width: 80%;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.Admin .Body .Box .tabs {
+    user-select: none;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.Admin .Body .Box .tabs .tab {
+    margin: 10px 0 10px 0;
+    cursor: pointer;
+    padding: 10px 10px 0 10px;
+    border-bottom: solid 4px #ea4d8e00;
+}
+
+.Admin .Body .Box .tabs .tab.selected {
+    background-color: #e6e6e6;
+    border-bottom: solid 4px #ea4d8f;
+}
+
+.Admin .Body .Box .tabs .tab:hover {
+    background-color: #e6e6e6;
+    border-bottom: solid 4px #ea4d8f;
+}
+
+.Admin .Body .Box .tabs .tab h4 {
+    font-weight: 700;
+}
+
+.Admin .Body .Box .Filter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.Admin .Body .Box .Filter button {
+    margin: 10px;
+}
+
+.Admin .Body .Box input {
+    width: 300px;
+    height: 50px;
+    padding: 10px;
+}
+
+.Admin .Body .Box select {
+    border: none;
+    width: 150px;
+    padding: 14px 0 14px 0;
+    background-color: #fff;
+    box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.1);
+}
+
 @media screen and (max-width: 600px) {
     .Admin .Form form {
         width: 100%;
@@ -527,6 +606,10 @@
         text-align: center;
     }
 
+    .Admin .Body .Box {
+        width: 100%;
+    }
+
 }
 
 @media screen and (max-width: 1000px) and (min-width: 601px) {
@@ -616,5 +699,9 @@
 
     .Admin .Tags .content .edittagcard .buttons i {
         text-align: center;
+    }
+
+    .Admin .Body .Box {
+        width: 100%;
     }
 }

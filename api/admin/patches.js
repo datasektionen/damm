@@ -34,12 +34,16 @@ let upload = multer({
 router.use(dauth.patchesAuth)
 
 router.post('/create', upload.single('file'), (req, res) => {
-    const {name, description, date, price, orders, selectedTags} = JSON.parse(req.body.body)
+    const {name, description, date, price, orders, selectedTags, radioPrice} = JSON.parse(req.body.body)
     console.log(JSON.parse(req.body.body))
   
     if (!req.file) return res.json({"error":"Ingen fil medskickad."})
-    if (!name) return res.json({"error":"Inget namn medskickat."})
+    if (!name) return res.json({"error":"Inget namn angett."})
     if (name.length < 1) return res.json({"error":"Namnet är för kort."})
+
+    if (radioPrice === "Ange pris") {
+        if (price.length === 0 || !price) return res.json({"error":"Inget pris angett"})
+    } else if (radioPrice === "" || !radioPrice) return res.json({"error":"Inget pris angett"})
   
     Märke.create({name, description, date, price, image: "/api/file/" + req.file.filename, orders, tags: selectedTags}, (marke) => {
       console.log(marke)

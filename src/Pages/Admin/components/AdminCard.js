@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import '../Admin.css'
 
-const AdminCard = ({title, description, link, buttonText, onClick = () => {}}) => {
+const AdminCard = ({title, description, link, buttonText, onClick = () => {}, nolink = false}) => {
 
     return(
         <div className="AdminCard">
@@ -12,7 +12,19 @@ const AdminCard = ({title, description, link, buttonText, onClick = () => {}}) =
             <div className="Description">
                 {description}
             </div>
-                <Link onClick={() => onClick()} to={link}>{buttonText ? buttonText : "Kör"}</Link>
+            {nolink ?
+                <Link
+                onClick={onClick}
+                >{buttonText ? buttonText : "Kör"}
+                </Link>
+            :
+                <Link
+                onClick={onClick}
+                to={link}
+                >{buttonText ? buttonText : "Kör"}
+                </Link>
+            }
+            
         </div>
     )
 }

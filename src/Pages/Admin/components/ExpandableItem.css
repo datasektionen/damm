@@ -1,0 +1,79 @@
+.ExpandableItem {
+    margin: 5px;
+    user-select: none;
+}
+
+.ExpandableItem .row {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+    border: 1px solid #eee;
+}
+
+.ExpandableItem .row .col {
+    margin: 10px;
+    margin-right: auto;
+}
+
+.ExpandableItem .row .col.title {
+    width: 45%;
+}
+
+.ExpandableItem .body {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #eeeeee;
+    border-radius: 2px;
+    border: 1px solid #eee;
+}
+
+.ExpandableItem .body .bodyRow {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.ExpandableItem .body .bodyRow .radio {
+    margin-left: 10px;
+}
+
+.ExpandableItem .body .bodyRow button {
+    width: 100px;
+}
+
+.ExpandableItem .Timeline {
+    margin-bottom: 10px;
+}
+
+.ExpandableItem textarea {
+    resize: none;
+    padding: 10px;
+    border: 1px solid #f7f7f7;
+    box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.1);
+    width: 500px;
+    height: 150px;
+}
+
+.ExpandableItem .Edit {
+    display: flex;
+    flex-direction: column;
+}
+
+.ExpandableItem .Edit > * {
+    margin: 0 0 5px 0;
+}
+
+
+@media screen and (max-width: 600px) {
+
+    .ExpandableItem .row .col.title {
+        width: auto;
+        word-break: break-all;
+    }
+
+    .ExpandableItem textarea {
+        width: 100%;
+    }
+}

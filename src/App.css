@@ -100,7 +100,7 @@ time.Year {
   margin-bottom: 0;
 }
 .Timeline .cards .card:nth-child(odd) {
-  margin-top: -50px;
+  /* margin-top: -50px; */
   margin-bottom: 50px;
 }
 .Timeline .cards .card:nth-child(odd):last-child {
@@ -133,6 +133,7 @@ time.Year {
 }
 
 .Timeline .cards .card .Head {
+  word-break: break-all;
   min-height: 50px;
   background: #f9f9f9;
   border-bottom: 1px solid #eee;
@@ -196,6 +197,7 @@ time.Year {
   border-bottom-style: solid;
 }
 .Timeline .cards .card.Anniversary .Head {
+  word-break: break-all;
   background: #E5C100;
   padding: 20px 20px;
 }
@@ -561,8 +563,16 @@ time.Year {
   transition: .1s;
 }
 
+.radio input[type=radio]:disabled + label,
+.radio input[type=radio]:disabled + label:before,
+.radio input[type=radio]:disabled + label:after {
+  cursor: not-allowed;
+  color: gray;
+}
 
-
+.radio input[type=radio]:checked:disabled + label:before {
+  background-color: gray;
+}
 
 .Filter {
   margin: 0 auto;
@@ -575,4 +585,13 @@ time.Year {
 .Filter ul {
   list-style-type: none;
   display: inline-block;
+}
+
+h3#obligatorisk::after {
+  content: " *";
+  color: red;
+}
+
+textarea:disabled {
+  cursor: not-allowed;
 }

@@ -51,11 +51,11 @@ router.post('/accept', (req, res) => {
                 acceptedObject.accepted["accepted"] = true
                 acceptedObject.accepted["comment"] = ""
                 Object.keys(changes).map(key => {
-                    acceptedObject.accepted[key] = changes[key]
+                    acceptedObject[key] = changes[key]
                 })
             }
 
-            Event.findByIdAndUpdate(id, {$set: {...acceptedObject}}, (err, _) => {
+            Event.findByIdAndUpdate(id, {$set: acceptedObject}, (err, _) => {
                 if (err) {
                     return res.status(500).json({"error":"Something went wrong"})
                 } else {

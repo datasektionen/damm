@@ -48,7 +48,7 @@ const HandledExpandableEvent = ({event, fetchEvents}) => {
             {event.accepted.accepted === true &&
                 <div>
                     <div>
-                        Godkänd av {event.accepted.user.first_name + " " + event.accepted.user.last_name} den {moment(event.accepted.date).format("YYYY-MM-DD hh:mm:ss")}
+                        Godkänd av {event.accepted.user.first_name + " " + event.accepted.user.last_name} den {moment(event.accepted.date).format("YYYY-MM-DD kk:mm:ss")}
                     </div>
                     <div>
                         <button style={{backgroundColor: "#E5C100"}}>Redigera</button>
@@ -63,7 +63,7 @@ const HandledExpandableEvent = ({event, fetchEvents}) => {
             {event.accepted.accepted === false &&
                 <div>
                     <div>
-                        Avslagen av {event.accepted.user.first_name + " " + event.accepted.user.last_name} den {moment(event.accepted.date).format("YYYY-MM-DD hh:mm:ss")}
+                        Avslagen av {event.accepted.user.first_name + " " + event.accepted.user.last_name} den {moment(event.accepted.date).format("YYYY-MM-DD kk:mm:ss")}
                     </div>
                     {event.accepted.comment &&
                         <div>

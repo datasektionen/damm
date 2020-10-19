@@ -70,6 +70,7 @@
 
     .ExpandablEvent .row .col.title {
         width: auto;
+        word-break: break-all;
     }
 
     .ExpandablEvent textarea {

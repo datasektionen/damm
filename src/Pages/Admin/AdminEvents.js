@@ -72,7 +72,7 @@ class AdminEvents extends React.Component {
                                     <option key={i} value={option.value}>{option.text}</option>
                                 )}
                             </select>
-                            <button style={{backgroundColor: "#E5C100"}} onClick={_ => this.setState({query: "", templateFilter: "all"})}>Rensa allt</button>
+                            <button style={{backgroundColor: "#E5C100"}} onClick={_ => this.setState({query: "", templateFilter: "all"})}>Rensa filter</button>
                         </div>
                         <div className="tabs">
                             {this.state.tabs.map(tab =>

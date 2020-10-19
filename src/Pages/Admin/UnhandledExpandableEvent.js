@@ -67,7 +67,7 @@ const UnhandledExpandableEvent = ({event, index, fetchEvents}) => {
         <ExpandableEvent
             cols={[
                 <b>{event.title}</b>,
-                moment(event.author.date).format("YYYY-MM-DD hh:mm"),
+                moment(event.author.date).format("YYYY-MM-DD kk:mm"),
                 event.author.user.first_name + " " + event.author.user.last_name,
                 event.template === "general" ? <span style={{color: "#ea4d8f", fontWeight: "bold"}}>Generell historia</span> : <span style={{color: "#E5C100", fontWeight: "bold"}}>Årsdagar</span>,
                 //TODO: Change to just "Ej behandlad", "Behandlas" and then nothing since it will be updated.

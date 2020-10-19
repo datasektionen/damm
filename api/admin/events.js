@@ -2,18 +2,17 @@ var express = require('express')
 var router = express.Router()
 const dauth = require('../../dauth')
 const moment = require('moment')
-const mongoose = require('mongoose')
 
-const User = require('../../models/User')
 const Event = require('../../models/Event')
-const { update } = require('../../models/User')
 
+// Middleware that hecks if id is in the request body, if not, return an error.
 const idMiddleware = (req, res, next) => {
     const { id } = req.body
     if (id === undefined || id === "") return res.status(403).json({"error":"No id provided."})
     next()
 }
 
+// Middlewares for this route. Admin and id middleware
 router.use(dauth.adminAuth)
 router.use(idMiddleware)
 
@@ -67,6 +66,7 @@ router.post('/accept', (req, res) => {
     })
 })
 
+// Endpoint to delete an event
 router.post('/delete', (req, res) => {
     const { id } = req.body
 
@@ -77,6 +77,7 @@ router.post('/delete', (req, res) => {
     })
 })
 
+// Endpoint to update an event
 router.post('/update', (req, res) => {
     const { id, title, content, date } = req.body
 
@@ -91,7 +92,6 @@ router.post('/update', (req, res) => {
         if (err) return res.status(500).json({"error":err})
         else return res.status(200).json({"status":"Event updated successfully."})
     })
-
 })
 
 module.exports = router

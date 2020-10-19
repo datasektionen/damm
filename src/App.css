@@ -591,3 +591,7 @@ h3#obligatorisk::after {
   content: " *";
   color: red;
 }
+
+textarea:disabled {
+  cursor: not-allowed;
+}

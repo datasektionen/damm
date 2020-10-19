@@ -100,7 +100,13 @@ const UnhandledExpandableEvent = ({event, index, fetchEvents}) => {
                     <div className="ApproveWithChanges">
                         <input type="text" value={title} placeholder="Titel" onChange={e => setTitle(e.target.value)} />
                         <input type="date" value={date} onChange={e => setDate(e.target.value)} />
-                        <textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="Beskrivning" />
+                        {event.template !== "anniversary" &&
+                            <textarea
+                                value={description}
+                                onChange={e => setDescription(e.target.value)}
+                                placeholder="Beskrivning"
+                            />
+                        }
                         <button
                             style={{width: "180px"}}
                             onClick={_ => {

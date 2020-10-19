@@ -6,6 +6,7 @@ const mongoose = require('mongoose')
 
 const User = require('../../models/User')
 const Event = require('../../models/Event')
+const { update } = require('../../models/User')
 
 const idMiddleware = (req, res, next) => {
     const { id } = req.body
@@ -74,6 +75,23 @@ router.post('/delete', (req, res) => {
         if (result === null) return res.status(404).json({"error":"Couldn't find event."})
         return res.status(200).json({"status":"Deleted event successfully."})
     })
+})
+
+router.post('/update', (req, res) => {
+    const { id, title, content, date } = req.body
+
+    let updated = {}
+    if (title !== undefined) updated.title = title
+    if (content !== undefined) updated.content = content
+    if (date !== undefined) updated.date = date
+
+    Event.findByIdAndUpdate(id, {$set: updated}, (err, result) => {
+        console.log(err)
+        console.log(result)
+        if (err) return res.status(500).json({"error":err})
+        else return res.status(200).json({"status":"Event updated successfully."})
+    })
+
 })
 
 module.exports = router

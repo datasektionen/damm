@@ -112,8 +112,8 @@ class SkapaHändelse extends React.Component {
                             <h3 id="obligatorisk">Typ av händelse</h3>
                             <h4>Påverkar hur händelsen ser ut på tidslinjen</h4>
                             <div className="radios">
-                                {radios.map(x => 
-                                    <div className="radio" key={x}>
+                                {radios.map((x,i) => 
+                                    <div className="radio" key={i}>
                                         <input id={x.value} type="radio" checked={this.state.checked === x.value} onChange={e => this.setState({checked: e.target.id})}/>
                                         <label htmlFor={x.value}>{x.text}</label>
                                     </div>   

@@ -128,13 +128,13 @@ const TabBody = ({tabs, selectedTab, events, query, templateFilter, fetchEvents}
         if (queryFilteredEvents.filter(e => e.accepted.status === true && e.accepted.accepted === true).length === 0) {
             return <div>Inga godkända händelser</div>
         } else return queryFilteredEvents.filter(e => e.accepted.status === true && e.accepted.accepted === true).map((e,i) => 
-            <HandledExpandableEvent event={e} key={e._id} />
+            <HandledExpandableEvent event={e} key={e._id} fetchEvents={fetchEvents} />
         )
     } else if (selectedTab === tabs[2]) {
         if (queryFilteredEvents.filter(e => e.accepted.status === true && e.accepted.accepted === false).length === 0) {
             return <div>Inga avslagna händelser</div>
         } else return queryFilteredEvents.filter(e => e.accepted.status === true && e.accepted.accepted === false).map((e,i) => 
-            <HandledExpandableEvent event={e} key={e._id} />    
+            <HandledExpandableEvent event={e} key={e._id} fetchEvents={fetchEvents} />    
         ) 
     } else return <div></div>
 }

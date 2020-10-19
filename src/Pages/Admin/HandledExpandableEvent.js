@@ -1,12 +1,40 @@
 import React, { useState } from 'react'
 import moment from 'moment'
+import * as ROUTES from '../../routes'
 
 import ExpandableEvent from './components/ExpandableEvent'
 import EventTimelineView from './components/EventTimelineView'
 
-const HandledExpandableEvent = ({event}) => {
+const HandledExpandableEvent = ({event, fetchEvents}) => {
 
-    console.log(event)
+    const [fetching, setFetching] = useState(false)
+
+    const deleteEvent = _ => {
+        setFetching(true)
+
+        fetch(`${ROUTES.API_DELETE_EVENT}?token=${localStorage.getItem('token')}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({id: event._id})
+        })
+        .then(res => res.json())
+        .then(json => {
+            setFetching(false)
+            console.log(json)
+            if (json.error) {
+                
+            } else {
+                fetchEvents()
+            }
+        })
+        .catch(err => {
+            console.log(err)
+            setFetching(false)
+        })
+    }
+
     return (
         <ExpandableEvent
             cols={[
@@ -24,7 +52,11 @@ const HandledExpandableEvent = ({event}) => {
                     </div>
                     <div>
                         <button style={{backgroundColor: "#E5C100"}}>Redigera</button>
-                        <button style={{backgroundColor: "#f44336", color: "white"}}>Ta bort</button>
+                        <button
+                            style={{backgroundColor: "#f44336", color: "white"}}
+                            onClick={deleteEvent}
+                            disabled={fetching}
+                        >Ta bort</button>
                     </div>
                 </div>
             }
@@ -38,6 +70,11 @@ const HandledExpandableEvent = ({event}) => {
                             Kommentar: {event.accepted.comment}
                         </div>
                     }
+                    <button
+                        style={{backgroundColor: "#f44336", color: "white"}}
+                        onClick={deleteEvent}
+                        disabled={fetching}
+                    >Ta bort</button>
                 </div>
             }
             <EventTimelineView

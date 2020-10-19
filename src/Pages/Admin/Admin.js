@@ -83,7 +83,7 @@ class Admin extends React.Component {
             content = prylisCards.map(x => <AdminCard {...x} />)
         }
 
-        if (localStorage.getItem('token')) {
+        if (localStorage.getItem('token') && this.props.pls.includes("admin")) {
             return(
                 <div className="Admin">
                     <div className="Header">

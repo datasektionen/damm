@@ -49,13 +49,13 @@ const Märke = ({image, date, name, description, numProduced = "?", tags = [], p
                     className="date"
                     title="Utgivningsdatum (första utgåvan)"
                 >
-                    <div><i class="far fa-clock"></i> {date ? moment(date).format("D MMM YYYY") : "Okänt"}</div>
+                    <div><i className="far fa-clock"></i> {date ? moment(date).format("D MMM YYYY") : "Okänt"}</div>
                 </div>
                 <div
                     className="price"
                     title="Pris"
                 >
-                    <div><i class="fas fa-dollar-sign"></i> {displayPrice}</div>
+                    <div><i className="fas fa-dollar-sign"></i> {displayPrice}</div>
                 </div>
             </div>
             <div className="title"><h2>{name}</h2></div>

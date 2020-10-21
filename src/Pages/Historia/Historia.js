@@ -5,9 +5,6 @@ import logo from '../../skold.png'
 import ScrollLegend from './ScrollLegend'
 import templates from '../../config/templates'
 
-import General from './cards/General'
-import Anniversary from './cards/Anniversary'
-
 class Historia extends React.Component {
     constructor(props) {
         super(props)

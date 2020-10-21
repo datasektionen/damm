@@ -156,7 +156,7 @@ class AdminMärke extends React.Component {
             this.setState({orders: this.state.orders.filter((x,i) => index !== i)})
         }
 
-        const invalid = this.state.name.length === 0 || this.state.imageSrc === ""
+        // const invalid = this.state.name.length === 0 || this.state.imageSrc === ""
 
         return (
             <div className="Admin">
@@ -176,7 +176,7 @@ class AdminMärke extends React.Component {
                                 {!this.state.image ?
                                     <div className="preupload">
                                         <div>
-                                            <i class="fas fa-upload"></i>
+                                            <i className="fas fa-upload"></i>
                                         </div>
                                         <div>
                                             <p className="title">Ladda upp en bild på märket</p>
@@ -190,7 +190,7 @@ class AdminMärke extends React.Component {
                                             <i class="fa fa-check" style={{color: "green"}}></i>
                                             <span className="filename" style={{color: "green"}}>{this.state.image.name}</span>
                                         </div>
-                                        {this.state.imageSrc && <img src={`${this.state.imageSrc}`} />}
+                                        {this.state.imageSrc && <img alt="" src={`${this.state.imageSrc}`} />}
                                     </div>
                                 }
                             </label>
@@ -208,8 +208,8 @@ class AdminMärke extends React.Component {
                             <h3 id="obligatorisk">Pris</h3>
                             <h4>Ange pris för märket</h4>
                             <div>
-                                {radioValues.map(x =>
-                                    <div className="radio">
+                                {radioValues.map((x,i) =>
+                                    <div key={"radioprice-"+i} className="radio">
                                         <input id={x} type="radio" checked={this.state.radioPrice === x} onChange={e => handleRadioChange(e)}/>
                                         <label htmlFor={x}>{x}</label>
                                     </div>    

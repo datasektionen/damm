@@ -28,7 +28,7 @@ class EditTag extends React.Component {
     render() {
 
         //För att uppdatera props, fungerar på ett konstigt sätt. Ta ej bort...
-        const updateProps = this.getProps(this.props)
+        const _ = this.getProps(this.props)
         
         const handleChange = e => {
             this.setState({[e.target.name]: e.target.value})

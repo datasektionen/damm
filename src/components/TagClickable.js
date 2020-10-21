@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import Add from './add.png'
 import Added from './added.png'
@@ -11,7 +11,7 @@ const TagClickable = ({color = "#fff", backgroundColor = "#e83d84", text = "", h
     return (
         <div className="tagClickable" title={hoverText === "" ? "Ingen beskrivning" : hoverText} onClick={() => onClick()} style={clicked ? {backgroundColor: backgroundColor === "" ? "#e83d84" : backgroundColor, color: color === "" ? "#fff" : color} : {}} >
             <span>{text}</span>
-            <img src={clicked ? Added : Add} />
+            <img alt="" src={clicked ? Added : Add} />
         </div>
     )
 }

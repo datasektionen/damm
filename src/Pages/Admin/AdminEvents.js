@@ -69,7 +69,7 @@ class AdminEvents extends React.Component {
                                 placeholder="Sök titel, innehåll eller år"
                                 onChange={handleQuery}
                             />
-                            <img className="clearImg" src={Add} onClick={() => {this.setState({query: ""})}}/>
+                            <img alt="Kryss" className="clearImg" src={Add} onClick={() => {this.setState({query: ""})}}/>
                             <select value={this.state.templateFilter} onChange={e => this.setState({templateFilter: e.target.value})}>
                                 {filterOptions.map((option,i) =>
                                     <option key={i} value={option.value}>{option.text}</option>

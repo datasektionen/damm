@@ -78,9 +78,9 @@ class Admin extends React.Component {
 
         let content
         if (this.props.pls.includes("admin")) {
-            content = adminCards.map(x => <AdminCard {...x} />)
+            content = adminCards.map((x,i) => <AdminCard key={"card-"+i} {...x} />)
         } else if (this.props.pls.includes("prylis")) {
-            content = prylisCards.map(x => <AdminCard {...x} />)
+            content = prylisCards.map((x,i) => <AdminCard key={"card-"+i} {...x} />)
         }
 
         if (localStorage.getItem('token') && this.props.pls.includes("admin")) {

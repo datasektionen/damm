@@ -54,7 +54,7 @@ class MärkePage extends React.Component {
                         <div className="patchbody">
                             <div className="patchimg">
                                 <a href={this.state.image} target="_blank" rel="noopener noreferrer">
-                                    <img id="patch" src={this.state.image} />
+                                    <img alt="Bild på märke" id="patch" src={this.state.image} />
                                 </a>
                                 {this.props.pls.includes("admin") ?
                                     <div>
@@ -69,7 +69,7 @@ class MärkePage extends React.Component {
                                 </div>
                                 <div className="meta">
                                     {this.state.date ? moment(this.state.date).format("DD MMM YYYY") : "????-??-??"}
-                                    <i class="fas fa-circle"></i>
+                                    <i className="fas fa-circle"></i>
                                     {priceDisplay()}
                                 </div>
                                 <div className="description">
@@ -80,7 +80,7 @@ class MärkePage extends React.Component {
                                     {this.state.createdBy.map((creator, i) => <span id="creator">{creator.firstName}{creator.lastName ? " " + creator.lastName : ""}{i === this.state.createdBy.length - 1 ? "" : ", "}</span>)}
                                 </div> */}
                                 <div className="tags">
-                                    {this.state.tags.map(tag => <Tag {...tag} />)}
+                                    {this.state.tags.map((tag,i) => <Tag key={"tag-"+i} {...tag} />)}
                                 </div>
                             </div>
                         </div>
@@ -88,7 +88,7 @@ class MärkePage extends React.Component {
                             <div className="patchadmincontent">
                                 <div className="col files">
                                     <h4><b>Filer</b></h4>
-                                    {this.state.files.map(file => <div className="file"><i class="far fa-file"></i><a href={file.url} target="_blank" rel="noopener noreferrer">{file.name}</a></div>)}
+                                    {this.state.files.map((file,i) => <div key={"file-"+i} className="file"><i className="far fa-file"></i><a href={file.url} target="_blank" rel="noopener noreferrer">{file.name}</a></div>)}
                                 </div>
                                 <div className="col">
                                     <h4><b>Beställningar</b></h4>

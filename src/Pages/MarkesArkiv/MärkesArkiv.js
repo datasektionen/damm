@@ -211,7 +211,7 @@ class MärkesArkiv extends React.Component {
                     </div>
                     <div className="sök">
                         <input type="text" placeholder="Sök..." value={this.state.search} onChange={(e) => this.setState({search: e.target.value})}/>
-                        <img className="clearImg" src={Add} onClick={() => {this.setState({search: ""})}}/>
+                        <img alt="Kryss" className="clearImg" src={Add} onClick={() => {this.setState({search: ""})}}/>
                         <select name="sortera" onChange={(e) => this.setState({sortRule: e.target.value})} value={this.state.sortRule}>
                             {this.state.sortOptions.map((x, i) => <option key={"option-"+i} value={x.value}>{x.text}</option>)}
                         </select>
@@ -220,7 +220,7 @@ class MärkesArkiv extends React.Component {
                         <div>
                             <div className="filter">
                                 <input type="text" placeholder="Filtrera taggar" onChange={(e) => this.setState({filterTagsQuery: e.target.value})} value={this.state.filterTagsQuery} />
-                                <img className="clearImg" src={Add} onClick={() => {this.setState({filterTagsQuery: ""})}}/>
+                                <img alt="Kryss" className="clearImg" src={Add} onClick={() => {this.setState({filterTagsQuery: ""})}}/>
                             </div>
                             <div className="tagQueryResult">
                                 {this.state.tags.map((x,i) => x.text.toLowerCase().match(new RegExp(this.state.filterTagsQuery.toLowerCase(), "g")) ? <TagClickable key={"tag-"+i} onClick={() => {toggleTag(x)}} {...x} selectedTags={this.state.selectedTags}/> : undefined)}

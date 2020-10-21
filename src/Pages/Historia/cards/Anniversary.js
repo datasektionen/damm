@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import CardHead from './CardHead'
-import MDReactComponent from 'markdown-react-js'
 
 class Anniversary extends Component {
   render() {

@@ -18,6 +18,16 @@ class MärkesArkiv extends React.Component {
           } catch (e) {}
         }
 
+        const sortOptions = [
+            {text: "Sortera på: Standard", value: "all"},
+            {text: "Namn (A-Ö)", value: "name-desc"},
+            {text: "Namn (Ö-A)", value: "name-asc"},
+            {text: "Pris (Lägst överst)", value: "price-asc"},
+            {text: "Pris (Högst överst)", value: "price-desc"},
+            {text: "Datum (Nu-1983)", value: "date-desc"},
+            {text: "Datum (1983-Nu)", value: "date-asc"},
+        ]
+
         this.state = {
             tags: [],
             filterTagsQuery: "",
@@ -26,8 +36,9 @@ class MärkesArkiv extends React.Component {
             märken: [],
             showTags: showTags,
             numPatches: 0,
-            sortRule: "standard",
+            sortRule: sortOptions[0].value,
             file: undefined,
+            sortOptions: sortOptions
         }
     }
 
@@ -111,7 +122,7 @@ class MärkesArkiv extends React.Component {
 
         //Clears both selected tags and search query
         const clearAll = () => {
-            this.setState({search: "", selectedTags: []})
+            this.setState({search: "", selectedTags: [], sortRule: "Sortera på: Standard".toLowerCase()})
         }
         
         //Shows/hides tags and saves the state to localstorage
@@ -121,16 +132,13 @@ class MärkesArkiv extends React.Component {
             })
         }
         
-        //Array of sort options
-        const sortOptions = ["Sortera på: Standard", "Namn (A-Ö)", "Namn (Ö-A)", "Pris (Lägst överst)", "Pris (Högst överst)", "Datum (Nu-1983)", "Datum (1983-Nu)"]
-
         //Function that sorts results
         const sortResults = () => {
             const {sortRule} = this.state
             
-            if (sortRule === sortOptions[0].toLowerCase()) return this.state.märken
+            if (sortRule === this.state.sortOptions[0].value) return this.state.märken
 
-            if (sortRule === sortOptions[1].toLowerCase()) {
+            if (sortRule === this.state.sortOptions[1].value) {
                 return [...this.state.märken].sort((a, b) => {
                     const A = a.name.toLowerCase()
                     const B = b.name.toLowerCase()
@@ -140,7 +148,7 @@ class MärkesArkiv extends React.Component {
                 })
             }
 
-            if (sortRule === sortOptions[2].toLowerCase()) {
+            if (sortRule === this.state.sortOptions[2].value) {
                 return [...this.state.märken].sort((a, b) => {
                     const A = a.name.toLowerCase()
                     const B = b.name.toLowerCase()
@@ -150,7 +158,7 @@ class MärkesArkiv extends React.Component {
                 })
             }
 
-            if (sortRule === sortOptions[3].toLowerCase()) {
+            if (sortRule === this.state.sortOptions[3].value) {
                 return [...this.state.märken].sort((a, b) => {
                     const A = a.price.toLowerCase()
                     const B = b.price.toLowerCase()
@@ -160,7 +168,7 @@ class MärkesArkiv extends React.Component {
                 })
             }
 
-            if (sortRule === sortOptions[4].toLowerCase()) {
+            if (sortRule === this.state.sortOptions[4].value) {
                 return [...this.state.märken].sort((a, b) => {
                     const A = a.price.toLowerCase()
                     const B = b.price.toLowerCase()
@@ -171,13 +179,13 @@ class MärkesArkiv extends React.Component {
             }
 
             //Sorts patches after date, today to 1983 and "okänt" 
-            if (sortRule === sortOptions[5].toLowerCase()) {
+            if (sortRule === this.state.sortOptions[5].value) {
                 // If date is an empty string (It has been marked as "unknown"), calculate it as 0 (otherwise the sorting wouldn't work as new Date("") doesn't work)
                 return [...this.state.märken].sort((a, b) => (b.date === "" ? 0 : new Date(b.date)) - (a.date === "" ? 0 : new Date(a.date)))
             }
 
             //Sorts patches after date, "Okänt" and 1983" to today 
-            if (sortRule === sortOptions[6].toLowerCase()) {
+            if (sortRule === this.state.sortOptions[6].value) {
                 // If date is an empty string (It has been marked as "unknown"), calculate it as 0 (otherwise the sorting wouldn't work as new Date("") doesn't work)
                 return [...this.state.märken].sort((a, b) => (a.date === "" ? 0 : new Date(a.date)) - (b.date === "" ? 0 : new Date(b.date)))
             }
@@ -204,8 +212,8 @@ class MärkesArkiv extends React.Component {
                     <div className="sök">
                         <input type="text" placeholder="Sök..." value={this.state.search} onChange={(e) => this.setState({search: e.target.value})}/>
                         <img className="clearImg" src={Add} onClick={() => {this.setState({search: ""})}}/>
-                        <select name="sortera" onChange={(e) => this.setState({sortRule: e.target.value})}>
-                            {sortOptions.map((x, i) => <option key={"option-"+i} value={x.toLowerCase()}>{x}</option>)}
+                        <select name="sortera" onChange={(e) => this.setState({sortRule: e.target.value})} value={this.state.sortRule}>
+                            {this.state.sortOptions.map((x, i) => <option key={"option-"+i} value={x.value}>{x.text}</option>)}
                         </select>
                     </div>
                     {this.state.showTags ? 

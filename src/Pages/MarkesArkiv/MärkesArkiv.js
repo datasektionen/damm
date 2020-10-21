@@ -202,7 +202,7 @@ class MärkesArkiv extends React.Component {
                         <input type="text" placeholder="Sök..." value={this.state.search} onChange={(e) => this.setState({search: e.target.value})}/>
                         <img className="clearImg" src={Add} onClick={() => {this.setState({search: ""})}}/>
                         <select name="sortera" onChange={(e) => this.setState({sortRule: e.target.value})}>
-                            {sortOptions.map((x, i) => <option key={i} value={x.toLowerCase()}>{x}</option>)}
+                            {sortOptions.map((x, i) => <option key={"option-"+i} value={x.toLowerCase()}>{x}</option>)}
                         </select>
                     </div>
                     {this.state.showTags ? 
@@ -212,7 +212,7 @@ class MärkesArkiv extends React.Component {
                                 <img className="clearImg" src={Add} onClick={() => {this.setState({filterTagsQuery: ""})}}/>
                             </div>
                             <div className="tagQueryResult">
-                                {this.state.tags.map((x,i) => x.text.toLowerCase().match(new RegExp(this.state.filterTagsQuery.toLowerCase(), "g")) ? <TagClickable key={i} onClick={() => {toggleTag(x)}} {...x} selectedTags={this.state.selectedTags}/> : undefined)}
+                                {this.state.tags.map((x,i) => x.text.toLowerCase().match(new RegExp(this.state.filterTagsQuery.toLowerCase(), "g")) ? <TagClickable key={"tag-"+i} onClick={() => {toggleTag(x)}} {...x} selectedTags={this.state.selectedTags}/> : undefined)}
                             </div>
                         </div>
                     :
@@ -220,7 +220,7 @@ class MärkesArkiv extends React.Component {
                     }
                 </div>
                 <div className="märken">
-                    {sortResults().map((x,i) => (patchTagsMatchesSelected(x) && matchesSearch(x)) ? <Märke key={i} {...x} /> : undefined)}
+                    {sortResults().map((x,i) => (patchTagsMatchesSelected(x) && matchesSearch(x)) ? <Märke key={"patch-"+i} {...x} /> : undefined)}
                 </div>
             </div>
         )

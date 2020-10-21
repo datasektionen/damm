@@ -1,8 +1,11 @@
-import React from 'react'
+import React,  { useState } from 'react'
 import Tag from '../../../components/Tag'
 import moment from 'moment'
 
+// Component that displays a patch.
 const Märke = ({image, date, name, description, numProduced = "?", tags = [], price, ...rest}) => {
+
+    const [hovered, setHovered] = useState(false)
 
     let displayPrice
     if (price === undefined || price === "") displayPrice = "Gratis"
@@ -10,30 +13,52 @@ const Märke = ({image, date, name, description, numProduced = "?", tags = [], p
     else displayPrice = price + " kr"
 
     return (
-        <div className="märke" title={description} onClick={() => {window.location=`/marke/${rest._id}`}}>
-                <div><img src={image} /></div>
-                <div className="head">
-                    <div className="date" title="Utgivningsdatum (första utgåvan)">{date ? moment(date).format("DD MMM YYYY") : "Okänt"}</div>
-                    {/* <div className="produced" title="Antal producerade (första utgåvan)">{numProduced} st</div> */}
-                    <div className="price" title="Pris">{displayPrice}</div>
-                </div>
-                <div className="title"><h2>{name}</h2></div>
-                {/* <div className="desc">{description ? description : "Ingen beskrivning"}</div> */}
-                {/* <div className="tags"> */}
-                    {tags.length === 0 ?
-                        <div className="tags">Inga taggar</div>
-                    :
-                        tags.length <= 5 ?
-                        <div className="tags">
-                            {tags.map((x,i) => <Tag key={i} color={x.color} backgroundColor={x.backgroundColor} hoverText={x.hoverText} text={x.text} />)}
-                        </div>
+        <div
+            className="märke"
+            title={description}
+            onClick={() => {window.location=`/marke/${rest._id}`}}
+            onMouseEnter={_ => setHovered(true)}
+            onMouseLeave={_ => setHovered(false)}
+            onTouchStart={_ => setHovered(true)}
+            onTouchMove={_ => setHovered(false)}
+            onTouchEnd={_ => setHovered(false)}
+        >
+            {hovered &&
+                <div className="hover">
+                    <div className="tags">
+                        {tags.length === 0 ?
+                            "Inga taggar"
                         :
-                        <div className="tags">
-                            {tags.filter((x,i) => i < 5).map((x,i) => <Tag key={i} color={x.color} backgroundColor={x.backgroundColor} hoverText={x.hoverText} text={x.text} />)}
-                            med flera...
-                        </div>
-                    }
-                {/* </div> */}
+                            tags.map((x,i) => 
+                                <Tag
+                                    key={i}
+                                    color={x.color}
+                                    backgroundColor={x.backgroundColor}
+                                    hoverText={x.hoverText}
+                                    text={x.text}
+                                />
+                            )
+                        }
+                    </div>
+                    Klicka för detaljer
+                </div>
+            }
+            <div className="image" style={{backgroundImage: `url(${image})`}}></div>
+            <div className="head">
+                <div
+                    className="date"
+                    title="Utgivningsdatum (första utgåvan)"
+                >
+                    <div><i class="far fa-clock"></i> {date ? moment(date).format("D MMM YYYY") : "Okänt"}</div>
+                </div>
+                <div
+                    className="price"
+                    title="Pris"
+                >
+                    <div><i class="fas fa-dollar-sign"></i> {displayPrice}</div>
+                </div>
+            </div>
+            <div className="title"><h2>{name}</h2></div>
         </div>
     )
 }

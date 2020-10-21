@@ -39,22 +39,24 @@ router.get('/tags', (req, res) => {
 })
   
 router.get('/marken', (req, res) => {
-    Märke.find((err, data) => {
-      if (err) {
-        console.log(err)
-        res.send(err)
-      } else res.send(data)
+    Märke.find()
+    .populate('tags')
+    .exec((err, data) => {
+        if (err) return res.status(500).json({"error":"Something went wrong", "message":err})
+        return res.status(200).json(data)
     })
 })
   
 router.get('/marke/id/:id', (req, res) => {
-    Märke.find({_id: req.params.id}, (err, data) => {
+    Märke.find({_id: req.params.id})
+    .populate('tags')
+    .exec((err, data) => {
         if (err) {
-            console.log(`Couldn't find märke with id: \"${req.params.id}\"`)
-            res.status(404).json({"error":"Patch not found."})
+            res.status(500).json({"error":"Something went wrong"})
         } else {
+            if (data === null) return res.status(404).json({"error":"Patch not found."})
             console.log(data)
-            res.send(data)
+            return res.status(200).send(data)
         }
     })
 })

@@ -74,12 +74,11 @@ class AdminMärke extends React.Component {
                 date,
                 price,
                 radioPrice: this.state.radioPrice,
-                selectedTags,
+                tags: selectedTags.map(tag => tag._id),
                 orders,
                 orderdate
             }
 
-            //TODO: UPLOAD FILE
 
             console.log(body)
             const formData = new FormData()
@@ -197,7 +196,7 @@ class AdminMärke extends React.Component {
                             </label>
                         </div>
                         <h3 id="obligatorisk">Namn</h3>
-                        <input id="name" name="name" type="text" autoComplete={false} placeholder="Namn" value={this.state.name} onChange={(e) => handleChange(e)} />
+                        <input id="name" name="name" type="text" autoComplete="off" placeholder="Namn" value={this.state.name} onChange={(e) => handleChange(e)} />
                         <h3>Beskrivning</h3>
                         <textarea id="description" name="description" placeholder="Beskrivning" value={this.state.description} onChange={(e) => handleChange(e)} />
                         <div className="date">

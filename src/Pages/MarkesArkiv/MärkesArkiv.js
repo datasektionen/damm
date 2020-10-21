@@ -4,7 +4,6 @@ import './MärkesArkiv.css'
 import Märke from './components/Märke'
 import * as ROUTES from '../../routes'
 
-import moment from 'moment'
 import Add from '../../components/add.png'
 import TagClickable from '../../components/TagClickable'
 
@@ -171,12 +170,16 @@ class MärkesArkiv extends React.Component {
                 })
             }
 
+            //Sorts patches after date, today to 1983 and "okänt" 
             if (sortRule === sortOptions[5].toLowerCase()) {
-                return [...this.state.märken].sort((a, b) => new moment(a.date).format('YYYYMMDD') - new moment(b.date).format('YYYYMMDD'))
+                // If date is an empty string (It has been marked as "unknown"), calculate it as 0 (otherwise the sorting wouldn't work as new Date("") doesn't work)
+                return [...this.state.märken].sort((a, b) => (b.date === "" ? 0 : new Date(b.date)) - (a.date === "" ? 0 : new Date(a.date)))
             }
 
+            //Sorts patches after date, "Okänt" and 1983" to today 
             if (sortRule === sortOptions[6].toLowerCase()) {
-                return [...this.state.märken].sort((a, b) => new moment(b.date).format('YYYYMMDD') - new moment(a.date).format('YYYYMMDD'))
+                // If date is an empty string (It has been marked as "unknown"), calculate it as 0 (otherwise the sorting wouldn't work as new Date("") doesn't work)
+                return [...this.state.märken].sort((a, b) => (a.date === "" ? 0 : new Date(a.date)) - (b.date === "" ? 0 : new Date(b.date)))
             }
 
             return this.state.märken

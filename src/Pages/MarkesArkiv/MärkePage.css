@@ -25,6 +25,7 @@
 
 .MarkeInfo .patch .patchimg img {
     width: 300px;
+    cursor: pointer;
 }
 
 .MarkeInfo .patch .patchimg .files {

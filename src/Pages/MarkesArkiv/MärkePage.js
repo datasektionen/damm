@@ -53,7 +53,9 @@ class MärkePage extends React.Component {
                     <div className="patch">
                         <div className="patchbody">
                             <div className="patchimg">
-                                <img id="patch" src={this.state.image} />
+                                <a href={this.state.image} target="_blank" rel="noopener noreferrer">
+                                    <img id="patch" src={this.state.image} />
+                                </a>
                                 {this.props.pls.includes("admin") ?
                                     <div>
                                         {this.props.pls.includes("admin") && <button className="adminedit">Redigera</button>}

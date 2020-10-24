@@ -127,16 +127,6 @@
     font-weight: normal;
 }
 
-.tag {
-    padding: 5px 10px 5px 10px;
-    border-radius: 2px;
-    /* width: 100px; */
-    text-align: center;
-    margin: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    color: black;
-}
-
 .tagClickable {
     background-color: #d1d1d1f9;
     border-radius: 20px;

@@ -40,8 +40,7 @@ class MärkePage extends React.Component {
 
         const priceDisplay = _ => {
             if (this.state.price === "-") return "Säljs ej"
-            else if (this.state.price.toLowerCase() === "gratis") return "Gratis"
-            else if (this.state.price === "") return "Okänt pris"
+            else if (this.state.price === "") return "Gratis"
             else return this.state.price + " kr"
         }
 
@@ -68,9 +67,9 @@ class MärkePage extends React.Component {
                                     <h1>{this.state.name}</h1>
                                 </div>
                                 <div className="meta">
-                                    {this.state.date ? moment(this.state.date).format("DD MMM YYYY") : "????-??-??"}
+                                    <i className="far fa-clock"></i> {this.state.date ? moment(this.state.date).format("DD MMM YYYY") : "Okänt"}
                                     <i className="fas fa-circle"></i>
-                                    {priceDisplay()}
+                                    <i className="fas fa-dollar-sign"></i> {priceDisplay()}
                                 </div>
                                 <div className="description">
                                     {this.state.description ? this.state.description : "Ingen beskrivning"}
@@ -80,7 +79,12 @@ class MärkePage extends React.Component {
                                     {this.state.createdBy.map((creator, i) => <span id="creator">{creator.firstName}{creator.lastName ? " " + creator.lastName : ""}{i === this.state.createdBy.length - 1 ? "" : ", "}</span>)}
                                 </div> */}
                                 <div className="tags">
-                                    {this.state.tags.map((tag,i) => <Tag key={"tag-"+i} {...tag} />)}
+                                    {this.state.tags.length === 0 ? 
+                                        "Inga taggar"
+                                    :
+                                        this.state.tags.map((tag,i) => <Tag key={"tag-"+i} {...tag} />)
+                                    }
+                                    
                                 </div>
                             </div>
                         </div>

@@ -122,7 +122,7 @@ class MärkesArkiv extends React.Component {
 
         //Clears both selected tags and search query
         const clearAll = () => {
-            this.setState({search: "", selectedTags: [], sortRule: "Sortera på: Standard".toLowerCase()})
+            this.setState({search: "", selectedTags: [], sortRule: this.state.sortOptions[0].value})
         }
         
         //Shows/hides tags and saves the state to localstorage
@@ -206,7 +206,7 @@ class MärkesArkiv extends React.Component {
         <h3>Sök bland {this.state.numPatches} märken</h3>
                     <div className="buttons">
                         <button onClick={() => {this.setState({selectedTags: []})}} disabled={this.state.selectedTags.length === 0}>Rensa taggar</button>
-                        <button onClick={() => clearAll()} disabled={this.state.selectedTags.length === 0 && this.state.search.length === 0}>Rensa allt</button>
+                        <button onClick={() => clearAll()} disabled={this.state.selectedTags.length === 0 && this.state.search.length === 0 && this.state.sortRule === this.state.sortOptions[0].value}>Rensa allt</button>
                         <button onClick={() => toggleShowTags()}>{this.state.showTags ? "Göm taggar" : "Visa taggar"}</button>
                     </div>
                     <div className="sök">

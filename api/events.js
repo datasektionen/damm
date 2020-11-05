@@ -17,7 +17,7 @@ router.post('/create', (req, res) => {
     }
 
     //Get user info from provided token
-    fetch(`https://login2.datasektionen.se/verify/${token}.json?api_key=${process.env.LOGIN2_API_KEY}`)
+    fetch(`${process.env.LOGIN2_URL}/verify/${token}.json?api_key=${process.env.LOGIN2_API_KEY}`)
     .then(x => x.json())
     .then(json => {
         console.log(json)

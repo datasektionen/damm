@@ -9,13 +9,13 @@ exports.adminAuth = (req, res, next) => {
     //If token provided
     if (token) {
         //Verify token with login2
-        fetch(`https://login2.datasektionen.se/verify/${token}.json?api_key=${process.env.LOGIN2_API_KEY}`)
+        fetch(`${process.env.LOGIN2_URL}/verify/${token}.json?api_key=${process.env.LOGIN2_API_KEY}`)
         .then(x => x.json())
         .then(json => {
             console.log(json)
 
             //Check pls if user has admin access
-            fetch(`https://pls.datasektionen.se/api/user/${json.user}/damm`)
+            fetch(`${process.env.PLS_API_URL}/user/${json.user}/damm`)
             .then(response => response.json())
             .then(y => {
                 if (!y.includes('admin')) {
@@ -48,13 +48,13 @@ exports.patchesAuth = (req, res, next) => {
     //If token provided
     if (token) {
         //Verify token with login2
-        fetch(`https://login2.datasektionen.se/verify/${token}.json?api_key=${process.env.LOGIN2_API_KEY}`)
+        fetch(`${process.env.LOGIN2_URL}/verify/${token}.json?api_key=${process.env.LOGIN2_API_KEY}`)
         .then(x => x.json())
         .then(json => {
             // console.log(json)
 
             //Check pls if user has admin access
-            fetch(`https://pls.datasektionen.se/api/user/${json.user}/damm`)
+            fetch(`${process.env.PLS_API_URL}/user/${json.user}/damm`)
             .then(response => response.json())
             .then(y => {
                 if (y.includes('admin') || y.includes("prylis")) {
@@ -85,7 +85,7 @@ exports.patchesAuth = (req, res, next) => {
 //Check the user's pls access rights
 exports.getPls = (token) => {
     return new Promise((resolve, reject) => {
-        fetch(`https://login2.datasektionen.se/verify/${token}.json?api_key=${process.env.LOGIN2_API_KEY}`)
+        fetch(`${process.env.LOGIN2_URL}/verify/${token}.json?api_key=${process.env.LOGIN2_API_KEY}`)
         .then(res => res.json())
         .then(json => {
             console.log(json)
@@ -96,7 +96,7 @@ exports.getPls = (token) => {
                 // Users are used in our model when creating events.
             })
             
-            fetch(`https://pls.datasektionen.se/api/user/${json.user}/damm`)
+            fetch(`${process.env.PLS_API_URL}/user/${json.user}/damm`)
             .then(res => res.json())
             .then(json => resolve(json))
             .catch(err => {
@@ -113,7 +113,7 @@ exports.getPls = (token) => {
 
 exports.getUser = token => {
     return new Promise((resolve, reject) => {
-        fetch(`https://login2.datasektionen.se/verify/${token}.json?api_key=${process.env.LOGIN2_API_KEY}`)
+        fetch(`${process.env.LOGIN2_URL}/verify/${token}.json?api_key=${process.env.LOGIN2_API_KEY}`)
         .then(res => res.json())
         .then(json => {
             User.findOne({ugkthid: json.ugkthid}, (err, res) => {

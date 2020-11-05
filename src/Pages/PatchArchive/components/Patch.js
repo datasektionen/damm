@@ -3,7 +3,7 @@ import Tag from '../../../components/Tag'
 import moment from 'moment'
 
 // Component that displays a patch.
-const Märke = ({image, date, name, description, numProduced = "?", tags = [], price, ...rest}) => {
+const Patch = ({image, date, name, description, numProduced = "?", tags = [], price, ...rest}) => {
 
     const [hovered, setHovered] = useState(false)
 
@@ -63,4 +63,4 @@ const Märke = ({image, date, name, description, numProduced = "?", tags = [], p
     )
 }
 
-export default Märke
+export default Patch

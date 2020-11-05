@@ -7,11 +7,11 @@ import './App.css'
 
 import Historia from './Pages/Historia/Historia'
 import Admin from './Pages/Admin/Admin'
-import SkapaHändelse from './Pages/SkapaHändelse/SkapaHändelse'
+import CreateEvent from './Pages/CreateEvent/CreateEvent'
 import Museum from './Pages/Museum/Museum'
-import MärkesArkiv from './Pages/MarkesArkiv/MärkesArkiv'
-import MärkePage from './Pages/MarkesArkiv/MärkePage'
-import AdminMärke from './Pages/Admin/AdminMärke'
+import PatchArchive from './Pages/PatchArchive/PatchArchive'
+import PatchDetailed from './Pages/PatchDetailed/PatchDetailed'
+import AdminPatch from './Pages/Admin/AdminPatch'
 import NotFound from './components/NotFound'
 import AdminTags from './Pages/Admin/AdminTags'
 import AdminEvents from './Pages/Admin/AdminEvents'
@@ -78,11 +78,11 @@ class App extends Component {
         <Switch>
           <Route exact path={ROUTES.HOME} render={match => <Historia {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.MUSEUM} render={match => <Museum {...this.props} {...this.state} /> } />
-          <Route exact path={ROUTES.MÄRKESARKIV} render={match => <MärkesArkiv {...this.props} {...this.state} /> } />
-          <Route exact path={ROUTES.MÄRKE} render={match => <MärkePage {...this.props} {...this.state} {...match} /> } />
-          <Route exact path={ROUTES.SKAPA_MÄRKE} render={match => <AdminMärke {...this.props} {...this.state} />} />
+          <Route exact path={ROUTES.MÄRKESARKIV} render={match => <PatchArchive {...this.props} {...this.state} /> } />
+          <Route exact path={ROUTES.MÄRKE} render={match => <PatchDetailed {...this.props} {...this.state} {...match} /> } />
+          <Route exact path={ROUTES.SKAPA_MÄRKE} render={match => <AdminPatch {...this.props} {...this.state} />} />
           <Route exact path={ROUTES.MÄRKESTAGGAR} render={match => <AdminTags {...this.props} {...this.state} />} />
-          <Route exact path={ROUTES.SKAPA_HÄNDELSE} render={match => <SkapaHändelse {...this.props} {...this.state} /> } />
+          <Route exact path={ROUTES.SKAPA_HÄNDELSE} render={match => <CreateEvent {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.HANTERA_HÄNDELSER} render={match => <AdminEvents {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.ADMIN} render={match => <Admin {...this.props} {...this.state} />} />
           <Route exact path={ROUTES.LOGIN} render={match => {window.location = `https://login2.datasektionen.se/login?callback=${encodeURIComponent(window.location.origin)}/token/` }} />

@@ -1,13 +1,9 @@
 import React from 'react'
-import logo from '../../skold.png'
-import './MärkesArkiv.css'
-import Märke from './components/Märke'
+import './PatchArchive.css'
 import * as ROUTES from '../../routes'
+import PatchArchiveView from './PatchArchiveView'
 
-import Add from '../../components/add.png'
-import TagClickable from '../../components/TagClickable'
-
-class MärkesArkiv extends React.Component {
+class PatchArchive extends React.Component {
     constructor(props) {
         super(props)
 
@@ -122,7 +118,7 @@ class MärkesArkiv extends React.Component {
 
         //Clears both selected tags and search query
         const clearAll = () => {
-            this.setState({search: "", selectedTags: [], sortRule: this.state.sortOptions[0].value})
+            this.setState({search: "", filterTagsQuery: "", selectedTags: [], sortRule: this.state.sortOptions[0].value})
         }
         
         //Shows/hides tags and saves the state to localstorage
@@ -194,48 +190,28 @@ class MärkesArkiv extends React.Component {
         }
 
         return (
-            <div className="MärkesArkiv">
-                <div className="Header">
-                    <div>
-                        <img src={logo} alt="Datasektionens sköld" className="Logo" />
-                        <h1>Konglig Datasektionens</h1>
-                        <h2>Märkesarkiv</h2>
-                    </div>
-                </div>
-                <div className="settings">
-        <h3>Sök bland {this.state.numPatches} märken</h3>
-                    <div className="buttons">
-                        <button onClick={() => {this.setState({selectedTags: []})}} disabled={this.state.selectedTags.length === 0}>Rensa taggar</button>
-                        <button onClick={() => clearAll()} disabled={this.state.selectedTags.length === 0 && this.state.search.length === 0 && this.state.sortRule === this.state.sortOptions[0].value}>Rensa allt</button>
-                        <button onClick={() => toggleShowTags()}>{this.state.showTags ? "Göm taggar" : "Visa taggar"}</button>
-                    </div>
-                    <div className="sök">
-                        <input type="text" placeholder="Sök..." value={this.state.search} onChange={(e) => this.setState({search: e.target.value})}/>
-                        <img alt="Kryss" className="clearImg" src={Add} onClick={() => {this.setState({search: ""})}}/>
-                        <select name="sortera" onChange={(e) => this.setState({sortRule: e.target.value})} value={this.state.sortRule}>
-                            {this.state.sortOptions.map((x, i) => <option key={"option-"+i} value={x.value}>{x.text}</option>)}
-                        </select>
-                    </div>
-                    {this.state.showTags ? 
-                        <div>
-                            <div className="filter">
-                                <input type="text" placeholder="Filtrera taggar" onChange={(e) => this.setState({filterTagsQuery: e.target.value})} value={this.state.filterTagsQuery} />
-                                <img alt="Kryss" className="clearImg" src={Add} onClick={() => {this.setState({filterTagsQuery: ""})}}/>
-                            </div>
-                            <div className="tagQueryResult">
-                                {this.state.tags.map((x,i) => x.text.toLowerCase().match(new RegExp(this.state.filterTagsQuery.toLowerCase(), "g")) ? <TagClickable key={"tag-"+i} onClick={() => {toggleTag(x)}} {...x} selectedTags={this.state.selectedTags}/> : undefined)}
-                            </div>
-                        </div>
-                    :
-                        undefined
-                    }
-                </div>
-                <div className="märken">
-                    {sortResults().map((x,i) => (patchTagsMatchesSelected(x) && matchesSearch(x)) ? <Märke key={"patch-"+i} {...x} /> : undefined)}
-                </div>
-            </div>
+            <PatchArchiveView
+                numPatches={this.state.numPatches}
+                tags={this.state.tags}
+                selectedTags={this.state.selectedTags}
+                searchQuery={this.state.search}
+                sortOptions={this.state.sortOptions}
+                showTags={this.state.showTags}
+                filterTagsQuery={this.state.filterTagsQuery}
+                sortRule={this.state.sortRule}
+                toggleShowTags={toggleShowTags}
+                toggleTag={toggleTag}
+                sortResults={sortResults}
+                patchTagsMatchesSelected={patchTagsMatchesSelected}
+                matchesSearch={matchesSearch}
+                handleSearch={e => this.setState({[e.target.id]: e.target.value})}
+                clearSearch={e => {this.setState({[e.target.id]: ""})}}
+                handleSort={e => this.setState({sortRule: e.target.value})}
+                clearAll={clearAll}
+                clearSelectedTags={_ => this.setState({selectedTags: []})}
+            />
         )
     }
 }
 
-export default MärkesArkiv
+export default PatchArchive

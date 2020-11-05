@@ -24,7 +24,7 @@ const INITIAL_STATE = {
 const SUCCESS_STATE = {...INITIAL_STATE, success: true}
 const RESET_STATE = {...INITIAL_STATE, success: false, selectedTags: [],}
 
-class AdminMärke extends React.Component {
+class AdminPatch extends React.Component {
     constructor(props) {
         super(props)
 
@@ -273,4 +273,4 @@ class AdminMärke extends React.Component {
     }
 }
 
-export default AdminMärke
+export default AdminPatch

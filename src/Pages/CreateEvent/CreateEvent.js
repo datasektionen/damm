@@ -1,7 +1,7 @@
 import React from 'react'
 import {Redirect} from 'react-router-dom'
 import * as ROUTES from '../../routes'
-import './SkapaHändelse.css'
+import './CreateEvent.css'
 import Alert from '../../components/Alert'
 
 import moment from 'moment'
@@ -24,7 +24,7 @@ const SUCCESS_STATE = {
     error: ""
 }
 
-class SkapaHändelse extends React.Component {
+class CreateEvent extends React.Component {
     constructor(props) {
         super(props)
 
@@ -265,4 +265,4 @@ const ConditionalForm = ({checked, title, description, date, handleChange, comme
     }
 }
 
-export default SkapaHändelse
+export default CreateEvent

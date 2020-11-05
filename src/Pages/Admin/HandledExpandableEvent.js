@@ -85,7 +85,7 @@ const HandledExpandableEvent = ({event, fetchEvents}) => {
         <ExpandableItem
             cols={[
                 <b>{event.title}</b>,
-                moment(event.accepted.date).format("YYYY-MM-DD kk:mm:ss"),
+                moment(event.accepted.date).format("YYYY-MM-DD kk:mm"),
                 event.author.user.first_name + " " + event.author.user.last_name,
                 event.template === "general" ? <span style={{color: "#ea4d8f", fontWeight: "bold"}}>Generell historia</span> : <span style={{color: "#E5C100", fontWeight: "bold"}}>Årsdagar</span>,
                 event.accepted.status === true ? (event.accepted.accepted ? <span style={{color: "green"}}><b>Godkänd</b></span> : <span style={{color: "red"}}><b>Avslagen</b></span> ) : "Ej behandlad",
@@ -94,7 +94,7 @@ const HandledExpandableEvent = ({event, fetchEvents}) => {
             {event.accepted.accepted === true &&
                 <div>
                     <div>
-                        Godkänd av {event.accepted.user.first_name + " " + event.accepted.user.last_name} den {moment(event.accepted.date).format("YYYY-MM-DD kk:mm:ss")}
+                        Godkänd av {event.accepted.user.first_name + " " + event.accepted.user.last_name} den {moment(event.accepted.date).format("YYYY-MM-DD kk:mm")}
                     </div>
                     <div>
                         <button

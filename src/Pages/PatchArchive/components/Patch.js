@@ -16,6 +16,7 @@ const Patch = ({image, date, name, description, numProduced = "?", tags = [], pr
         <div
             className="märke"
             title={description}
+            // TODO: Replace with this.props.history.push
             onClick={() => {window.location=`/marke/${rest._id}`}}
             onMouseEnter={_ => setHovered(true)}
             onMouseLeave={_ => setHovered(false)}

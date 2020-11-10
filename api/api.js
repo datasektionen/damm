@@ -51,8 +51,11 @@ router.get('/marke/id/:id', (req, res) => {
     Märke.find({_id: req.params.id})
     .populate('tags')
     .exec((err, data) => {
+        if (data === undefined) {
+            return res.status(404).json({"error":"Patch not found"})
+        }
         if (err) {
-            res.status(500).json({"error":"Something went wrong"})
+            return res.status(500).json({"error":"Something went wrong"})
         } else {
             if (data === null) return res.status(404).json({"error":"Patch not found."})
             console.log(data)

@@ -27,9 +27,13 @@ class PatchDetailed extends React.Component {
     componentDidMount() {
         let id = this.props.location.pathname.split("/marke/")[1]
 
-        fetch(window.location.origin + ROUTES.API_GET_TAG + id)
+        fetch(window.location.origin + ROUTES.API_GET_PATCH + id)
         .then(res => res.json())
         .then(json => {
+            if (json.error) {
+                this.props.history.push("/404")
+                return
+            }
             this.setState({...json[0], fetching: false})
         })
         .catch(err => {
@@ -47,6 +51,9 @@ class PatchDetailed extends React.Component {
 
         const hasPls = this.props.pls.includes("admin") || this.props.pls.includes("prylis")
 
+        if (this.state.fetching) {
+            return <div></div>
+        } else 
         return (
             <div className="MarkeInfo">
                 <div className="patch">

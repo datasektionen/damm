@@ -3,6 +3,7 @@ const app = express()
 const cors = require('cors')
 const moment = require('moment')
 const morgan = require('morgan')
+const fs = require('fs')
 
 var mongoose = require('mongoose');
 //Configure process.env
@@ -77,6 +78,10 @@ mongoose.Promise = global.Promise
 app.get('/api', (req, res) => {
   res.send(cachedData)
 })
+
+// For the search bar in methone. Available in mobile, not desktop.
+const fuzzyfile = fs.readFileSync(`${__dirname}/fuzzyfile.json`)
+app.get('/fuzzyfile', (req, res) => res.json(JSON.parse(fuzzyfile)))
 
 //API
 app.use('/api/admin/tag', adminTags)

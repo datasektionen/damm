@@ -33,6 +33,7 @@ class App extends Component {
         console.log(json)
         if (json.error) {
           localStorage.removeItem('token')
+          // TODO: Replace with this.props.history.push
           window.location=ROUTES.HOME
         } else {
           this.setState({pls: json.pls})
@@ -88,11 +89,13 @@ class App extends Component {
           <Route exact path={ROUTES.LOGIN} render={match => {window.location = `https://login2.datasektionen.se/login?callback=${encodeURIComponent(window.location.origin)}/token/` }} />
           <Route exact path={ROUTES.LOGOUT} render={({match}) => {
             localStorage.removeItem('token')
+            // TODO: Replace with this.props.history.push
             window.location=ROUTES.HOME
             // return <Redirect to={ROUTES.HOME} />
           }} />
           <Route path={ROUTES.TOKEN} render={({match}) => {
             localStorage.setItem('token', match.params.token)
+            // TODO: Replace with this.props.history.push
             window.location=ROUTES.HOME
             // return <Redirect to={ROUTES.HOME} />
           }} />

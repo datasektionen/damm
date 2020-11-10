@@ -31,11 +31,12 @@ Du behöver variablerna LOGIN2_API_KEY, MONGO_URL (gärna i en .env-fil i ./)
 
 En login2-nyckel fås av systemansvarig (d-sys@d.kth.se)
 
-| Variable              | Description                           |
-|-----------------------|---------------------------------------|
-| LOGIN2_API_KEY        | Login2 api-nyckel                     |
-| MONGO_URL             | URL till mongodatabasen               |
-
+| Variable              | Description                           | Standardvärde |
+|-----------------------|---------------------------------------| --------------|
+| LOGIN2_API_KEY        | Login2 api-nyckel                     | -             |
+| MONGO_URL             | URL till mongodatabasen               | -             |
+| NODE_ENV              | Om du kör i "production" eller "development". Antagligen "development" om du kör lokalt | - |
+| PORT                  | Port som servern körs på, måste förmodligen också ändras i package.json (för development) om du inte kör standard | - |
 
 ## Testning/lokalt
 ### Server

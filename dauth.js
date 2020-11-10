@@ -1,6 +1,5 @@
 const fetch = require('node-fetch')
-//Configure process.env
-require('dotenv').config()
+const {error, error500} = require('./util/error')
 
 const User = require('./models/User')
 
@@ -19,8 +18,7 @@ exports.adminAuth = (req, res, next) => {
             .then(response => response.json())
             .then(y => {
                 if (!y.includes('admin')) {
-                    res.status(403).send("No admin, no access.")
-                    return
+                    return error(res, 403, "No admin, no access.")
                 } else {
                     next()
                     // return
@@ -28,18 +26,16 @@ exports.adminAuth = (req, res, next) => {
             })
             .catch(err => {
                 console.log("Pls error: ", err)
-                res.status(500).send("Invalid token")
-                return
+                return error(res, 500, "Invalid token", err)
             })
         })
         .catch(err => {
             console.log("Login error", err)
-            res.status(500).send("Invalid token")
-            return
+            return error(res, 500, "Invalid token", err)
         })
     //No token provided
     } else {
-        res.status(401).send("No token provided")
+        return error(res, 401, "No token provided")
     }
 }
 
@@ -60,25 +56,21 @@ exports.patchesAuth = (req, res, next) => {
                 if (y.includes('admin') || y.includes("prylis")) {
                     next()
                 } else {
-                    res.status(403).send("Unauthorized")
-                    return
-                    // return
+                    return error(res, 403, "Unauthorized.")
                 }
             })
             .catch(err => {
                 console.log("Pls error: ", err)
-                res.status(500).send(err)
-                return
+                return error500(res, err)
             })
         })
         .catch(err => {
             console.log("Token error")
-            res.status(500).send(err)
-            return
+            return error500(res, err)
         })
     //No token provided
     } else {
-        res.status(401).send("No token provided")
+        return error(res, 401, "No token provided.")
     }
 }
 

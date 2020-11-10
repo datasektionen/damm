@@ -4,6 +4,7 @@ const dauth = require('../../dauth')
 const Märke = require('../../models/Märke')
 const mongoose = require('mongoose')
 const uuid4 = require('uuid4')
+const {error, error500} = require('../../util/error')
 
 let multer = require('multer')
 let GridFsStorage = require('multer-gridfs-storage')
@@ -37,13 +38,13 @@ router.post('/create', upload.single('file'), (req, res) => {
     const {name, description, date, price, orders, tags, radioPrice} = JSON.parse(req.body.body)
     console.log(JSON.parse(req.body.body))
   
-    if (!req.file) return res.json({"error":"Ingen fil medskickad."})
-    if (!name) return res.json({"error":"Inget namn angett."})
-    if (name.length < 1) return res.json({"error":"Namnet är för kort."})
+    if (!req.file) return error(res, 403, "Ingen fil medskickad.")
+    if (!name) return error(res, 403, "Ingen namn angett.")
+    if (name.length < 1) return error(res, 403, "Namnet är för kort.")
 
     if (radioPrice === "Ange pris") {
-        if (price.length === 0 || !price) return res.json({"error":"Inget pris angett"})
-    } else if (radioPrice === "" || !radioPrice) return res.json({"error":"Inget pris angett"})
+        if (price.length === 0 || !price) return error(res, 403, "Inget pris angett.")
+    } else if (radioPrice === "" || !radioPrice) return error(res, 403, "Inget pris angett.")
   
     Märke.create({
         name,

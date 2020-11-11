@@ -13,6 +13,7 @@ require('dotenv').config()
 const dfunkt = require('./adapters/dfunkt')
 const sm = require('./adapters/sm')
 const database = require('./adapters/database')
+const {error} = require('./util/error')
 
 
 const dAuth = require('./dauth')
@@ -24,7 +25,7 @@ const adminEvents = require('./api/admin/events')
 const bodyParser = require('body-parser')
 
 const dataGenerator = require('./generator')
-// const { model } = require('mongoose')
+
 const init = _ => dataGenerator([
   dfunkt,
   sm,
@@ -58,10 +59,10 @@ app.get('/api/admin/refresh', dAuth.adminAuth, (req, res) => {
   const limit = lastCached.clone()
   limit.add(1, 'minute')
   if (moment().isBefore(limit)) {
-    res.send('{"response": "error", "message":"Already refreshed. Wait a minute..."}') 
+    return error(res, 403, "Already refreshed. Wait a minute...")
   } else {
     console.log("Refreshing...")
-    res.send('{"response": "Data refreshed"}')
+    res.status(200).json({"response": "Data refreshed"})
     cachedData = init()()
     lastCached = moment()
   }

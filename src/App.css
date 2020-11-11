@@ -6,6 +6,10 @@ body {
   height: 50px;
 }
 
+a {
+  color: #e83d84;
+}
+
 time.Year {
   margin: 20px auto;
   font-size: 3em;

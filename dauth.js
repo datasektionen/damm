@@ -1,6 +1,5 @@
 const fetch = require('node-fetch')
-//Configure process.env
-require('dotenv').config()
+const {error, error500} = require('./util/error')
 
 const User = require('./models/User')
 
@@ -9,18 +8,17 @@ exports.adminAuth = (req, res, next) => {
     //If token provided
     if (token) {
         //Verify token with login2
-        fetch(`https://login2.datasektionen.se/verify/${token}.json?api_key=${process.env.LOGIN2_API_KEY}`)
+        fetch(`${process.env.LOGIN2_URL}/verify/${token}.json?api_key=${process.env.LOGIN2_API_KEY}`)
         .then(x => x.json())
         .then(json => {
             console.log(json)
 
             //Check pls if user has admin access
-            fetch(`https://pls.datasektionen.se/api/user/${json.user}/damm`)
+            fetch(`${process.env.PLS_API_URL}/user/${json.user}/damm`)
             .then(response => response.json())
             .then(y => {
                 if (!y.includes('admin')) {
-                    res.status(403).send("No admin, no access.")
-                    return
+                    return error(res, 403, "No admin, no access.")
                 } else {
                     next()
                     // return
@@ -28,18 +26,16 @@ exports.adminAuth = (req, res, next) => {
             })
             .catch(err => {
                 console.log("Pls error: ", err)
-                res.status(500).send("Invalid token")
-                return
+                return error(res, 500, "Invalid token", err)
             })
         })
         .catch(err => {
             console.log("Login error", err)
-            res.status(500).send("Invalid token")
-            return
+            return error(res, 500, "Invalid token", err)
         })
     //No token provided
     } else {
-        res.status(401).send("No token provided")
+        return error(res, 401, "No token provided")
     }
 }
 
@@ -48,44 +44,40 @@ exports.patchesAuth = (req, res, next) => {
     //If token provided
     if (token) {
         //Verify token with login2
-        fetch(`https://login2.datasektionen.se/verify/${token}.json?api_key=${process.env.LOGIN2_API_KEY}`)
+        fetch(`${process.env.LOGIN2_URL}/verify/${token}.json?api_key=${process.env.LOGIN2_API_KEY}`)
         .then(x => x.json())
         .then(json => {
             // console.log(json)
 
             //Check pls if user has admin access
-            fetch(`https://pls.datasektionen.se/api/user/${json.user}/damm`)
+            fetch(`${process.env.PLS_API_URL}/user/${json.user}/damm`)
             .then(response => response.json())
             .then(y => {
                 if (y.includes('admin') || y.includes("prylis")) {
                     next()
                 } else {
-                    res.status(403).send("Unauthorized")
-                    return
-                    // return
+                    return error(res, 403, "Unauthorized.")
                 }
             })
             .catch(err => {
                 console.log("Pls error: ", err)
-                res.status(500).send(err)
-                return
+                return error500(res, err)
             })
         })
         .catch(err => {
             console.log("Token error")
-            res.status(500).send(err)
-            return
+            return error500(res, err)
         })
     //No token provided
     } else {
-        res.status(401).send("No token provided")
+        return error(res, 401, "No token provided.")
     }
 }
 
 //Check the user's pls access rights
 exports.getPls = (token) => {
     return new Promise((resolve, reject) => {
-        fetch(`https://login2.datasektionen.se/verify/${token}.json?api_key=${process.env.LOGIN2_API_KEY}`)
+        fetch(`${process.env.LOGIN2_URL}/verify/${token}.json?api_key=${process.env.LOGIN2_API_KEY}`)
         .then(res => res.json())
         .then(json => {
             console.log(json)
@@ -96,7 +88,7 @@ exports.getPls = (token) => {
                 // Users are used in our model when creating events.
             })
             
-            fetch(`https://pls.datasektionen.se/api/user/${json.user}/damm`)
+            fetch(`${process.env.PLS_API_URL}/user/${json.user}/damm`)
             .then(res => res.json())
             .then(json => resolve(json))
             .catch(err => {
@@ -113,7 +105,7 @@ exports.getPls = (token) => {
 
 exports.getUser = token => {
     return new Promise((resolve, reject) => {
-        fetch(`https://login2.datasektionen.se/verify/${token}.json?api_key=${process.env.LOGIN2_API_KEY}`)
+        fetch(`${process.env.LOGIN2_URL}/verify/${token}.json?api_key=${process.env.LOGIN2_API_KEY}`)
         .then(res => res.json())
         .then(json => {
             User.findOne({ugkthid: json.ugkthid}, (err, res) => {

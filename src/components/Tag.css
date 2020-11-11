@@ -1,0 +1,13 @@
+.TagComponent {
+    user-select: none;
+    padding: 5px 10px 5px 10px;
+    border-radius: 2px;
+    /* width: 100px; */
+    text-align: center;
+    margin: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    color: black;
+}
+.TagComponent:hover {
+    transform: scale(1.05);
+}

@@ -14,6 +14,7 @@ const AdminCard = ({title, description, link, buttonText, onClick = () => {}, no
             </div>
             {nolink ?
                 <Link
+                to="#"
                 onClick={onClick}
                 >{buttonText ? buttonText : "Kör"}
                 </Link>

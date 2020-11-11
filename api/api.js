@@ -4,9 +4,10 @@ const dAuth = require('../dauth')
 const {Tag} = require('../models/Tag')
 const Märke = require('../models/Märke')
 const eventsNoAdmin = require('./events')
+const {error, error500} = require('../util/error')
 
 router.get('/isAdmin', (req, res) => {
-    if (req.query.token === undefined) return res.status(403).json({"error":"No token provided."})
+    if (req.query.token === undefined) return error(res, 403, "No token provided", "")
 
     dAuth.getPls(req.query.token)
     .then(x => {
@@ -15,7 +16,7 @@ router.get('/isAdmin', (req, res) => {
     })
     .catch(err => {
         console.log("Invalid token")
-        res.status(404).json({"error": err})
+        return error(res, 404, "Invalid token", err)
     })
 })
 
@@ -31,30 +32,32 @@ router.get('/artefakter', (req, res) => {
 
 router.get('/tags', (req, res) => {
     Tag.find((err, data) => {
-        if (err) {
-        console.log(err)
-        res.send(err)
-        } else res.send(data)
+        if (err) return error500(res, err)
+        else res.send(data)
     })
 })
   
 router.get('/marken', (req, res) => {
-    Märke.find((err, data) => {
-      if (err) {
-        console.log(err)
-        res.send(err)
-      } else res.send(data)
+    Märke.find()
+    .populate('tags')
+    .exec((err, data) => {
+        if (err) return error500(res, err)
+        return res.status(200).json(data)
     })
 })
   
 router.get('/marke/id/:id', (req, res) => {
-    Märke.find({_id: req.params.id}, (err, data) => {
+    Märke.find({_id: req.params.id})
+    .populate('tags')
+    .exec((err, data) => {
+        if (data === undefined) {
+            return error(res, 404, "Patch not found", err)
+        }
         if (err) {
-            console.log(`Couldn't find märke with id: \"${req.params.id}\"`)
-            res.status(404).json({"error":"Patch not found."})
+            return error500(res, err)
         } else {
             console.log(data)
-            res.send(data)
+            return res.status(200).send(data)
         }
     })
 })
@@ -79,7 +82,7 @@ router.get('/file/:filename', (req, res) => {
         // console.log(files)
         if (err) console.log(err)
         if (!files || files.length === 0) {
-            return res.status(404).json({"error":"File not found"})
+            return error(res, 404, "File not found", err)
         }
 
         var rs = gfs.createReadStream({
@@ -95,7 +98,7 @@ router.get('/file/:filename', (req, res) => {
 router.use('/event', eventsNoAdmin)
 
 router.get('/*', (req, res) => {
-    res.json({"error":"Invalid API path"})
+    return error(res, 404, "Invalid API path.")
 })
 
 module.exports = router

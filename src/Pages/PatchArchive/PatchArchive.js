@@ -1,14 +1,9 @@
 import React from 'react'
-import logo from '../../skold.png'
-import './MärkesArkiv.css'
-import Märke from './components/Märke'
+import './PatchArchive.css'
 import * as ROUTES from '../../routes'
+import PatchArchiveView from './PatchArchiveView'
 
-import moment from 'moment'
-import Add from '../../components/add.png'
-import TagClickable from '../../components/TagClickable'
-
-class MärkesArkiv extends React.Component {
+class PatchArchive extends React.Component {
     constructor(props) {
         super(props)
 
@@ -19,6 +14,16 @@ class MärkesArkiv extends React.Component {
           } catch (e) {}
         }
 
+        const sortOptions = [
+            {text: "Sortera på: Standard", value: "all"},
+            {text: "Namn (A-Ö)", value: "name-desc"},
+            {text: "Namn (Ö-A)", value: "name-asc"},
+            {text: "Pris (Lägst överst)", value: "price-asc"},
+            {text: "Pris (Högst överst)", value: "price-desc"},
+            {text: "Datum (Nu-1983)", value: "date-desc"},
+            {text: "Datum (1983-Nu)", value: "date-asc"},
+        ]
+
         this.state = {
             tags: [],
             filterTagsQuery: "",
@@ -27,8 +32,9 @@ class MärkesArkiv extends React.Component {
             märken: [],
             showTags: showTags,
             numPatches: 0,
-            sortRule: "standard",
+            sortRule: sortOptions[0].value,
             file: undefined,
+            sortOptions: sortOptions
         }
     }
 
@@ -112,7 +118,7 @@ class MärkesArkiv extends React.Component {
 
         //Clears both selected tags and search query
         const clearAll = () => {
-            this.setState({search: "", selectedTags: []})
+            this.setState({search: "", filterTagsQuery: "", selectedTags: [], sortRule: this.state.sortOptions[0].value})
         }
         
         //Shows/hides tags and saves the state to localstorage
@@ -122,16 +128,13 @@ class MärkesArkiv extends React.Component {
             })
         }
         
-        //Array of sort options
-        const sortOptions = ["Sortera på: Standard", "Namn (A-Ö)", "Namn (Ö-A)", "Pris (Lägst överst)", "Pris (Högst överst)", "Datum (Nu-1983)", "Datum (1983-Nu)"]
-
         //Function that sorts results
         const sortResults = () => {
             const {sortRule} = this.state
             
-            if (sortRule === sortOptions[0].toLowerCase()) return this.state.märken
+            if (sortRule === this.state.sortOptions[0].value) return this.state.märken
 
-            if (sortRule === sortOptions[1].toLowerCase()) {
+            if (sortRule === this.state.sortOptions[1].value) {
                 return [...this.state.märken].sort((a, b) => {
                     const A = a.name.toLowerCase()
                     const B = b.name.toLowerCase()
@@ -141,7 +144,7 @@ class MärkesArkiv extends React.Component {
                 })
             }
 
-            if (sortRule === sortOptions[2].toLowerCase()) {
+            if (sortRule === this.state.sortOptions[2].value) {
                 return [...this.state.märken].sort((a, b) => {
                     const A = a.name.toLowerCase()
                     const B = b.name.toLowerCase()
@@ -151,7 +154,7 @@ class MärkesArkiv extends React.Component {
                 })
             }
 
-            if (sortRule === sortOptions[3].toLowerCase()) {
+            if (sortRule === this.state.sortOptions[3].value) {
                 return [...this.state.märken].sort((a, b) => {
                     const A = a.price.toLowerCase()
                     const B = b.price.toLowerCase()
@@ -161,7 +164,7 @@ class MärkesArkiv extends React.Component {
                 })
             }
 
-            if (sortRule === sortOptions[4].toLowerCase()) {
+            if (sortRule === this.state.sortOptions[4].value) {
                 return [...this.state.märken].sort((a, b) => {
                     const A = a.price.toLowerCase()
                     const B = b.price.toLowerCase()
@@ -171,60 +174,44 @@ class MärkesArkiv extends React.Component {
                 })
             }
 
-            if (sortRule === sortOptions[5].toLowerCase()) {
-                return [...this.state.märken].sort((a, b) => new moment(a.date).format('YYYYMMDD') - new moment(b.date).format('YYYYMMDD'))
+            //Sorts patches after date, today to 1983 and "okänt" 
+            if (sortRule === this.state.sortOptions[5].value) {
+                // If date is an empty string (It has been marked as "unknown"), calculate it as 0 (otherwise the sorting wouldn't work as new Date("") doesn't work)
+                return [...this.state.märken].sort((a, b) => (b.date === "" ? 0 : new Date(b.date)) - (a.date === "" ? 0 : new Date(a.date)))
             }
 
-            if (sortRule === sortOptions[6].toLowerCase()) {
-                return [...this.state.märken].sort((a, b) => new moment(b.date).format('YYYYMMDD') - new moment(a.date).format('YYYYMMDD'))
+            //Sorts patches after date, "Okänt" and 1983" to today 
+            if (sortRule === this.state.sortOptions[6].value) {
+                // If date is an empty string (It has been marked as "unknown"), calculate it as 0 (otherwise the sorting wouldn't work as new Date("") doesn't work)
+                return [...this.state.märken].sort((a, b) => (a.date === "" ? 0 : new Date(a.date)) - (b.date === "" ? 0 : new Date(b.date)))
             }
 
             return this.state.märken
         }
 
         return (
-            <div className="MärkesArkiv">
-                <div className="Header">
-                    <div>
-                        <img src={logo} alt="Datasektionens sköld" className="Logo" />
-                        <h1>Konglig Datasektionens</h1>
-                        <h2>Märkesarkiv</h2>
-                    </div>
-                </div>
-                <div className="settings">
-        <h3>Sök bland {this.state.numPatches} märken</h3>
-                    <div className="buttons">
-                        <button onClick={() => {this.setState({selectedTags: []})}} disabled={this.state.selectedTags.length === 0}>Rensa taggar</button>
-                        <button onClick={() => clearAll()} disabled={this.state.selectedTags.length === 0 && this.state.search.length === 0}>Rensa allt</button>
-                        <button onClick={() => toggleShowTags()}>{this.state.showTags ? "Göm taggar" : "Visa taggar"}</button>
-                    </div>
-                    <div className="sök">
-                        <input type="text" placeholder="Sök..." value={this.state.search} onChange={(e) => this.setState({search: e.target.value})}/>
-                        <img className="clearImg" src={Add} onClick={() => {this.setState({search: ""})}}/>
-                        <select name="sortera" onChange={(e) => this.setState({sortRule: e.target.value})}>
-                            {sortOptions.map((x, i) => <option key={i} value={x.toLowerCase()}>{x}</option>)}
-                        </select>
-                    </div>
-                    {this.state.showTags ? 
-                        <div>
-                            <div className="filter">
-                                <input type="text" placeholder="Filtrera taggar" onChange={(e) => this.setState({filterTagsQuery: e.target.value})} value={this.state.filterTagsQuery} />
-                                <img className="clearImg" src={Add} onClick={() => {this.setState({filterTagsQuery: ""})}}/>
-                            </div>
-                            <div className="tagQueryResult">
-                                {this.state.tags.map((x,i) => x.text.toLowerCase().match(new RegExp(this.state.filterTagsQuery.toLowerCase(), "g")) ? <TagClickable key={i} onClick={() => {toggleTag(x)}} {...x} selectedTags={this.state.selectedTags}/> : undefined)}
-                            </div>
-                        </div>
-                    :
-                        undefined
-                    }
-                </div>
-                <div className="märken">
-                    {sortResults().map((x,i) => (patchTagsMatchesSelected(x) && matchesSearch(x)) ? <Märke key={i} {...x} /> : undefined)}
-                </div>
-            </div>
+            <PatchArchiveView
+                numPatches={this.state.numPatches}
+                tags={this.state.tags}
+                selectedTags={this.state.selectedTags}
+                searchQuery={this.state.search}
+                sortOptions={this.state.sortOptions}
+                showTags={this.state.showTags}
+                filterTagsQuery={this.state.filterTagsQuery}
+                sortRule={this.state.sortRule}
+                toggleShowTags={toggleShowTags}
+                toggleTag={toggleTag}
+                sortResults={sortResults}
+                patchTagsMatchesSelected={patchTagsMatchesSelected}
+                matchesSearch={matchesSearch}
+                handleSearch={e => this.setState({[e.target.id]: e.target.value})}
+                clearSearch={e => {this.setState({[e.target.id]: ""})}}
+                handleSort={e => this.setState({sortRule: e.target.value})}
+                clearAll={clearAll}
+                clearSelectedTags={_ => this.setState({selectedTags: []})}
+            />
         )
     }
 }
 
-export default MärkesArkiv
+export default PatchArchive

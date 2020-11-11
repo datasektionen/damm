@@ -2,50 +2,33 @@ var express = require('express')
 var router = express.Router()
 const dauth = require('../../dauth')
 const {Tag} = require('../../models/Tag')
-const Märke = require('../../models/Märke')
+const {error, error500} = require('../../util/error')
 
 //Middleware for patch access rights, admin and prylis
 router.use(dauth.patchesAuth)
 
-const checkName = (req, res, next) => {
-    const {text} = req.body
-    if (text === undefined) return res.json({"error":"Inget namn medskickat."})
-    if (text.length < 1) return res.json({"error":"För kort namn."})
+// Middleware for checking if id is in request body
+const idMiddleware = (req, res, next) => {
+    if (_id === undefined || id === "") return error(res, 403, "No id provided.")
     next()
 }
 
-router.post('/update', checkName, (req, res) => {
+// Middleware that checks if text is present in request body and if it is longer than 1 character
+const checkName = (req, res, next) => {
+    const {text} = req.body
+    if (text === undefined) return error(res, 403, "Ignet namn medskickat.")
+    if (text.length < 1) return error(res, 403, "För kort namn.")
+    next()
+}
+
+router.post('/update', idMiddleware, checkName, (req, res) => {
     const {text, hoverText, color, backgroundColor, _id} = req.body
 
     Tag.updateTag(_id, text, hoverText, color, backgroundColor, (err) => {
         if (err) {
-            return res.json({"error":err})
-        } else {
-            Märke.find((err, rows) => {
-                if (err) {
-                    return res.json({"error": err})
-                }
-                let promises = []
-                rows.map(patch => {
-                    patch.tags.map(_ => {
-                        promises.concat(new Promise((resolve, reject) => {
-                            Märke.updateTags(patch._id, {_id, text, hoverText, color, backgroundColor}, (err, x) => {
-                                if (err) {
-                                    reject(err)
-                                } else {
-                                    resolve(x)
-                                }
-                            })
-                        }))
-                    })
-                })
-                Promise.all(promises).then((value) => {
-                    return res.json({"status":"success"})
-                }, (rejected) => {
-                    return res.json({"error": err})
-                })
-            })
+            return error500(res, err)
         }
+        return res.status(200).json({"status":"Updated tag successfully."})
     })
 })
   
@@ -54,32 +37,18 @@ router.post('/create', checkName, (req, res) => {
 
     console.log(req.body)
     Tag.create({text, hoverText, color, backgroundColor}, (tag) => {
-        console.log(tag)
         return res.json({"status":"success"})
     })
 })
   
-router.post('/delete', (req, res) => {
+router.post('/delete', idMiddleware, (req, res) => {
     const {_id} = req.body
-
-    if (_id === undefined) return res.json({"error":"Inget id medskickat."})
 
     console.log(req.body)
     Tag.deleteOne({_id}, (err) => {
         if (err) {
-            return res.json({"error": err})
+            return error500(res, err)
         } else return res.json({"status":"success"})
-    })
-    Märke.find((err, rows) => {
-        if (err) {} else {
-            rows.map(patch => {
-                patch.tags.map(tag => {
-                    Märke.removeTags(patch._id, _id, (err, result) => {
-                        console.log(result)
-                    })
-                })
-            })
-        }
     })
 })
 

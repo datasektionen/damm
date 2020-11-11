@@ -94,7 +94,7 @@ time.Year {
 
 .Timeline .cards .card:nth-child(even) {
   margin-top: 50px;
-  margin-bottom: -50px;
+  /* margin-bottom: -50px; */
 }
 .Timeline .cards .card:nth-child(even):last-child {
   margin-bottom: 0;

@@ -25,7 +25,7 @@ const database = _ => {
 
 		Event.find((err, x) => {
 			if (err) reject(err)
-			resolve(x.filter(event => event.accepted.status === true).map(event => ({
+			resolve(x.filter(event => event.accepted.accepted === true && event.accepted.status === true).map(event => ({
 				title: event.title,
 				content: event.content,
 				date: moment(event.date),

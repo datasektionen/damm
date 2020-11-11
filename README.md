@@ -1,7 +1,6 @@
 # Damm - sektionens historiesystem
 ## Om Damm
-Damm är sektionens historiesystem. Systemet började skrivas i januari 2018 av Jonas Dahl (tidslinjen), men låg sedan orört i mer än två år innan sektionshistorikerna 2020 (Axel Elmarsson, 
-Douglas Fischer Horn af Rantzien, William Agnér) beslöt sig för att fortsätta utvecklingen av systemet.
+Damm är sektionens historiesystem. Systemet började skrivas i januari 2018 av Jonas Dahl (tidslinjen), men låg sedan orört i mer än två år innan en av sektionshistorikerna 2020 (Axel Elmarsson) beslöt sig för att fortsätta utvecklingen av systemet.
 
 Systemets huvudfokus är alltså att bokföra sektionens mycket viktiga historia. Systemet gör detta på tre sätt:
 - Tidslinjen
@@ -27,15 +26,21 @@ Och så använder sig systemet såklart av Aurora och Methone, men det gör i pr
 Du behöver npm/nodejs och mongodb.
 
 ## Environment tables
-Du behöver variablerna LOGIN2_API_KEY, MONGO_URL (gärna i en .env-fil i ./)
+Du behöver variablerna nedan (PORT och HOST är inte ett krav, HOST måste däremot finnas om du kör mot login.datasektionen.se), gärna i en .env-fil i roten av projektet.
 
 En login2-nyckel fås av systemansvarig (d-sys@d.kth.se)
 
-| Variable              | Description                           |
-|-----------------------|---------------------------------------|
-| LOGIN2_API_KEY        | Login2 api-nyckel                     |
-| MONGO_URL             | URL till mongodatabasen               |
-
+| Variable              | Description                           | Standardvärde |
+|-----------------------|---------------------------------------| --------------|
+| MONGO_URL             | URL till mongodatabasen               | -             |
+| LOGIN2_API_KEY        | Login2 API-nyckel                     | -             |
+| LOGIN2_API_URL        | URL till login2                       | -             |
+| PLS_API_URL           | URL till pls                          | -             |
+| SPAM_API_URL          | URL till spam                         | -             |
+| SPAM_API_KEY          | API-nyckel till spam, används för mejlfunktionalitet | -             |
+| NODE_ENV              | Om du kör i "production" eller "development". Antagligen "development" om du kör lokalt | - |
+| PORT                  | Port som servern körs på, måste förmodligen också ändras i package.json (för development) om du inte kör standard | 5000 |
+| HOST                  | När du utvecklar damm lokalt och inte kör login lokalt måste du ange detta som `localhost.datasektionen.se`, annars får du dels `Invalid host header` samt att login kommer neka din callback eftersom `localhost` inte är en subdomän till datasektionen. | -             |
 
 ## Testning/lokalt
 ### Server

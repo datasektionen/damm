@@ -24,7 +24,7 @@ const INITIAL_STATE = {
 const SUCCESS_STATE = {...INITIAL_STATE, success: true}
 const RESET_STATE = {...INITIAL_STATE, success: false, selectedTags: [],}
 
-class AdminMärke extends React.Component {
+class AdminPatch extends React.Component {
     constructor(props) {
         super(props)
 
@@ -74,12 +74,11 @@ class AdminMärke extends React.Component {
                 date,
                 price,
                 radioPrice: this.state.radioPrice,
-                selectedTags,
+                tags: selectedTags.map(tag => tag._id),
                 orders,
                 orderdate
             }
 
-            //TODO: UPLOAD FILE
 
             console.log(body)
             const formData = new FormData()
@@ -157,7 +156,7 @@ class AdminMärke extends React.Component {
             this.setState({orders: this.state.orders.filter((x,i) => index !== i)})
         }
 
-        const invalid = this.state.name.length === 0 || this.state.imageSrc === ""
+        // const invalid = this.state.name.length === 0 || this.state.imageSrc === ""
 
         return (
             <div className="Admin">
@@ -177,7 +176,7 @@ class AdminMärke extends React.Component {
                                 {!this.state.image ?
                                     <div className="preupload">
                                         <div>
-                                            <i class="fas fa-upload"></i>
+                                            <i className="fas fa-upload"></i>
                                         </div>
                                         <div>
                                             <p className="title">Ladda upp en bild på märket</p>
@@ -191,13 +190,13 @@ class AdminMärke extends React.Component {
                                             <i class="fa fa-check" style={{color: "green"}}></i>
                                             <span className="filename" style={{color: "green"}}>{this.state.image.name}</span>
                                         </div>
-                                        {this.state.imageSrc && <img src={`${this.state.imageSrc}`} />}
+                                        {this.state.imageSrc && <img alt="" src={`${this.state.imageSrc}`} />}
                                     </div>
                                 }
                             </label>
                         </div>
                         <h3 id="obligatorisk">Namn</h3>
-                        <input id="name" name="name" type="text" autoComplete={false} placeholder="Namn" value={this.state.name} onChange={(e) => handleChange(e)} />
+                        <input id="name" name="name" type="text" autoComplete="off" placeholder="Namn" value={this.state.name} onChange={(e) => handleChange(e)} />
                         <h3>Beskrivning</h3>
                         <textarea id="description" name="description" placeholder="Beskrivning" value={this.state.description} onChange={(e) => handleChange(e)} />
                         <div className="date">
@@ -209,8 +208,8 @@ class AdminMärke extends React.Component {
                             <h3 id="obligatorisk">Pris</h3>
                             <h4>Ange pris för märket</h4>
                             <div>
-                                {radioValues.map(x =>
-                                    <div className="radio">
+                                {radioValues.map((x,i) =>
+                                    <div key={"radioprice-"+i} className="radio">
                                         <input id={x} type="radio" checked={this.state.radioPrice === x} onChange={e => handleRadioChange(e)}/>
                                         <label htmlFor={x}>{x}</label>
                                     </div>    
@@ -274,4 +273,4 @@ class AdminMärke extends React.Component {
     }
 }
 
-export default AdminMärke
+export default AdminPatch

@@ -25,6 +25,7 @@
 
 .MarkeInfo .patch .patchimg img {
     width: 300px;
+    cursor: pointer;
 }
 
 .MarkeInfo .patch .patchimg .files {
@@ -98,10 +99,12 @@
 }
 
 .MarkeInfo .patch .patchcontent .tags {
-    margin-top: 20px;
+    padding-top: 20px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    border-top: solid 1px #afafaf;
+    border-radius: 1px;
 }
 
 .MarkeInfo .patch .patchadmincontent {

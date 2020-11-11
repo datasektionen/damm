@@ -6,7 +6,6 @@ import moment from 'moment'
 const Patch = ({image, date, name, description, numProduced = "?", tags = [], price, ...rest}) => {
 
     const [hovered, setHovered] = useState(false)
-
     let displayPrice
     if (price === undefined || price === "") displayPrice = "Gratis"
     else if (price === "-") displayPrice = "Säljs ej"
@@ -16,8 +15,7 @@ const Patch = ({image, date, name, description, numProduced = "?", tags = [], pr
         <div
             className="märke"
             title={description}
-            // TODO: Replace with this.props.history.push
-            onClick={() => {window.location=`/marke/${rest._id}`}}
+            onClick={() => {rest.history.push(`/marke/${rest._id}`)}}
             onMouseEnter={_ => setHovered(true)}
             onMouseLeave={_ => setHovered(false)}
             onTouchStart={_ => setHovered(true)}

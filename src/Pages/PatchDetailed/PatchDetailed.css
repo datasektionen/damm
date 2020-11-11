@@ -28,6 +28,10 @@
     cursor: pointer;
 }
 
+.MarkeInfo .patch .patchimg img:hover {
+    transform: scale(1.01);
+}
+
 .MarkeInfo .patch .patchimg .files {
     margin-top: 5px;
     padding-bottom: 10px;

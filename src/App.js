@@ -15,6 +15,8 @@ import AdminPatch from './Pages/Admin/AdminPatch'
 import NotFound from './components/NotFound'
 import AdminTags from './Pages/Admin/AdminTags'
 import AdminEvents from './Pages/Admin/AdminEvents'
+import ProtectedContent from './Pages/CreateEvent/ProtectedContent'
+import EventDetailed from './Pages/CreateEvent/EventDetailed'
 
 class App extends Component {
   constructor(props) {
@@ -64,8 +66,6 @@ class App extends Component {
       return links
     }
 
-    console.log(methoneLinks())
-
     return (
       <div className="App">
         <Methone config={{
@@ -80,24 +80,32 @@ class App extends Component {
           <Route exact path={ROUTES.HOME} render={match => <Historia {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.MUSEUM} render={match => <Museum {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.MÄRKESARKIV} render={match => <PatchArchive {...this.props} {...this.state} {...match}/> } />
-          <Route exact path={ROUTES.MÄRKE} render={match => <PatchDetailed {...this.props} {...this.state} {...match} /> } />
+          <Route exact path={ROUTES.MÄRKE} render={match => <ProtectedContent contentURL={`${ROUTES.API_GET_PATCH}${match.match.params.id}`}>
+            <PatchDetailed {...this.props} {...this.state} {...match} /> 
+          </ProtectedContent>} />
           <Route exact path={ROUTES.SKAPA_MÄRKE} render={match => <AdminPatch {...this.props} {...this.state} />} />
           <Route exact path={ROUTES.MÄRKESTAGGAR} render={match => <AdminTags {...this.props} {...this.state} />} />
           <Route exact path={ROUTES.SKAPA_HÄNDELSE} render={match => <CreateEvent {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.HANTERA_HÄNDELSER} render={match => <AdminEvents {...this.props} {...this.state} /> } />
+          <Route exact path={ROUTES.EVENT} render={match =>
+            <ProtectedContent
+              contentURL={`${ROUTES.API_GET_EVENT}/${match.match.params.id}?token=${localStorage.getItem("token" || "")}`}
+              {...this.props}
+              {...this.state}
+              {...match}
+            >
+              <EventDetailed />
+            </ProtectedContent>}
+          />
           <Route exact path={ROUTES.ADMIN} render={match => <Admin {...this.props} {...this.state} />} />
           <Route exact path={ROUTES.LOGIN} render={match => {window.location = `https://login2.datasektionen.se/login?callback=${encodeURIComponent(window.location.origin)}/token/` }} />
           <Route exact path={ROUTES.LOGOUT} render={({match}) => {
             localStorage.removeItem('token')
-            // TODO: Replace with this.props.history.push
             window.location=ROUTES.HOME
-            // return <Redirect to={ROUTES.HOME} />
           }} />
           <Route path={ROUTES.TOKEN} render={({match}) => {
             localStorage.setItem('token', match.params.token)
-            // TODO: Replace with this.props.history.push
             window.location=ROUTES.HOME
-            // return <Redirect to={ROUTES.HOME} />
           }} />
           <Route path="*" render={match => <NotFound />} />
         </Switch>

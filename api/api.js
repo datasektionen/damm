@@ -47,7 +47,7 @@ router.get('/marken', (req, res) => {
 })
   
 router.get('/marke/id/:id', (req, res) => {
-    Märke.find({_id: req.params.id})
+    Märke.findById(req.params.id)
     .populate('tags')
     .exec((err, data) => {
         if (data === undefined) {

@@ -44,7 +44,7 @@ router.post('/create', middlewares.hasToken,(req, res) => {
 
 })
 
-router.get('/pending', (req, res) => {
+router.get('/all', dauth.adminAuth, (req, res) => {
     Event.find()
     .populate('author.user')
     .populate('accepted.user')
@@ -53,53 +53,23 @@ router.get('/pending', (req, res) => {
             console.log(err)
             return error500(res)
         }
-        res.json({events})
+        res.status(200).json({events})
     })
 })
 
-router.get('/id/:id', middlewares.hasToken, (req, res) => {
+router.get('/id/:id', dauth.adminAuth, (req, res) => {
     const id = req.params.id
-    const token = req.query.token
-    hasAccessToEvent(token, id)
-    .then(result => {
-        console.log(result)
-        if (result.error) return error500(res, result.error)
-        if (result.hasAccess) return res.status(200).json(result)
-        else return error(res, 401, "Unauthorized.")
-    })
-    .catch(result => {
-        console.log(result.error)
-        return error(res, result.code, "Error", result.error)
+
+    Event.findById(id)
+    .populate('author.user')
+    .populate('accepted.user')
+    .exec((err, event) => {
+        if (err) {
+            console.log(err)
+            return error(res, 404, "Event not found", err)
+        }
+        res.status(200).json(event)
     })
 })
-
-// Checks if user can access an event page.
-const hasAccessToEvent = (token, id) => {
-    return new Promise((resolve, reject) => {
-        //False by default
-        let hasAccess = false
-        let ugkthid = undefined
-
-        dauth.getPlsAndUgKthId(token)
-        .then(result => {
-            //If admin you can access
-            if (result.pls.includes("admin")) hasAccess = true
-            ugkthid = result.ugkthid
-    
-            Event.findById(id)
-            .populate('author.user')
-            .exec((err, result) => {
-                if (err) return reject({error: err, code: 404})
-                //If user created it he can access
-                if (result.author.user.ugkthid === ugkthid) hasAccess = true
-                resolve({hasAccess, event: result})
-            })
-        })
-        .catch(err => {
-            console.log(err)
-            reject({error: err, code: 500})
-        })
-    })
-}
 
 module.exports = router

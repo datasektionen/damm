@@ -20,47 +20,26 @@ class PatchDetailed extends React.Component {
             files: [{name:"Testfiladwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"}, {name:"Testfil"}],
             orders: [],
             edit: false,
-            fetching: true
         }
     }
 
-    componentDidMount() {
-        let id = this.props.location.pathname.split("/marke/")[1]
-
-        fetch(window.location.origin + ROUTES.API_GET_PATCH + id)
-        .then(res => res.json())
-        .then(json => {
-            if (json.error) {
-                this.props.history.push("/404")
-                return
-            }
-            this.setState({...json[0], fetching: false})
-        })
-        .catch(err => {
-            console.log(err)
-        })
-    }
-
     render() {
-
+        console.log(this.props)
         const priceDisplay = _ => {
-            if (this.state.price === "-") return "Säljs ej"
-            else if (this.state.price === "") return "Gratis"
-            else return this.state.price + " kr"
+            if (this.props.data.price === "-") return "Säljs ej"
+            else if (this.props.data.price === "") return "Gratis"
+            else return this.props.data.price + " kr"
         }
 
         const hasPls = this.props.pls.includes("admin") || this.props.pls.includes("prylis")
 
-        if (this.state.fetching) {
-            return <div></div>
-        } else 
         return (
             <div className="MarkeInfo">
                 <div className="patch">
                     <div className="patchbody">
                         <div className="patchimg">
-                            <a href={this.state.image} target="_blank" rel="noopener noreferrer">
-                                <img alt="Bild på märke" id="patch" src={this.state.image} />
+                            <a href={this.props.data.image} target="_blank" rel="noopener noreferrer">
+                                <img alt="Bild på märke" id="patch" src={this.props.data.image} />
                             </a>
                             {this.props.pls.includes("admin") &&
                                 <div>
@@ -70,27 +49,27 @@ class PatchDetailed extends React.Component {
                         </div>
                         <div className="patchcontent">
                             <div className="name">
-                                <h1>{this.state.name}</h1>
+                                <h1>{this.props.data.name}</h1>
                             </div>
                             <div className="meta">
-                                <i className="far fa-clock"></i> {this.state.date ? moment(this.state.date).format("DD MMM YYYY") : "Okänt"}
+                                <i className="far fa-clock"></i> {this.props.data.date ? moment(this.props.data.date).format("DD MMM YYYY") : "Okänt"}
                                 <i className="fas fa-circle"></i>
                                 <i className="fas fa-dollar-sign"></i> {priceDisplay()}
                             </div>
                             <div className="description">
-                                {this.state.description ? this.state.description : "Ingen beskrivning"}
+                                {this.props.data.description ? this.props.data.description : "Ingen beskrivning"}
                             </div>
                             <div className="tags">
-                                {this.state.tags.length === 0 ? 
+                                {this.props.data.tags.length === 0 ? 
                                     "Inga taggar"
                                 :
-                                    this.state.tags.map((tag,i) => <Tag key={"tag-"+i} {...tag} />)
+                                    this.props.data.tags.map((tag,i) => <Tag key={"tag-"+i} {...tag} />)
                                 }
                                 
                             </div>
                         </div>
                     </div>
-                    {hasPls && <PatchDetailedAdminInfo files={this.state.files} orders={this.state.orders} />}
+                    {hasPls && <PatchDetailedAdminInfo files={this.props.data.files} orders={this.props.data.orders} />}
                 </div>
             </div>
         )

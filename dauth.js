@@ -18,7 +18,7 @@ exports.adminAuth = (req, res, next) => {
             .then(response => response.json())
             .then(y => {
                 if (!y.includes('admin')) {
-                    return error(res, 403, "No admin, no access.")
+                    return error(res, 401, "No admin, no access.")
                 } else {
                     next()
                     // return
@@ -35,7 +35,7 @@ exports.adminAuth = (req, res, next) => {
         })
     //No token provided
     } else {
-        return error(res, 401, "No token provided")
+        return error(res, 403, "No token provided")
     }
 }
 
@@ -56,7 +56,7 @@ exports.patchesAuth = (req, res, next) => {
                 if (y.includes('admin') || y.includes("prylis")) {
                     next()
                 } else {
-                    return error(res, 403, "Unauthorized.")
+                    return error(res, 401, "Unauthorized.")
                 }
             })
             .catch(err => {
@@ -70,7 +70,7 @@ exports.patchesAuth = (req, res, next) => {
         })
     //No token provided
     } else {
-        return error(res, 401, "No token provided.")
+        return error(res, 403, "No token provided.")
     }
 }
 
@@ -114,36 +114,6 @@ exports.getUser = token => {
                     console.log(err)
                 }
                 resolve(res)
-            })
-        })
-        .catch(err => {
-            console.log(err)
-            reject(err)
-        })
-    })
-}
-
-//Returns pls rights and ugkthid
-// Ex. {pls: ["admin"], ugkthid: "u1XXXXXX"}
-exports.getPlsAndUgKthId = token => {
-    return new Promise((resolve, reject) => {
-        fetch(`${process.env.LOGIN2_URL}/verify/${token}.json?api_key=${process.env.LOGIN2_API_KEY}`)
-        .then(res => res.json())
-        .then(json => {
-            console.log(json)
-            const { first_name, last_name, user, ugkthid, emails } = json
-
-            User.createFromLogin({first_name, last_name, user, ugkthid, emails}, (user) => {
-                // User created or already exists
-                // Users are used in our model when creating events.
-            })
-            
-            fetch(`${process.env.PLS_API_URL}/user/${json.user}/damm`)
-            .then(res => res.json())
-            .then(json => resolve({pls: json, ugkthid}))
-            .catch(err => {
-                console.log("Error fetching: ", err)
-                return reject(err)
             })
         })
         .catch(err => {

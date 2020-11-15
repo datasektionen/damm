@@ -10,6 +10,7 @@ export const LOGIN = '/login';
 export const LOGOUT = '/logout';
 export const MÄRKESARKIV = '/markesarkiv';
 export const MÄRKE = '/marke/:id'
+export const EVENT = '/event/:id'
 export const SKAPA_MÄRKE = '/admin/marke/skapa'
 export const MÄRKESTAGGAR = '/admin/markestaggar/hantera'
 
@@ -28,3 +29,4 @@ export const API_ACCEPT_EVENT = '/api/admin/event/accept'
 export const API_DELETE_EVENT = '/api/admin/event/delete'
 export const API_UPDATE_EVENT = '/api/admin/event/update'
 export const API_GET_UNACCEPTED_EVENTS = '/api/event/pending'
+export const API_GET_EVENT = '/api/event/id'

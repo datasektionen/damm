@@ -4,7 +4,6 @@ import Unauthorized from './Unauthorized'
 import * as ROUTES from '../routes'
 
 const AdminProtected = ({component: Component, ...rest}) => {
-    console.log(rest)
     // Not logged in
     if (!localStorage.getItem("token")) return <Redirect to={ROUTES.LOGIN} />
     

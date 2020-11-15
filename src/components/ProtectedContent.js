@@ -9,7 +9,6 @@ import InternalError from './InternalError'
 // Renders 401, 404 or the child component with injected data depending on access rights
 // Used for event and patch pages.
 const ProtectedContent = ({contentURL = "", ...rest}) => {
-    console.log(rest)
     const [data, setData] = useState(undefined)
 
     useEffect(_ => {
@@ -19,7 +18,7 @@ const ProtectedContent = ({contentURL = "", ...rest}) => {
                 let data = await fetch(`${contentURL}`)
                 data = await data.json()
                 setData(data)
-                console.log(data)
+                // console.log(data)
             } catch(err) {
                 
             }

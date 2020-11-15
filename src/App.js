@@ -15,8 +15,9 @@ import AdminPatch from './Pages/Admin/AdminPatch'
 import NotFound from './components/NotFound'
 import AdminTags from './Pages/Admin/AdminTags'
 import AdminEvents from './Pages/Admin/AdminEvents'
-import ProtectedContent from './Pages/CreateEvent/ProtectedContent'
+import ProtectedContent from './components/ProtectedContent'
 import EventDetailed from './Pages/CreateEvent/EventDetailed'
+import AdminProtected, {AdminPrylisProtected, PrylisAdminProtected} from './components/AdminProtected'
 
 class App extends Component {
   constructor(props) {
@@ -24,6 +25,7 @@ class App extends Component {
 
     this.state = {
       pls: [],
+      adminFetchDone: false,
     }
   }
 
@@ -35,11 +37,9 @@ class App extends Component {
         console.log(json)
         if (json.error) {
           localStorage.removeItem('token')
-          // TODO: Replace with this.props.history.push
           window.location=ROUTES.HOME
         } else {
-          this.setState({pls: json.pls})
-          // this.setState({admin: json.isAdmin})
+          this.setState({pls: json.pls, adminFetchDone: true})
         }
       })
       .catch(err => {
@@ -83,10 +83,10 @@ class App extends Component {
           <Route exact path={ROUTES.MÄRKE} render={match => <ProtectedContent contentURL={`${ROUTES.API_GET_PATCH}${match.match.params.id}`}>
             <PatchDetailed {...this.props} {...this.state} {...match} /> 
           </ProtectedContent>} />
-          <Route exact path={ROUTES.SKAPA_MÄRKE} render={match => <AdminPatch {...this.props} {...this.state} />} />
-          <Route exact path={ROUTES.MÄRKESTAGGAR} render={match => <AdminTags {...this.props} {...this.state} />} />
+          <Route exact path={ROUTES.SKAPA_MÄRKE} render={match => <AdminPrylisProtected component={AdminPatch} {...this.props} {...this.state} />} />
+          <Route exact path={ROUTES.MÄRKESTAGGAR} render={match => <AdminPrylisProtected component={AdminTags} {...this.props} {...this.state} />} />
           <Route exact path={ROUTES.SKAPA_HÄNDELSE} render={match => <CreateEvent {...this.props} {...this.state} /> } />
-          <Route exact path={ROUTES.HANTERA_HÄNDELSER} render={match => <AdminEvents {...this.props} {...this.state} /> } />
+          <Route exact path={ROUTES.HANTERA_HÄNDELSER} render={match => <AdminProtected component={AdminEvents} {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.EVENT} render={match =>
             <ProtectedContent
               contentURL={`${ROUTES.API_GET_EVENT}/${match.match.params.id}?token=${localStorage.getItem("token" || "")}`}
@@ -97,7 +97,7 @@ class App extends Component {
               <EventDetailed />
             </ProtectedContent>}
           />
-          <Route exact path={ROUTES.ADMIN} render={match => <Admin {...this.props} {...this.state} />} />
+          <Route exact path={ROUTES.ADMIN} render={match => <AdminPrylisProtected component={Admin} {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.LOGIN} render={match => {window.location = `https://login2.datasektionen.se/login?callback=${encodeURIComponent(window.location.origin)}/token/` }} />
           <Route exact path={ROUTES.LOGOUT} render={({match}) => {
             localStorage.removeItem('token')

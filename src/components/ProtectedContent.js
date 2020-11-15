@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Redirect } from 'react-router-dom'
-import * as ROUTES from '../../routes'
-import NotFound from '../../components/NotFound'
-import Unauthorized from '../../components/Unauthorized'
-import InternalError from '../../components/InternalError'
+import * as ROUTES from '../routes'
+import NotFound from './NotFound'
+import Unauthorized from './Unauthorized'
+import InternalError from './InternalError'
 
 // Component that fetches data upon first mount.
 // Renders 401, 404 or the child component with injected data depending on access rights

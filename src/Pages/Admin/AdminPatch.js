@@ -2,6 +2,7 @@ import React from 'react'
 import * as ROUTES from '../../routes'
 import TagClickable from '../../components/TagClickable'
 import Alert from '../../components/Alert'
+import Unauthorized from '../../components/Unauthorized'
 
 const INITIAL_STATE = {
     image: undefined,
@@ -270,6 +271,8 @@ class AdminPatch extends React.Component {
                 </div>
             </div>
         )
+
+
     }
 }
 

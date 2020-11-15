@@ -18,8 +18,15 @@
     margin-right: auto;
 }
 
+.ExpandableItem .row .col.arrow {
+    margin-right: 15px;
+    margin-left: 0;
+}
+
 .ExpandableItem .row .col.title {
-    width: 45%;
+    max-width: 100%;
+    margin-left: 0;
+    min-width: 45%;
 }
 
 .ExpandableItem .body {

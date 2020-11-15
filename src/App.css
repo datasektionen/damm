@@ -599,3 +599,17 @@ h3#obligatorisk::after {
 textarea:disabled {
   cursor: not-allowed;
 }
+
+button.red {
+  background-color: #D73A4A;
+  color: white;
+}
+
+button.green {
+  background-color: #2C974B;
+  color: white;
+}
+
+button.yellow {
+  background-color: #E5C100;
+}

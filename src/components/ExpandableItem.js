@@ -2,14 +2,14 @@ import React, { useState } from 'react'
 import './ExpandableItem.css'
 
 // Expandable component, designed for the "Hantera händelser" page.
-const ExpandableItem = ({cols = [], children}) => {
+const ExpandableItem = ({cols = [], children, startOpen = false}) => {
 
-    const [expanded, expand] = useState(false)
+    const [expanded, expand] = useState(startOpen)
 
     return (
         <div className="ExpandableItem">
             <div className="row" onClick={_ => expand(!expanded)}>
-                <div className="col">
+                <div className="col arrow">
                     <i className="fas fa-chevron-down" style={expanded ? {transform: "rotate(180deg)"} : {}}></i>
                 </div>
                 {cols.map((col,i) =>

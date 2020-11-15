@@ -88,13 +88,8 @@ class App extends Component {
           <Route exact path={ROUTES.SKAPA_HÄNDELSE} render={match => <CreateEvent {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.HANTERA_HÄNDELSER} render={match => <AdminProtected component={AdminEvents} {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.EVENT} render={match =>
-            <ProtectedContent
-              contentURL={`${ROUTES.API_GET_EVENT}/${match.match.params.id}?token=${localStorage.getItem("token" || "")}`}
-              {...this.props}
-              {...this.state}
-              {...match}
-            >
-              <EventDetailed />
+            <ProtectedContent contentURL={`${ROUTES.API_GET_EVENT}/${match.match.params.id}?token=${localStorage.getItem("token" || "")}`}>
+              <EventDetailed {...this.props} {...this.state} {...match}/>
             </ProtectedContent>}
           />
           <Route exact path={ROUTES.ADMIN} render={match => <AdminPrylisProtected component={Admin} {...this.props} {...this.state} /> } />

@@ -76,9 +76,11 @@ mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true,  useUnifiedTopo
 
 mongoose.Promise = global.Promise
 
-app.get('/api', (req, res) => {
+app.get('/api', (_, res) => {
   res.send(cachedData)
 })
+
+app.get('/damm', (_, res) => res.send('<img style="width: 600px;" src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Dust_bunnies.jpg" />'))
 
 // For the search bar in methone. Available in mobile, not desktop.
 const fuzzyfile = fs.readFileSync(`${__dirname}/fuzzyfile.json`)

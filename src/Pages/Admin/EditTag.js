@@ -42,7 +42,7 @@ class EditTag extends React.Component {
             let body
             let fetchURL
             
-            this.setState({fetching: true}, () => {
+            this.setState({fetching: true, success: "", error: ""}, () => {
                 //Edit or create url and body
                 if (this.props.edit) {
                     fetchURL = `${ROUTES.API_UPDATE_TAG}?token=${localStorage.getItem('token')}`
@@ -73,6 +73,7 @@ class EditTag extends React.Component {
                     }
                 })
                 .catch(err => {
+                    this.setState({fetching: false, error: err.toString()})
                     console.log(err)
                 })
             })

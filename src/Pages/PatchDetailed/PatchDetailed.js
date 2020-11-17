@@ -4,6 +4,7 @@ import moment from 'moment'
 import './PatchDetailed.css'
 import Tag from '../../components/Tag'
 import PatchDetailedAdminInfo from './PatchDetailedAdminInfo'
+import { PRICE_TYPES } from '../../config/constants'
 
 class PatchDetailed extends React.Component {
 
@@ -26,9 +27,10 @@ class PatchDetailed extends React.Component {
     render() {
         console.log(this.props)
         const priceDisplay = _ => {
-            if (this.props.data.price === "-") return "Säljs ej"
-            else if (this.props.data.price === "") return "Gratis"
-            else return this.props.data.price + " kr"
+            const price = this.props.data.price
+            if (price !== PRICE_TYPES.FREE && price !== PRICE_TYPES.NOT_FOR_SALE && price !== PRICE_TYPES.UNKNOWN) {
+                return price + " SEK"
+            } else return price
         }
 
         const hasPls = this.props.pls.includes("admin") || this.props.pls.includes("prylis")

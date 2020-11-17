@@ -1,15 +1,20 @@
 import React,  { useState } from 'react'
 import Tag from '../../../components/Tag'
 import moment from 'moment'
+import { PRICE_TYPES } from '../../../config/constants'
 
 // Component that displays a patch.
 const Patch = ({image, date, name, description, numProduced = "?", tags = [], price, ...rest}) => {
 
     const [hovered, setHovered] = useState(false)
     let displayPrice
-    if (price === undefined || price === "") displayPrice = "Gratis"
-    else if (price === "-") displayPrice = "Säljs ej"
-    else displayPrice = price + " kr"
+    // if (price === undefined || price === "") displayPrice = "Gratis"
+    // else if (price === "-") displayPrice = "Säljs ej"
+    // else displayPrice = price + " SEK"
+
+    if (price !== PRICE_TYPES.FREE && price !== PRICE_TYPES.NOT_FOR_SALE && price !== PRICE_TYPES.UNKNOWN) {
+        displayPrice = price + " SEK"
+    } else displayPrice = price
 
     return (
         <div

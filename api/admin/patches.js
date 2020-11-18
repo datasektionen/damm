@@ -25,7 +25,8 @@ let storage = GridFsStorage({
             filename: uuid4()
         }
     },
-    root: 'files'
+    root: 'files',
+    options: { useUnifiedTopology: true },
 })
 
 let upload = multer({

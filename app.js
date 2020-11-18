@@ -45,6 +45,9 @@ app.use(function(req, res, next) {
    next();
 });
 
+// Prevent attackers from knowing we use Express. They could read the source code, but defend against web bots
+app.disable("x-powered-by")
+
 app.use(morgan('dev'))
 
 app.use('/', express.static('build'))
@@ -74,6 +77,8 @@ mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true,  useUnifiedTopo
 .then(console.log("DB connected"))
 .catch(err => {
     console.log("DB connection error: " + err)
+    console.log("Shutting down...")
+    process.exit(0)
 })
 
 mongoose.Promise = global.Promise
@@ -94,7 +99,7 @@ app.use('/api/admin/marke', adminPatches)
 app.use('/api/admin/event', adminEvents)
 app.use('/api', api)
 
-console.log(`${__dirname}/build/index.html`)
+// console.log(`${__dirname}/build/index.html`)
 app.get('*', (req, res) => res.sendFile(`${__dirname}/build/index.html`))
 const PORT = process.env.PORT || 5000
 app.listen(PORT, () => console.log(`Listening on port ${PORT}!`))

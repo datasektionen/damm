@@ -66,8 +66,9 @@ router.get('/id/:id', dauth.adminAuth, (req, res) => {
     .exec((err, event) => {
         if (err) {
             console.log(err)
-            return error(res, 404, "Event not found", err)
+            return error500(res, err)
         }
+        if (!event) return error(res, 404, "Event not found")
         res.status(200).json(event)
     })
 })

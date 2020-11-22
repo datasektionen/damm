@@ -110,7 +110,7 @@ exports.getUser = token => {
         .then(json => {
             User.findOne({ugkthid: json.ugkthid}, (err, res) => {
                 if (err) {
-                    reject(err)
+                    reject(null)
                     console.log(err)
                 }
                 resolve(res)
@@ -118,7 +118,7 @@ exports.getUser = token => {
         })
         .catch(err => {
             console.log(err)
-            reject(err)
+            reject(null)
         })
     })
 }

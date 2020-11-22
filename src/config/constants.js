@@ -5,6 +5,11 @@ const EVENT_TYPES = {
 	GENERAL: "general"
 }
 
+const EVENT_TYPE_TO_STRING = {
+    general: "Generell historia",
+    "anniversary": "Årsdagar"
+}
+
 const PRICE_TYPES = {
     FREE: "Gratis",
     NOT_FOR_SALE: "Säljs ej",
@@ -15,4 +20,5 @@ const PRICE_TYPES = {
 module.exports = {
     EVENT_TYPES,
     PRICE_TYPES,
+    EVENT_TYPE_TO_STRING
 }

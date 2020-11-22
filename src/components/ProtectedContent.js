@@ -11,19 +11,20 @@ import InternalError from './InternalError'
 const ProtectedContent = ({contentURL = "", ...rest}) => {
     const [data, setData] = useState(undefined)
 
+    async function fetchData() {
+        try {
+            let data = await fetch(`${contentURL}`)
+            data = await data.json()
+            setData(data)
+            // console.log(data)
+        } catch(err) {
+            console.log(err)
+        }
+        console.log("FETCHING")
+    }
+
     useEffect(_ => {
         if (!localStorage.getItem("token")) return
-        async function fetchData() {
-            try {
-                let data = await fetch(`${contentURL}`)
-                data = await data.json()
-                setData(data)
-                // console.log(data)
-            } catch(err) {
-                
-            }
-            console.log("FETCHING")
-        }
         fetchData()
     }, [true])
 
@@ -52,7 +53,7 @@ const ProtectedContent = ({contentURL = "", ...rest}) => {
 
     //Everything went ok.
     //Inject the data into the child component(s)
-    return React.cloneElement(rest.children, {data})
+    return React.cloneElement(rest.children, {data, fetchData})
 }
 
 export default ProtectedContent

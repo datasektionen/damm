@@ -596,8 +596,14 @@ h3#obligatorisk::after {
   color: red;
 }
 
+input:disabled {
+  cursor: not-allowed !important;
+  color: #818181;
+}
+
 textarea:disabled {
   cursor: not-allowed;
+  color: #818181;
 }
 
 button.red {

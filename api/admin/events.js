@@ -9,7 +9,14 @@ const Event = require('../../models/Event')
 // Middleware that hecks if id is in the request body, if not, return an error.
 const idMiddleware = (req, res, next) => {
     const { id } = req.body
-    if (id === undefined || id === "") return error(res, 403, "No id provided.")
+    if (id === undefined || id === "") return error(res, 403, "Inget id meskickat.")
+    next()
+}
+
+const handleMiddleware = (req, res, next) => {
+    const { accept, changes } = req.body
+    if (!accept) return error(res, 403, "Acceptansstatus ej angivet.")
+    
     next()
 }
 
@@ -17,53 +24,45 @@ const idMiddleware = (req, res, next) => {
 router.use(dauth.adminAuth)
 router.use(idMiddleware)
 
-router.post('/accept', (req, res) => {
-    const {token} = req.query
-    const { id, accept, comment, changes } = req.body
+// Behandla ett evenemang, i.e. acceptera eller avslå
+router.post('/handle', handleMiddleware, async (req, res) => {
+    const { token } = req.query
+    const { id, accept, changes } = req.body
 
-    // Get the event
-    Event.findById(id, (err, event) => {
-        if (err) return error500(res, err)
-        // Event is already accepted
-        if (event.accepted.status === true) return error(res, 403, "Event already accepted.")
+    let event = await Event.findById(id)
+    if (!event) return error(res, 404, "Händelsen hittades ej.")
+    if (event.accepted.status === true) return error(res, 403, "Händelsen är redan behandlad.")
 
-        //Get the user who is accepting
-        dauth.getUser(token)
-        .then(user => {
-            
-            // Base object, append relevant stuff based on action
-            let acceptedObject = {
-                accepted: {
-                    status: true,
-                    user: user._id,
-                    date: moment().format(),
-                }
-            }
+    let user = await dauth.getUser(token)
+    if (!user) return error500(res, "")
     
-            if (accept === "godkänn") {
-                acceptedObject.accepted["accepted"] = true
-                acceptedObject.accepted["comment"] = ""
-            }
-            else if (accept === "avslå") {
-                acceptedObject.accepted["accepted"] = false
-                acceptedObject.accepted["comment"] = comment
-            }
-            else if (accept === "godkännmedändring") {
-                acceptedObject.accepted["accepted"] = true
-                acceptedObject.accepted["comment"] = ""
-                Object.keys(changes).map(key => {
-                    acceptedObject[key] = changes[key]
-                })
-            }
+    let updatedState = {
+        accepted: {
+            status: true,
+            accepted: accept,
+            user: user._id,
+            date: moment().format(),
+        },
+    }
 
-            Event.findByIdAndUpdate(id, {$set: acceptedObject}, (err, _) => {
-                if (err) {
-                    return error500(res, err)
-                } else {
-                    return res.status(200).json({"status":"Updated event status successfully!"})
-                }
-            })
-        })
+    // Only apply changes if we accept the event
+    if (changes && accept === true) {
+        if (changes.title) updatedState["title"] = changes.title
+        if (changes.content) updatedState["content"] = changes.content
+        if (changes.date) updatedState["date"] = changes.date
+    }
+    
+    Event.findByIdAndUpdate({_id: id}, {$set: updatedState}, (err, _) => {
+        if (err) return error500(res, err)
+        if (accept === false) {
+            setTimeout(_ => {
+                Event.findByIdAndDelete(id, (err, removed) => {
+                    if (err) console.log("Failed to remove event after 24h timeout. Already removed?")
+                    else console.log(`Removed event after 1h timeout: ${removed.title}`)
+                })
+            }, 60*60*1000)
+        }
+        return res.status(200).json({"status":(accept ? "Händelsen godkänd." : "Händelsen avslagen."), "accepted":accept})
     })
 })
 
@@ -73,26 +72,28 @@ router.post('/delete', (req, res) => {
 
     Event.findByIdAndDelete(id, (err, result) => {
         if (err) return error500(res, err)
-        if (result === null) return error(res, 404, "Couldn't find event.")
-        return res.status(200).json({"status":"Deleted event successfully."})
+        if (!result) return error(res, 404, "Kunde inte hitta händelsen.")
+        return res.status(200).json({"status":"Händelsen togs bort."})
     })
 })
 
 // Endpoint to update an event
 router.post('/update', (req, res) => {
-    const { id, title, content, date } = req.body
+    const { id, changes } = req.body
 
     let updated = {}
-    if (title !== undefined) updated.title = title
-    if (content !== undefined) updated.content = content
-    if (date !== undefined) updated.date = date
+    if (changes) {
+        if (changes.title !== undefined) updated.title = changes.title
+        if (changes.content !== undefined) updated.content = changes.content
+        if (changes.date !== undefined) updated.date = changes.date
+    } else return error(res, 403, "Inga ändringar, kan ej uppdatera händelsen.")
 
     Event.findByIdAndUpdate(id, {$set: updated}, (err, result) => {
         console.log(err)
         console.log(result)
         if (err) return res.status(500).json({"error":err})
-        if (result === null) return error(res, 404, "Couldn't find event.")
-        else return res.status(200).json({"status":"Event updated successfully."})
+        if (result === null) return error(res, 404, "Kunde inte hitta händelsen.")
+        else return res.status(200).json({"status":"Händelsen uppdaterad."})
     })
 })
 

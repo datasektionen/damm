@@ -48,7 +48,8 @@ app.use(function(req, res, next) {
 // Prevent attackers from knowing we use Express. They could read the source code, but defend against web bots
 app.disable("x-powered-by")
 
-app.use(morgan('dev'))
+if (process.env.NODE_ENV === "development") app.use(morgan('dev'))
+else app.use(morgan("common"))
 
 app.use('/', express.static('build'))
 

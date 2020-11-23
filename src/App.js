@@ -26,6 +26,12 @@ class App extends Component {
     this.state = {
       pls: [],
       adminFetchDone: false,
+      methoneLinks: [
+        <Link to={ROUTES.HOME}>Tidslinje</Link>,
+        <Link to={ROUTES.MUSEUM}>Historiska artefakter</Link>,
+        <Link to={ROUTES.MÄRKESARKIV}>Märkesarkiv</Link>,
+        <Link to={ROUTES.SKAPA_HÄNDELSE}>Skapa händelse</Link>
+      ],
     }
   }
 
@@ -40,6 +46,7 @@ class App extends Component {
           window.location=ROUTES.HOME
         } else {
           this.setState({pls: json.pls, adminFetchDone: true})
+          if ((this.state.pls.includes("admin") || this.state.pls.includes("prylis")) && localStorage.getItem('token')) this.setState({methoneLinks: this.state.methoneLinks.concat(<Link to={ROUTES.ADMIN}>Administrera</Link>)})
         }
       })
       .catch(err => {
@@ -51,27 +58,12 @@ class App extends Component {
 
   render() {
 
-    const methoneLinks = () => {
-      let links = [
-        <Link to={ROUTES.HOME}>Tidslinje</Link>,
-        <Link to={ROUTES.MUSEUM}>Historiska artefakter</Link>,
-        <Link to={ROUTES.MÄRKESARKIV}>Märkesarkiv</Link>,
-        <Link to={ROUTES.SKAPA_HÄNDELSE}>Skapa händelse</Link>
-      ]
-      
-      // if (localStorage.getItem('token')) links.push(<Link to={ROUTES.SKAPA_HÄNDELSE}>Skapa händelse</Link>)
-      if ((this.state.pls.includes("admin") || this.state.pls.includes("prylis")) && localStorage.getItem('token')) links.push(<Link to={ROUTES.ADMIN}>Administrera</Link>)
-
-      // links.push(<Link to={ROUTES.HELP}>Hjälp</Link>)
-      return links
-    }
-
     return (
       <div className="App">
         <Methone config={{
           system_name: 'damm',
           color_scheme: 'cerise',
-          links: methoneLinks(),
+          links: this.state.methoneLinks,
           login_text: localStorage.getItem('token') ? "Logga ut" : "Logga in",
           login_href: localStorage.getItem('token') ? "/logout" : "/login"
         }} />
@@ -96,11 +88,13 @@ class App extends Component {
           <Route exact path={ROUTES.LOGIN} render={match => {window.location = `https://login2.datasektionen.se/login?callback=${encodeURIComponent(window.location.origin)}/token/` }} />
           <Route exact path={ROUTES.LOGOUT} render={({match}) => {
             localStorage.removeItem('token')
+            // history.push(ROUTES.HOME)
             window.location=ROUTES.HOME
           }} />
-          <Route path={ROUTES.TOKEN} render={({match}) => {
+          <Route path={ROUTES.TOKEN} render={({match, history}) => {
             localStorage.setItem('token', match.params.token)
-            window.location=ROUTES.HOME
+            history.push(ROUTES.HOME)
+            // window.location=ROUTES.HOME
           }} />
           <Route path="*" render={match => <NotFound />} />
         </Switch>

@@ -619,3 +619,20 @@ button.green {
 button.yellow {
   background-color: #E5C100;
 }
+
+table {
+  border: 1px solid #eeeeee;
+  /* width: 100%; */
+}
+
+th {
+  padding: 10px;
+}
+td {
+  padding: 10px;
+  color: #818181;
+}
+
+tr:nth-child(odd) {
+  background: #eeeeee;
+}

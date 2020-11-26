@@ -55,12 +55,10 @@ router.post('/handle', handleMiddleware, async (req, res) => {
     Event.findByIdAndUpdate({_id: id}, {$set: updatedState}, (err, _) => {
         if (err) return error500(res, err)
         if (accept === false) {
-            setTimeout(_ => {
-                Event.findByIdAndDelete(id, (err, removed) => {
-                    if (err) console.log("Failed to remove event after 24h timeout. Already removed?")
-                    else console.log(`Removed event after 1h timeout: ${removed.title}`)
-                })
-            }, 60*60*1000)
+            Event.findByIdAndDelete(id, (err, removed) => {
+                if (err) console.log("Denied event, failed to remove it...")
+                else console.log(`Denied event and removed it: ${removed.title}`)
+            })
         }
         return res.status(200).json({"status":(accept ? "Händelsen godkänd." : "Händelsen avslagen."), "accepted":accept})
     })

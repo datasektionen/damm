@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import UnhandledExpandableEvent from './UnhandledExpandableEvent'
-import HandledExpandableEvent from './HandledExpandableEvent'
+
+import { EVENT_TYPE_TO_STRING } from '../../config/constants'
 
 import * as ROUTES from '../../routes'
 import Add from '../../components/add.png'
@@ -13,7 +13,7 @@ class AdminEvents extends React.Component {
 
         this.state = {
             events: [],
-            tabs: ["Obehandlade", "Godkända", "Avslagna"],
+            tabs: ["Obehandlade", "Godkända"],
             tab: "Obehandlade",
             query: "",
             templateFilter: "all"
@@ -116,33 +116,46 @@ const TabBody = ({tabs, selectedTab, events, query, templateFilter, fetchEvents}
         || moment(e.date).format("YYYY").match(new RegExp(query.toLowerCase(), "g"))
     )
 
-    return queryFilteredEvents.filter(e => e.accepted.status === false).map((e,i) => <Link key={e._id} to={`/event/${e._id}`}>{e._id}{e.accepted.accepted}</Link>)
+    if (selectedTab === tabs[0]) {
+        if (queryFilteredEvents.filter(e => e.accepted.status === false).length === 0) {
+            return <div></div>
+        } else return (
+            <Table events={queryFilteredEvents.filter(e => e.accepted.status === false)} />
+        )
+    } else if (selectedTab === tabs[1]) {
+        if (queryFilteredEvents.filter(e => e.accepted.status === true && e.accepted.accepted === true).length === 0) {
+            return <div></div>
+        } else return <Table events={queryFilteredEvents.filter(e => e.accepted.status === true && e.accepted.accepted === true)} />
+    } else return <div></div>
+}
 
-    // if (selectedTab === tabs[0]) {
-    //     if (queryFilteredEvents.filter(e => e.accepted.status === false).length === 0) {
-    //         return <div>Inga obehandlade händelser</div>
-    //     } else return (
-    //         queryFilteredEvents.filter(e => e.accepted.status === false).map((e,i) => 
-    //         <UnhandledExpandableEvent
-    //             index={i}
-    //             event={e}
-    //             fetchEvents={fetchEvents}
-    //             key={e._id}
-    //         />
-    //     ))
-    // } else if (selectedTab === tabs[1]) {
-    //     if (queryFilteredEvents.filter(e => e.accepted.status === true && e.accepted.accepted === true).length === 0) {
-    //         return <div>Inga godkända händelser</div>
-    //     } else return queryFilteredEvents.filter(e => e.accepted.status === true && e.accepted.accepted === true).map((e,i) => 
-    //         <HandledExpandableEvent event={e} key={e._id} fetchEvents={fetchEvents} />
-    //     )
-    // } else if (selectedTab === tabs[2]) {
-    //     if (queryFilteredEvents.filter(e => e.accepted.status === true && e.accepted.accepted === false).length === 0) {
-    //         return <div>Inga avslagna händelser</div>
-    //     } else return queryFilteredEvents.filter(e => e.accepted.status === true && e.accepted.accepted === false).map((e,i) => 
-    //         <HandledExpandableEvent event={e} key={e._id} fetchEvents={fetchEvents} />    
-    //     ) 
-    // } else return <div></div>
+const Table = ({events}) => {
+
+    return (
+        <table style={{width: "100%"}}>
+            <tbody>
+                <tr>
+                    <th>Titel</th>
+                    <th>Händelsedatum</th>
+                    <th>Händelsetyp</th>
+                    <th>Status</th>
+                </tr>
+                {events.map(event => 
+                    <tr key={event._id}>
+                        <td><Link to={`/event/${event._id}`}>{event.title}</Link></td>
+                        <td>{event.date}</td>
+                        <td>{EVENT_TYPE_TO_STRING[event.template]}</td>
+                        <td style={event.accepted.status === true ? {color: "green"} : {color: "red"}}>{event.accepted.status === true ? "Godkänd" : "Ej behandlad"}</td>
+                    </tr>
+                )}
+                {/* <tr>
+                    <td>Jill</td>
+                    <td>Smith</td>
+                    <td>50</td>
+                </tr> */}
+            </tbody>
+        </table>
+    )
 }
 
 export default AdminEvents

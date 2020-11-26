@@ -41,7 +41,10 @@ const EventDetailed = ({data, ...rest}) => {
                                 type="text"
                                 placeholder="Titel"
                                 value={localTitle}
-                                onChange={e => setLocalTitle(e.target.value)}
+                                onChange={e => {
+                                    setLocalTitle(e.target.value)
+                                    setAlert({})
+                                }}
                                 // Disable when denied
                                 disabled={data.accepted.accepted === false}
                             />
@@ -52,7 +55,10 @@ const EventDetailed = ({data, ...rest}) => {
                                     <textarea
                                         placeholder="Beskrivning"
                                         value={localContent}
-                                        onChange={e => setLocalContent(e.target.value)}
+                                        onChange={e => {
+                                            setLocalContent(e.target.value)
+                                            setAlert({})
+                                        }}
                                         // Disable when denied
                                         disabled={data.accepted.accepted === false}
                                     />
@@ -62,7 +68,10 @@ const EventDetailed = ({data, ...rest}) => {
                             <input
                                 type="date"
                                 value={localDate}
-                                onChange={e => setLocalDate(e.target.value)}
+                                onChange={e => {
+                                    setLocalDate(e.target.value)
+                                    setAlert({})
+                                }}
                                 // Disable when denied
                                 disabled={data.accepted.accepted === false}
                             />

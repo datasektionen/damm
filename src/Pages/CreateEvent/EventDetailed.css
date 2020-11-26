@@ -62,20 +62,7 @@
 }
 
 .EventDetailedBox table {
-    border: 1px solid #eeeeee;
     width: 100%;
-}
-
-.EventDetailedBox th {
-    padding: 10px;
-}
-.EventDetailedBox td {
-    padding: 10px;
-    color: #818181;
-}
-
-.EventDetailedBox table tbody tr:nth-child(odd) {
-    background: #eeeeee;
 }
 
 .EventDetailed .text {

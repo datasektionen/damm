@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Switch, Route, Link } from 'react-router-dom'
+import { Switch, Route, Link, Redirect } from 'react-router-dom'
 import Methone from 'methone'
 import * as ROUTES from './routes'
 
@@ -93,7 +93,7 @@ class App extends Component {
           }} />
           <Route path={ROUTES.TOKEN} render={({match, history}) => {
             localStorage.setItem('token', match.params.token)
-            history.push(ROUTES.HOME)
+            return <Redirect to={ROUTES.HOME} />
             // window.location=ROUTES.HOME
           }} />
           <Route path="*" render={match => <NotFound />} />

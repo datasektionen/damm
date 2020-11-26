@@ -6,14 +6,17 @@ const MAX_TAG_TEXT_LENGTH = 18
 var tagSchema = new Schema({
     text: {
         type: String,
-        minlength: 1,
         maxlength: MAX_TAG_TEXT_LENGTH,
         trim: true,
     },
     color: String,
     backgroundColor: String,
-    hoverText: String,
-})
+    hoverText: {
+        type: String,
+        trim: true,
+    },
+    __v: false,
+}, {timestamps: true})
 
 tagSchema.statics.create = function(x, callback) {
     var tag = new this({

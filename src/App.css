@@ -6,6 +6,10 @@ body {
   height: 50px;
 }
 
+a {
+  color: #e83d84;
+}
+
 time.Year {
   margin: 20px auto;
   font-size: 3em;
@@ -592,6 +596,26 @@ h3#obligatorisk::after {
   color: red;
 }
 
+input:disabled {
+  cursor: not-allowed !important;
+  color: #818181;
+}
+
 textarea:disabled {
   cursor: not-allowed;
+  color: #818181;
+}
+
+button.red {
+  background-color: #D73A4A;
+  color: white;
+}
+
+button.green {
+  background-color: #2C974B;
+  color: white;
+}
+
+button.yellow {
+  background-color: #E5C100;
 }

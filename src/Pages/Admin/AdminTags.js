@@ -2,6 +2,7 @@ import React from 'react'
 import * as ROUTES from '../../routes'
 import TagClickable from '../../components/TagClickable'
 import EditTag from './EditTag'
+import Unauthorized from '../../components/Unauthorized'
 
 const INIT_TAG = {
     text: "",
@@ -128,6 +129,7 @@ class AdminTags extends React.Component {
                 </div>
             </div>
         )
+
     }
 }
 

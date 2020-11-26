@@ -7,6 +7,7 @@ import Alert from '../../components/Alert'
 import moment from 'moment'
 import General from '../Historia/cards/General'
 import Anniversary from '../Historia/cards/Anniversary'
+import { EVENT_TYPES } from '../../config/constants'
 
 const INITIAL_STATE = {
     title: "",
@@ -33,8 +34,8 @@ class CreateEvent extends React.Component {
 
     render() {
         const radios = [
-            {text: "Generell historia", value: "general"},
-            {text: "Årsdagar", value: "anniversary"}
+            {text: "Generell historia", value: EVENT_TYPES.GENERAL},
+            {text: "Årsdagar", value: EVENT_TYPES.ANNIVERSARY}
         ]
 
         //Handles state change of form fields.
@@ -166,7 +167,7 @@ const Timeline = ({title, description, date, checked}) => {
             <div key={'year-heading-' + date.split("-")[0]} id={'year-' + date.split("-")[0]}>
                 <time className="Year">{ date === "" ? moment().format("YYYY") : date.split("-")[0] }</time>
                 <div className="cards">
-                    {checked === "general" &&
+                    {checked === EVENT_TYPES.GENERAL &&
                         <General
                             order={0}
                             data={{
@@ -176,7 +177,7 @@ const Timeline = ({title, description, date, checked}) => {
                             }}
                         />
                     }
-                    {checked === "anniversary" &&
+                    {checked === EVENT_TYPES.ANNIVERSARY &&
                         <Anniversary
                             order={0}
                             data={{
@@ -194,7 +195,7 @@ const Timeline = ({title, description, date, checked}) => {
 
 const ConditionalForm = ({checked, title, description, date, handleChange, comment}) => {
     //Conditional form whether or not it is a "General history" or anniversary
-    if (checked === "general") {
+    if (checked === EVENT_TYPES.GENERAL) {
         return (
             <div className="dynamicForm">
                 <h3 id="obligatorisk">Titel</h3>
@@ -231,7 +232,7 @@ const ConditionalForm = ({checked, title, description, date, handleChange, comme
                 />
             </div>
         )
-    } else if (checked === "anniversary") {
+    } else if (checked === EVENT_TYPES.ANNIVERSARY) {
         return (
             <div className="dynamicForm">
                 <h3 id="obligatorisk">Titel</h3>

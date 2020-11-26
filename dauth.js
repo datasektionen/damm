@@ -18,7 +18,7 @@ exports.adminAuth = (req, res, next) => {
             .then(response => response.json())
             .then(y => {
                 if (!y.includes('admin')) {
-                    return error(res, 403, "No admin, no access.")
+                    return error(res, 401, "No admin, no access.")
                 } else {
                     next()
                     // return
@@ -35,7 +35,7 @@ exports.adminAuth = (req, res, next) => {
         })
     //No token provided
     } else {
-        return error(res, 401, "No token provided")
+        return error(res, 403, "No token provided")
     }
 }
 
@@ -56,7 +56,7 @@ exports.patchesAuth = (req, res, next) => {
                 if (y.includes('admin') || y.includes("prylis")) {
                     next()
                 } else {
-                    return error(res, 403, "Unauthorized.")
+                    return error(res, 401, "Unauthorized.")
                 }
             })
             .catch(err => {
@@ -70,7 +70,7 @@ exports.patchesAuth = (req, res, next) => {
         })
     //No token provided
     } else {
-        return error(res, 401, "No token provided.")
+        return error(res, 403, "No token provided.")
     }
 }
 
@@ -110,7 +110,7 @@ exports.getUser = token => {
         .then(json => {
             User.findOne({ugkthid: json.ugkthid}, (err, res) => {
                 if (err) {
-                    reject(err)
+                    reject(null)
                     console.log(err)
                 }
                 resolve(res)
@@ -118,7 +118,7 @@ exports.getUser = token => {
         })
         .catch(err => {
             console.log(err)
-            reject(err)
+            reject(null)
         })
     })
 }

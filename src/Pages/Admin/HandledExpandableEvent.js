@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import moment from 'moment'
 import * as ROUTES from '../../routes'
 
-import ExpandableItem from './components/ExpandableItem'
+import ExpandableItem from '../../components/ExpandableItem'
 import EventTimelineView from './components/EventTimelineView'
 
 const HandledExpandableEvent = ({event, fetchEvents}) => {

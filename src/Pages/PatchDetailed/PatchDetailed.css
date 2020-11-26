@@ -25,7 +25,11 @@
 
 .MarkeInfo .patch .patchimg img {
     width: 300px;
-    cursor: pointer;
+    cursor: zoom-in;
+}
+
+.MarkeInfo .patch .patchimg img:hover {
+    transform: scale(1.01);
 }
 
 .MarkeInfo .patch .patchimg .files {

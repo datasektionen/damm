@@ -1,6 +1,6 @@
 const error = (res, code = 500, message = "", err = "") => {
     let errorMessage
-    if (process.env.NODE_ENV !== "production") errorMessage = err.toString()
+    if (process.env.NODE_ENV === "development") errorMessage = err.toString()
     return res.status(code).json({
         "error":message,
         "httpStatus":code,

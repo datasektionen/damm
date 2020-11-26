@@ -209,6 +209,7 @@ class PatchArchive extends React.Component {
                 handleSort={e => this.setState({sortRule: e.target.value})}
                 clearAll={clearAll}
                 clearSelectedTags={_ => this.setState({selectedTags: []})}
+                history={this.props.history}
             />
         )
     }

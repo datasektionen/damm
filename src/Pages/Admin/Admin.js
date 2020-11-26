@@ -1,6 +1,7 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
 import Alert from '../../components/Alert'
+import Unauthorized from '../../components/Unauthorized'
 import * as ROUTES from '../../routes'
 import './Admin.css'
 import AdminCard from './components/AdminCard'
@@ -82,23 +83,20 @@ class Admin extends React.Component {
         } else if (this.props.pls.includes("prylis")) {
             content = prylisCards.map((x,i) => <AdminCard key={"card-"+i} {...x} />)
         }
+        console.log(this.props)
 
-        if (localStorage.getItem('token') && this.props.pls.includes("admin")) {
-            return(
-                <div className="Admin">
-                    <div className="Header">
-                        <h2>Administrera, TODO: Skriv om denna sida</h2>
-                    </div>
-                    {this.state.success && <Alert>{this.state.success}</Alert>}
-                    {this.state.error && <Alert type="error">{this.state.error}</Alert>}
-                    <div className="Content">
-                        {content}
-                    </div>
+        return(
+            <div className="Admin">
+                <div className="Header">
+                    <h2>Administrera, TODO: Skriv om denna sida</h2>
                 </div>
-            )
-        } else {
-            return (<Redirect to={ROUTES.HOME} />)
-        }
+                {this.state.success && <Alert>{this.state.success}</Alert>}
+                {this.state.error && <Alert type="error">{this.state.error}</Alert>}
+                <div className="Content">
+                    {content}
+                </div>
+            </div>
+        )
     }
 }
 

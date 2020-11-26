@@ -16,11 +16,14 @@
     margin: 10px;
     user-select: none;
 }
+.märke:hover {
+    transform: scale(1.03);
+}
 
 .märke .hover {
     color: white;
     font-weight: bold;
-    width: inherit;
+    width: 100%;
     height: inherit;
     position: absolute;
     background-color: rgba(0, 0, 0, 0.3);
@@ -138,6 +141,7 @@
 .tagClickable:hover {
     background-color: #a7a7a7f9;
     cursor: pointer;
+    transform: scale(1.03);
 }
 
 .tagClickable span {

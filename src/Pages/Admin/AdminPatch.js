@@ -2,6 +2,7 @@ import React from 'react'
 import * as ROUTES from '../../routes'
 import TagClickable from '../../components/TagClickable'
 import Alert from '../../components/Alert'
+import { PRICE_TYPES } from '../../config/constants'
 
 const INITIAL_STATE = {
     image: undefined,
@@ -50,23 +51,18 @@ class AdminPatch extends React.Component {
 
     render() {
         
-        const radioValues = ["Gratis", "Säljs ej", "Okänt", "Ange pris"]
+        const radioValues = Object.values(PRICE_TYPES)
 
         const submit = (e) => {
             e.preventDefault()
 
+            this.setState({success: false})
+
             const {name, description, date, selectedTags, orders, orderdate} = this.state
             let price = this.state.price
 
-            if (this.state.radioPrice === radioValues[0]) {
-                price = ""
-            } else if (this.state.radioPrice === radioValues[1]){
-                price = "-"
-            } else if (this.state.radioPrice === radioValues[2]){
-                price = ""
-            } else if (this.state.radioPrice === radioValues[3]){
-                price = this.state.price
-            }
+            if (this.state.radioPrice === PRICE_TYPES.SET_PRICE) price = this.state.price
+            else price = this.state.radioPrice
 
             const body = {
                 name,
@@ -185,7 +181,7 @@ class AdminPatch extends React.Component {
                                     </div>
                                 :
                                     <div className="preview">
-                                        <i class="fa fa-times" onClick={() => this.setState({image: undefined, imageSrc: ""})}></i>
+                                        <i className="fa fa-times" onClick={() => this.setState({image: undefined, imageSrc: ""})}></i>
                                         <div>
                                             <i class="fa fa-check" style={{color: "green"}}></i>
                                             <span className="filename" style={{color: "green"}}>{this.state.image.name}</span>
@@ -215,19 +211,8 @@ class AdminPatch extends React.Component {
                                     </div>    
                                 )}
                             </div>
-                            {this.state.radioPrice === radioValues[3] && <input name="price" type="text" placeholder="Pris" value={this.state.price} onChange={(e) => handleChange(e)}/>}
-                            
+                            {this.state.radioPrice === PRICE_TYPES.SET_PRICE && <input name="price" type="text" placeholder="Pris" value={this.state.price} onChange={(e) => handleChange(e)}/>}
                         </div>
-                        {/* <div className="creators">
-                                <h3>Skapare</h3>
-                                <h4>Namn på den/de som skapat märket (om känt)</h4>
-                                <div className="add">
-                                    <input type="text" name="firstName" placeholder="Förnamn" value={this.state.firstName} onChange={(e) => handleChange(e)} />
-                                    <input type="text" id="lastName" name="lastName" placeholder="Efternamn" value={this.state.lastName} onChange={(e) => handleChange(e)} />
-                                    <button onClick={(e) => addCreator(e)} disabled={this.state.firstName === ""}>Lägg till</button>
-                                </div>
-                                {this.state.creators.map((x,i) => <div className="creator" key={i}>{x.firstName} {x.lastName}<i class="fa fa-times" onClick={(e) => removeCreator(e, i)}></i></div>)}
-                        </div> */}
                         <div className="tagsection">
                             <h3>Taggar</h3>
                             <h4>Lägg till passande taggar till märket. Underlättar sökning.</h4>
@@ -270,6 +255,8 @@ class AdminPatch extends React.Component {
                 </div>
             </div>
         )
+
+
     }
 }
 

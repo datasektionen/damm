@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import UnhandledExpandableEvent from './UnhandledExpandableEvent'
 import HandledExpandableEvent from './HandledExpandableEvent'
 
@@ -28,7 +29,7 @@ class AdminEvents extends React.Component {
 
     fetchEvents() {
         return new Promise((resolve, reject) => {
-            fetch(ROUTES.API_GET_UNACCEPTED_EVENTS)
+            fetch(`${ROUTES.API_GET_ALL_EVENTS}?token=${localStorage.getItem("token")}`)
             .then(res => res.json())
             .then(json => {
                 console.log(json.events)
@@ -115,31 +116,33 @@ const TabBody = ({tabs, selectedTab, events, query, templateFilter, fetchEvents}
         || moment(e.date).format("YYYY").match(new RegExp(query.toLowerCase(), "g"))
     )
 
-    if (selectedTab === tabs[0]) {
-        if (queryFilteredEvents.filter(e => e.accepted.status === false).length === 0) {
-            return <div>Inga obehandlade händelser</div>
-        } else return (
-            queryFilteredEvents.filter(e => e.accepted.status === false).map((e,i) => 
-            <UnhandledExpandableEvent
-                index={i}
-                event={e}
-                fetchEvents={fetchEvents}
-                key={e._id}
-            />
-        ))
-    } else if (selectedTab === tabs[1]) {
-        if (queryFilteredEvents.filter(e => e.accepted.status === true && e.accepted.accepted === true).length === 0) {
-            return <div>Inga godkända händelser</div>
-        } else return queryFilteredEvents.filter(e => e.accepted.status === true && e.accepted.accepted === true).map((e,i) => 
-            <HandledExpandableEvent event={e} key={e._id} fetchEvents={fetchEvents} />
-        )
-    } else if (selectedTab === tabs[2]) {
-        if (queryFilteredEvents.filter(e => e.accepted.status === true && e.accepted.accepted === false).length === 0) {
-            return <div>Inga avslagna händelser</div>
-        } else return queryFilteredEvents.filter(e => e.accepted.status === true && e.accepted.accepted === false).map((e,i) => 
-            <HandledExpandableEvent event={e} key={e._id} fetchEvents={fetchEvents} />    
-        ) 
-    } else return <div></div>
+    return queryFilteredEvents.filter(e => e.accepted.status === false).map((e,i) => <Link key={e._id} to={`/event/${e._id}`}>{e._id}{e.accepted.accepted}</Link>)
+
+    // if (selectedTab === tabs[0]) {
+    //     if (queryFilteredEvents.filter(e => e.accepted.status === false).length === 0) {
+    //         return <div>Inga obehandlade händelser</div>
+    //     } else return (
+    //         queryFilteredEvents.filter(e => e.accepted.status === false).map((e,i) => 
+    //         <UnhandledExpandableEvent
+    //             index={i}
+    //             event={e}
+    //             fetchEvents={fetchEvents}
+    //             key={e._id}
+    //         />
+    //     ))
+    // } else if (selectedTab === tabs[1]) {
+    //     if (queryFilteredEvents.filter(e => e.accepted.status === true && e.accepted.accepted === true).length === 0) {
+    //         return <div>Inga godkända händelser</div>
+    //     } else return queryFilteredEvents.filter(e => e.accepted.status === true && e.accepted.accepted === true).map((e,i) => 
+    //         <HandledExpandableEvent event={e} key={e._id} fetchEvents={fetchEvents} />
+    //     )
+    // } else if (selectedTab === tabs[2]) {
+    //     if (queryFilteredEvents.filter(e => e.accepted.status === true && e.accepted.accepted === false).length === 0) {
+    //         return <div>Inga avslagna händelser</div>
+    //     } else return queryFilteredEvents.filter(e => e.accepted.status === true && e.accepted.accepted === false).map((e,i) => 
+    //         <HandledExpandableEvent event={e} key={e._id} fetchEvents={fetchEvents} />    
+    //     ) 
+    // } else return <div></div>
 }
 
 export default AdminEvents

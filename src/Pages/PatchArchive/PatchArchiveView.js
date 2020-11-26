@@ -5,7 +5,7 @@ import TagClickable from '../../components/TagClickable'
 import Patch from './components/Patch'
 import logo from '../../skold.png'
 
-const PatchArchiveView = ({numPatches = 0, tags, selectedTags, toggleShowTags, toggleTag, sortResults, patchTagsMatchesSelected, matchesSearch, clearSelectedTags, clearAll, searchQuery, sortRule, sortOptions, showTags, filterTagsQuery, handleSearch, clearSearch, handleSort}) => {
+const PatchArchiveView = ({numPatches = 0, tags, selectedTags, toggleShowTags, toggleTag, sortResults, patchTagsMatchesSelected, matchesSearch, clearSelectedTags, clearAll, searchQuery, sortRule, sortOptions, showTags, filterTagsQuery, handleSearch, clearSearch, handleSort, history}) => {
     return (
         <div className="MärkesArkiv">
             <div className="Header">
@@ -75,7 +75,7 @@ const PatchArchiveView = ({numPatches = 0, tags, selectedTags, toggleShowTags, t
                 }
             </div>
             <div className="märken">
-                {sortResults().map((x,i) => (patchTagsMatchesSelected(x) && matchesSearch(x)) ? <Patch key={"patch-"+i} {...x} /> : undefined)}
+                {sortResults().map((x,i) => (patchTagsMatchesSelected(x) && matchesSearch(x)) ? <Patch key={"patch-"+i} {...x} history={history}/> : undefined)}
             </div>
         </div>
     )

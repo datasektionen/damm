@@ -40,10 +40,16 @@ app.use(function(req, res, next) {
    res.header("Access-Control-Allow-Origin", "*");
    res.header('Access-Control-Allow-Methods', 'DELETE, PUT, GET, POST');
    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+   // Defend against click-jacking
+   res.header("X-Frame-Options", "DENY")
    next();
 });
 
-app.use(morgan('dev'))
+// Prevent attackers from knowing we use Express. They could read the source code, but defend against web bots
+app.disable("x-powered-by")
+
+if (process.env.NODE_ENV === "development") app.use(morgan('dev'))
+else app.use(morgan("common"))
 
 app.use('/', express.static('build'))
 
@@ -72,13 +78,17 @@ mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true,  useUnifiedTopo
 .then(console.log("DB connected"))
 .catch(err => {
     console.log("DB connection error: " + err)
+    console.log("Shutting down...")
+    process.exit(0)
 })
 
 mongoose.Promise = global.Promise
 
-app.get('/api', (req, res) => {
+app.get('/api', (_, res) => {
   res.send(cachedData)
 })
+
+app.get('/damm', (_, res) => res.send('<img style="width: 600px;" src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Dust_bunnies.jpg" />'))
 
 // For the search bar in methone. Available in mobile, not desktop.
 const fuzzyfile = fs.readFileSync(`${__dirname}/fuzzyfile.json`)
@@ -90,7 +100,7 @@ app.use('/api/admin/marke', adminPatches)
 app.use('/api/admin/event', adminEvents)
 app.use('/api', api)
 
-console.log(`${__dirname}/build/index.html`)
+// console.log(`${__dirname}/build/index.html`)
 app.get('*', (req, res) => res.sendFile(`${__dirname}/build/index.html`))
 const PORT = process.env.PORT || 5000
 app.listen(PORT, () => console.log(`Listening on port ${PORT}!`))

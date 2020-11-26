@@ -1,4 +1,5 @@
-.Admin .Header {
+.Admin .Header,
+.HeaderBar {
     min-height: 96px;
     background: #ea4d8f;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -10,10 +11,11 @@
     /* padding-right: 50px; */
 }
 
-.Admin .Header h2 {
+.Admin .Header h2,
+.HeaderBar h2 {
     font-size: 40px;
     margin: 0;
-    /* font-weight: 700; */
+    font-weight: 900;
 }
 
 .Admin .Content {

@@ -1,23 +1,26 @@
 import React,  { useState } from 'react'
 import Tag from '../../../components/Tag'
 import moment from 'moment'
+import { PRICE_TYPES } from '../../../config/constants'
 
 // Component that displays a patch.
 const Patch = ({image, date, name, description, numProduced = "?", tags = [], price, ...rest}) => {
 
     const [hovered, setHovered] = useState(false)
-
     let displayPrice
-    if (price === undefined || price === "") displayPrice = "Gratis"
-    else if (price === "-") displayPrice = "Säljs ej"
-    else displayPrice = price + " kr"
+    // if (price === undefined || price === "") displayPrice = "Gratis"
+    // else if (price === "-") displayPrice = "Säljs ej"
+    // else displayPrice = price + " SEK"
+
+    if (price !== PRICE_TYPES.FREE && price !== PRICE_TYPES.NOT_FOR_SALE && price !== PRICE_TYPES.UNKNOWN) {
+        displayPrice = price + " SEK"
+    } else displayPrice = price
 
     return (
         <div
             className="märke"
             title={description}
-            // TODO: Replace with this.props.history.push
-            onClick={() => {window.location=`/marke/${rest._id}`}}
+            onClick={() => {rest.history.push(`/marke/${rest._id}`)}}
             onMouseEnter={_ => setHovered(true)}
             onMouseLeave={_ => setHovered(false)}
             onTouchStart={_ => setHovered(true)}

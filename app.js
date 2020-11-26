@@ -65,10 +65,10 @@ app.get('/api/admin/refresh', dAuth.adminAuth, (req, res) => {
   const limit = lastCached.clone()
   limit.add(1, 'minute')
   if (moment().isBefore(limit)) {
-    return error(res, 403, "Already refreshed. Wait a minute...")
+    return error(res, 403, "Tidslinjen laddades nyligen om. Vänta en minut...")
   } else {
     console.log("Refreshing...")
-    res.status(200).json({"response": "Data refreshed"})
+    res.status(200).json({"response": "Tidslinjen uppdaterad (refreshed)"})
     cachedData = init()()
     lastCached = moment()
   }

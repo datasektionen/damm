@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import "./FileUploader.css"
 
-const FileUploader = ({setFileCallback = () => {}, }) => {
+const FileUploader = ({setFileCallback = () => {}, clear, style= {}}) => {
 
     const fileInput = React.useRef(null);
     const [hover, setHover] = useState(false)
@@ -33,6 +33,7 @@ const FileUploader = ({setFileCallback = () => {}, }) => {
     }
 
     const handleClick = e => {
+        setHover(false)
         if (e.target.className === "fas fa-times") {
             setFile(undefined)
             setPreview(undefined)
@@ -53,7 +54,7 @@ const FileUploader = ({setFileCallback = () => {}, }) => {
             onDragEnter={e => {setHover(true)}}
             onDragLeave={e => {setHover(false)}}
             onClick={handleClick}
-            style={!file ? {cursor: "pointer"} : {}}
+            style={!file ? {cursor: "pointer", ...style} : {...style}}
         >
             <i className="fas fa-times" style={file ? {} : {display: "none"}}/>
             <input
@@ -66,7 +67,7 @@ const FileUploader = ({setFileCallback = () => {}, }) => {
 
                 file ?
                     <div>
-                        <div><img src={preview} /></div>
+                        <div><img draggable="false" src={preview} /></div>
                         <div style={{margin: "5px"}}>{file.name}</div>
                     </div>
                 :

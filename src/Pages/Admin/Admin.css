@@ -115,33 +115,6 @@
 
 }
 
-.Admin .Form .file-input{
-    width: 90%;
-}
-
-.Admin .Form .file-input label {
-    width: 100%;
-    text-align: center;
-    border: dashed 2px rgb(230, 220, 220);
-    padding: 10px;
-}
-
-.Admin .Form .file-input img {
-    height: 130px;
-    max-width: 100%;
-    user-select: none;
-}
-
-.Admin .Form .file-input .preupload {
-    cursor: pointer;
-}
-
-.Admin .Form .file-input .preupload i.fa-upload {
-    opacity: 0.3;
-    font-size: 3.1em;
-    color: black;
-}
-
 .fa-spinner {
     animation-name: spin;
     animation-duration: 1000ms;
@@ -156,48 +129,6 @@
     to {
         transform:rotate(360deg);
     }
-}
-
-.Admin .Form .file-input .preview span.filename {
-    font-weight: 300;
-}
-
-.Admin .Form .file-input .preview span::before {
-    content: " ";
-}
-
-.Admin .Form .fa-times {
-    color: red;
-    cursor: pointer;
-}
-
-.Admin .Form .file-input .preview i.fa-times {
-    /* color: red; */
-    opacity: 1;
-    position: relative;
-    left: 49%;
-}
-
-.Admin .Form .file-input .preupload .title,
-.Admin .Form .file-input .preview span {
-    color: black;
-}
-
-.Admin .Form .file-input .preupload p {
-    color: #757575;
-    margin: 0;
-}
-
-.Admin .Form .file-input input[type="file"] {
-    display: none;
-}
-
-.Admin .Form .file-input .preview {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    content: "\f00d";
 }
 
 .Admin .Form .tags {
@@ -481,10 +412,6 @@
 
 @media screen and (max-width: 600px) {
     .Admin .Form form {
-        width: 100%;
-    }
-
-    .Admin .Form form .file-input {
         width: 100%;
     }
 

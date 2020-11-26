@@ -4,9 +4,10 @@ import TagClickable from '../../components/TagClickable'
 import Alert from '../../components/Alert'
 import { PRICE_TYPES } from '../../config/constants'
 
+import FileUploader from '../../components/FileUploader'
+
 const INITIAL_STATE = {
     image: undefined,
-    imageSrc: "",
     selectedTags: [],
     name: "",
     description: "",
@@ -18,7 +19,6 @@ const INITIAL_STATE = {
     orderdate: "",
     company: "",
     order: "",
-    numFiles: 1,
     error: "",
 }
 
@@ -102,11 +102,6 @@ class AdminPatch extends React.Component {
             console.log("SUBMIT")
         }
 
-        const handleImageChange = (e) => {
-            if (e.target.files.length > 0)
-            this.setState({image: e.target.files[0], imageSrc: URL.createObjectURL(e.target.files[0])})
-        }
-
         const selectedTagsIncludesTag = (tagName) => {
             return this.state.selectedTags.filter((x,i) => x.text === tagName).length > 0
         }
@@ -128,18 +123,6 @@ class AdminPatch extends React.Component {
             this.setState({radioPrice: e.target.id})
         }
 
-        // const addCreator = (e) => {
-        //     e.preventDefault()
-        //     this.setState({creators: this.state.creators.concat({firstName: this.state.firstName, lastName: this.state.lastName})}, () => {
-        //         this.setState({firstName: "", lastName: ""})
-        //     })
-        // }
-
-        // const removeCreator = (e, index) => {
-        //     e.preventDefault()
-        //     this.setState({creators: this.state.creators.filter((x,i) => index !== i)})
-        // }
-
         const addOrder = e => {
             e.preventDefault()
             this.setState({orders: this.state.orders.concat({company: this.state.company, order: this.state.order, date: this.state.orderdate})}, () => {
@@ -151,8 +134,6 @@ class AdminPatch extends React.Component {
             e.preventDefault()
             this.setState({orders: this.state.orders.filter((x,i) => index !== i)})
         }
-
-        // const invalid = this.state.name.length === 0 || this.state.imageSrc === ""
 
         return (
             <div className="Admin">
@@ -166,31 +147,7 @@ class AdminPatch extends React.Component {
 
                         <h3 id="obligatorisk">Bild på märket</h3>
                         <h4>Ta en så bra bild av märket som möjligt. Skriv en lätt instruktion alternativt länka till en sida med instruktioner</h4>
-                        <div className="file-input">
-                            <label>
-                                <input id="image" name="image" type="file" onChange={(e) => handleImageChange(e)} />
-                                {!this.state.image ?
-                                    <div className="preupload">
-                                        <div>
-                                            <i className="fas fa-upload"></i>
-                                        </div>
-                                        <div>
-                                            <p className="title">Ladda upp en bild på märket</p>
-                                            <p>Du kan dra och släppa en fil här.</p>
-                                        </div>
-                                    </div>
-                                :
-                                    <div className="preview">
-                                        <i className="fa fa-times" onClick={() => this.setState({image: undefined, imageSrc: ""})}></i>
-                                        <div>
-                                            <i class="fa fa-check" style={{color: "green"}}></i>
-                                            <span className="filename" style={{color: "green"}}>{this.state.image.name}</span>
-                                        </div>
-                                        {this.state.imageSrc && <img alt="" src={`${this.state.imageSrc}`} />}
-                                    </div>
-                                }
-                            </label>
-                        </div>
+                        <FileUploader style={{width: "100%"}} setFileCallback={(file) => this.setState({image: file})}/>
                         <h3 id="obligatorisk">Namn</h3>
                         <input id="name" name="name" type="text" autoComplete="off" placeholder="Namn" value={this.state.name} onChange={(e) => handleChange(e)} />
                         <h3>Beskrivning</h3>

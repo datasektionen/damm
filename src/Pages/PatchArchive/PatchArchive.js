@@ -2,6 +2,7 @@ import React from 'react'
 import './PatchArchive.css'
 import * as ROUTES from '../../routes'
 import PatchArchiveView from './PatchArchiveView'
+import { PRICE_TYPES } from '../../config/constants'
 
 class PatchArchive extends React.Component {
     constructor(props) {
@@ -22,6 +23,8 @@ class PatchArchive extends React.Component {
             {text: "Pris (Högst överst)", value: "price-desc"},
             {text: "Datum (Nu-1983)", value: "date-desc"},
             {text: "Datum (1983-Nu)", value: "date-asc"},
+            {text: "Uppladdningsdatum (Nyast-Äldst)", value: "date-creation-desc"},
+            {text: "Uppladdningsdatum (Äldst-Nyast)", value: "date-creation-asc"},
         ]
 
         this.state = {
@@ -156,8 +159,12 @@ class PatchArchive extends React.Component {
 
             if (sortRule === this.state.sortOptions[3].value) {
                 return [...this.state.märken].sort((a, b) => {
-                    const A = a.price.toLowerCase()
-                    const B = b.price.toLowerCase()
+                    let A = a.price.toLowerCase()
+                    let B = b.price.toLowerCase()
+                    // Puts free first
+                    if (B === PRICE_TYPES.FREE.toLowerCase()) {
+                        B = "0"
+                    }
                     if (A < B) return -1
                     if (A > B) return 1
                     return 0
@@ -166,8 +173,12 @@ class PatchArchive extends React.Component {
 
             if (sortRule === this.state.sortOptions[4].value) {
                 return [...this.state.märken].sort((a, b) => {
-                    const A = a.price.toLowerCase()
-                    const B = b.price.toLowerCase()
+                    let A = a.price.toLowerCase()
+                    let B = b.price.toLowerCase()
+                    // Puts free last
+                    if (B === PRICE_TYPES.FREE.toLowerCase()) {
+                        B = 0
+                    }
                     if (A > B) return -1
                     if (A < B) return 1
                     return 0
@@ -185,6 +196,17 @@ class PatchArchive extends React.Component {
                 // If date is an empty string (It has been marked as "unknown"), calculate it as 0 (otherwise the sorting wouldn't work as new Date("") doesn't work)
                 return [...this.state.märken].sort((a, b) => (a.date === "" ? 0 : new Date(a.date)) - (b.date === "" ? 0 : new Date(b.date)))
             }
+
+            // Sorts patches after upload date, new to old
+            if (sortRule === this.state.sortOptions[7].value) {
+                return [...this.state.märken].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            }
+
+            //Sorts patches after upload date, old to new
+            if (sortRule === this.state.sortOptions[8].value) {
+                return [...this.state.märken].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+            }
+            
 
             return this.state.märken
         }

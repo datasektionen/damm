@@ -8,6 +8,7 @@ import FileUploader from '../../components/FileUploader'
 
 const INITIAL_STATE = {
     image: undefined,
+    resetFileComponent: () => {},
     selectedTags: [],
     name: "",
     description: "",
@@ -87,6 +88,7 @@ class AdminPatch extends React.Component {
             .then(res => res.json())
             .then(json => {
                 if (json.success) {
+                    this.state.resetFileComponent()
                     this.setState({...SUCCESS_STATE, tags: this.state.tags})
                     window.scrollTo(0, 0)
                 } else {
@@ -147,7 +149,7 @@ class AdminPatch extends React.Component {
 
                         <h3 id="obligatorisk">Bild på märket</h3>
                         <h4>Ta en så bra bild av märket som möjligt. Skriv en lätt instruktion alternativt länka till en sida med instruktioner</h4>
-                        <FileUploader style={{width: "100%"}} setFileCallback={(file) => this.setState({image: file})}/>
+                        <FileUploader style={{width: "100%"}} setFileCallback={(file, resetFileComponent) => this.setState({image: file, resetFileComponent})}/>
                         <h3 id="obligatorisk">Namn</h3>
                         <input id="name" name="name" type="text" autoComplete="off" placeholder="Namn" value={this.state.name} onChange={(e) => handleChange(e)} />
                         <h3>Beskrivning</h3>

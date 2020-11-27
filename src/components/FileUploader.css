@@ -4,6 +4,7 @@
     flex-direction: column;
     padding: 20px;
     text-align: center;
+    user-select: none;
 }
 
 .FileUploader i.fa-upload {

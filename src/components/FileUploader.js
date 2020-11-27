@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import "./FileUploader.css"
 
-const FileUploader = ({setFileCallback = () => {}, clear, style= {}}) => {
+const FileUploader = ({setFileCallback = () => {}, style= {}}) => {
 
     const fileInput = React.useRef(null);
     const [hover, setHover] = useState(false)
@@ -15,6 +15,13 @@ const FileUploader = ({setFileCallback = () => {}, clear, style= {}}) => {
         handleFile(e.dataTransfer.files[0])
     }
 
+    const reset = _ => {
+        setFile(undefined)
+        setPreview("")
+        setError("")
+        setHover(false)
+    }
+
     const handleFile = file => {
         setHover(false)
         // Should check bytes of file, but can do it backend...
@@ -23,7 +30,9 @@ const FileUploader = ({setFileCallback = () => {}, clear, style= {}}) => {
             return
         }
         setError("")
-        setFileCallback(file)
+        // Ugly?? hack, sends the resend function the the parent component so that it can reset the state of this component
+        // When needed, ex on submition
+        setFileCallback(file, reset)
         setFile(file)
         setPreview(URL.createObjectURL(file))
     }
@@ -35,9 +44,7 @@ const FileUploader = ({setFileCallback = () => {}, clear, style= {}}) => {
     const handleClick = e => {
         setHover(false)
         if (e.target.className === "fas fa-times") {
-            setFile(undefined)
-            setPreview(undefined)
-            setFileCallback(undefined)
+            reset()
             return
         }
         if (file) return

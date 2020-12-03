@@ -62,6 +62,22 @@ router.get('/marke/id/:id', (req, res) => {
     })
 })
 
+router.get('/marken/tag/:id', (req, res) => {
+    const id = req.params.id
+    console.log(id)
+    Märke.find()
+    .populate('tags')
+    .exec((err, data) => {
+        if (data === undefined) {
+            return error(res, 404, "Patch not found", err)
+        }
+        if (err) {
+            return error500(res, err)
+        } else {
+            return res.status(200).send(data.filter(patch => patch.tags.filter(tag => tag._id.toString() === id).length !== 0))
+        }
+    })
+})
 
 let Grid = require('gridfs-stream')
 const mongoose = require('mongoose')

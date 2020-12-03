@@ -85,7 +85,7 @@ class App extends Component {
             </ProtectedContent>}
           />
           <Route exact path={ROUTES.ADMIN} render={match => <AdminPrylisProtected component={Admin} {...this.props} {...this.state} /> } />
-          <Route exact path={ROUTES.LOGIN} render={match => {window.location = `https://login2.datasektionen.se/login?callback=${encodeURIComponent(window.location.origin)}/token/` }} />
+          <Route exact path={ROUTES.LOGIN} render={match => {window.location = `https://login.datasektionen.se/login?callback=${encodeURIComponent(window.location.origin)}/token/` }} />
           <Route exact path={ROUTES.LOGOUT} render={({match}) => {
             localStorage.removeItem('token')
             // history.push(ROUTES.HOME)

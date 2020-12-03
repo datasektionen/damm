@@ -1,0 +1,26 @@
+.tagClickable {
+    background-color: #d1d1d1f9;
+    border-radius: 20px;
+    /* max-width: 200px; */
+    padding: 10px;
+    white-space: nowrap;
+    user-select: none;
+    margin: 5px;
+}
+
+.tagClickable:hover {
+    background-color: #a7a7a7f9;
+    cursor: pointer;
+    transform: scale(1.03);
+}
+
+.tagClickable span {
+    padding-right: 10px;
+}
+
+.tagClickable img {
+    width: 15px;
+    height: 15px;
+    opacity: 0.6;
+    user-select: none;
+}

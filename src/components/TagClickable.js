@@ -2,6 +2,7 @@ import React from 'react'
 
 import Add from './add.png'
 import Added from './added.png'
+import './TagClickable.css'
 
 const TagClickable = ({color = "#fff", backgroundColor = "#e83d84", text = "", hoverText = "", selectedTags=[], onClick}) => {
 

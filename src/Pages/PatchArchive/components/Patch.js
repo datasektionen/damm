@@ -2,6 +2,7 @@ import React,  { useState } from 'react'
 import Tag from '../../../components/Tag'
 import moment from 'moment'
 import { PRICE_TYPES } from '../../../config/constants'
+import * as ROUTES from '../../../routes'
 
 // Component that displays a patch.
 const Patch = ({image, date, name, description, numProduced = "?", tags = [], price, ...rest}) => {
@@ -20,7 +21,7 @@ const Patch = ({image, date, name, description, numProduced = "?", tags = [], pr
         <div
             className="märke"
             title={description}
-            onClick={() => {rest.history.push(`/marke/${rest._id}`)}}
+            onClick={() => {rest.history.push(`${ROUTES.MÄRKE.replace(/\:id/, rest._id)}`)}}
             onMouseEnter={_ => setHovered(true)}
             onMouseLeave={_ => setHovered(false)}
             onTouchStart={_ => setHovered(true)}

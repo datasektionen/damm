@@ -21,6 +21,16 @@ Systemet använder sig av dessa system och API:er
 
 Och så använder sig systemet såklart av Aurora och Methone, men det gör i princip alla system.
 
+## API-dokumentation
+API-dokumentation finnes [här](API.md)
+
+## Pls permissions
+För tillfället finns två rättigheter i pls:
+- admin
+    - Adminrättigheter: full adminaccess.
+- prylis
+    - Denna rättighet är en delmängd av admin och kan hantera prylisrelaterade grejer, dvs märkesrelaterade grejer.
+
 # Så här kör du server + klient
 ## Dependencies
 Du behöver npm/nodejs och mongodb.
@@ -30,17 +40,15 @@ Du behöver variablerna nedan (PORT och HOST är inte ett krav, HOST måste där
 
 En login2-nyckel fås av systemansvarig (d-sys@d.kth.se)
 
-| Variable              | Description                           | Standardvärde |
-|-----------------------|---------------------------------------| --------------|
-| MONGO_URL             | URL till mongodatabasen               | -             |
-| LOGIN2_API_KEY        | Login2 API-nyckel                     | -             |
-| LOGIN2_API_URL        | URL till login2                       | -             |
-| PLS_API_URL           | URL till pls                          | -             |
-| SPAM_API_URL          | URL till spam                         | -             |
-| SPAM_API_KEY          | API-nyckel till spam, används för mejlfunktionalitet | -             |
-| NODE_ENV              | Om du kör i "production" eller "development". Antagligen "development" om du kör lokalt | - |
-| PORT                  | Port som servern körs på, måste förmodligen också ändras i package.json (för development) om du inte kör standard | 5000 |
-| HOST                  | När du utvecklar damm lokalt och inte kör login lokalt måste du ange detta som `localhost.datasektionen.se`, annars får du dels `Invalid host header` samt att login kommer neka din callback eftersom `localhost` inte är en subdomän till datasektionen. | -             |
+| Variable              | Description                           | Standardvärde | Exempelvärde |
+|-----------------------|---------------------------------------| --------------| ------------ |
+| MONGO_URL             | URL till mongodatabasen               | -             | mongodb://localhost:27017/damm |
+| LOGIN2_API_KEY        | Login2 API-nyckel                     | -             | - |
+| LOGIN2_API_URL        | URL till login2                       | -             | https://login.datasektionen.se |
+| PLS_API_URL           | URL till pls                          | -             | https://pls.datasektionen.se/api |
+| NODE_ENV              | Om du kör i "production" eller "development". Antagligen "development" om du kör lokalt | - | development |
+| PORT                  | Port som servern körs på, måste förmodligen också ändras i package.json (för development) om du inte kör standard | 5000 | - |
+| HOST                  | När du utvecklar damm lokalt och inte kör login lokalt måste du ange detta som `localhost.datasektionen.se`, annars får du dels `Invalid host header` samt att login kommer neka din callback eftersom `localhost` inte är en subdomän till datasektionen. | -             | - |
 
 ## Testning/lokalt
 ### Server

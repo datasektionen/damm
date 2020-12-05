@@ -23,7 +23,7 @@
 .märke .hover {
     color: white;
     font-weight: bold;
-    width: 100%;
+    width: inherit;
     height: inherit;
     position: absolute;
     background-color: rgba(0, 0, 0, 0.3);

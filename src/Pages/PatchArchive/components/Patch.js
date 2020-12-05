@@ -9,13 +9,10 @@ const Patch = ({image, date, name, description, numProduced = "?", tags = [], pr
 
     const [hovered, setHovered] = useState(false)
     let displayPrice
-    // if (price === undefined || price === "") displayPrice = "Gratis"
-    // else if (price === "-") displayPrice = "Säljs ej"
-    // else displayPrice = price + " SEK"
 
-    if (price !== PRICE_TYPES.FREE && price !== PRICE_TYPES.NOT_FOR_SALE && price !== PRICE_TYPES.UNKNOWN) {
-        displayPrice = price + " SEK"
-    } else displayPrice = price
+    if (price.type !== PRICE_TYPES.FREE && price.type !== PRICE_TYPES.NOT_FOR_SALE && price.type !== PRICE_TYPES.UNKNOWN) {
+        displayPrice = price.value + " SEK"
+    } else displayPrice = price.type
 
     return (
         <div

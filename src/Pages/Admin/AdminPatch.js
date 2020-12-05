@@ -59,18 +59,16 @@ class AdminPatch extends React.Component {
 
             this.setState({success: false})
 
-            const {name, description, date, selectedTags, orders, orderdate} = this.state
-            let price = this.state.price
-
-            if (this.state.radioPrice === PRICE_TYPES.SET_PRICE) price = this.state.price
-            else price = this.state.radioPrice
+            const {name, description, date, selectedTags, orders, orderdate, price, radioPrice} = this.state
 
             const body = {
                 name,
                 description,
                 date,
-                price,
-                radioPrice: this.state.radioPrice,
+                price: {
+                    type: radioPrice,
+                    value: price
+                },
                 tags: selectedTags.map(tag => tag._id),
                 orders,
                 orderdate

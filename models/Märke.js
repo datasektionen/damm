@@ -1,6 +1,6 @@
-const moment = require("moment");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const { PRICE_TYPES } = require('../src/config/constants')
 
 var markeSchema = new Schema({
     name: {
@@ -20,7 +20,12 @@ var markeSchema = new Schema({
         order: String,
         date: String,
     }],
-    price: String,
+    price: {
+        type: {
+            type: String
+        },
+        value: String
+    },
     tags: [{
         type: Schema.Types.ObjectId,
         ref: 'Tag'
@@ -41,6 +46,16 @@ markeSchema.statics.create = function(x, callback) {
     })
     märke.save().then(m => callback(m))
 }
+
+markeSchema.pre('save', function() {
+    const type = this.price.type
+    // If type isn't present in PRICE_TYPES
+    // https://stackoverflow.com/questions/35948669/how-to-check-if-a-value-exists-in-an-object-using-javascript
+    if (Object.values(PRICE_TYPES).indexOf(type) < 0) {
+        type = PRICE_TYPES.UNKNOWN
+        this.price.value = ""
+    }
+})
 
 var Märke = mongoose.model('Marke', markeSchema)
 module.exports = Märke

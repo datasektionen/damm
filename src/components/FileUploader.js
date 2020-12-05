@@ -25,7 +25,7 @@ const FileUploader = ({text = "Ladda upp en bild på märket", setFileCallback =
     const handleFile = file => {
         setHover(false)
         // Should check bytes of file, but can do it backend...
-        if (file.type !== "image/jpeg" && file.type !== "image/png") {
+        if (file && file.type !== "image/jpeg" && file.type !== "image/png") {
             setError("Ogiltig filtyp... Filen måste vara en bild")
             return
         }

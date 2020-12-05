@@ -1,4 +1,5 @@
-const {error} = require('./error')
+const { error } = require('./error')
+const mongoose = require('mongoose')
 
 // Middleware that checks if token is in the request as a query
 // For example https://damm.datasektionen.se/api/event/id/1337?token=ABCABCABC

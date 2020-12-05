@@ -99,22 +99,6 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2)
 }
 
-.Admin .Form input {
-    width: 300px;
-    height: 50px;
-    padding: 10px;
-}
-
-.Admin .Form textarea {
-    padding: 10px;
-    border: 1px solid #f7f7f7;
-    box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.1);
-    resize: none;
-    width: 500px;
-    height: 150px;
-
-}
-
 .fa-spinner {
     animation-name: spin;
     animation-duration: 1000ms;

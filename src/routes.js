@@ -17,6 +17,8 @@ export const MÄRKESTAGGAR = '/admin/markestaggar/hantera'
 
 //API
 export const API_CREATE_PATCH = '/api/admin/marke/create'
+export const API_EDIT_PATCH = '/api/admin/marke/edit/id/:id'
+export const API_PATCH_REPLACE_IMAGE = '/api/admin/marke/replace-image/id/:id'
 export const API_MÄRKE_GET_IMG_PATH = '/api/file'
 export const API_GET_TAGS = '/api/tags'
 export const API_GET_MÄRKEN ='/api/marken'

@@ -61,12 +61,56 @@ router.post('/create', upload.single('file'), (req, res) => {
         description,
         date,
         price,
+        // IF YOU CHANGE THIS, MAKE SURE TO CHANGE IN THE REMOVE FUNCTIONS ASWELL
         image: "/api/file/" + req.file.filename,
         orders,
         tags
     }, (marke) => {
         console.log(marke)
       res.json({"success":"true"})
+    })
+})
+
+// Filename, not including "/api/file/"
+router.get('/remove/filename/:filename', async (req, res) => {
+    const { filename } = req.params
+    const patch = await Märke.findOne({ image: `/api/file/${filename}` })
+    if (!patch) return error(res, 404, "Märket finns ej")
+
+    const fileObject = await gfs.files.findOne({ filename })
+    // const chunks = await conn.db.collection("fs.chunks").find( {  files_id: fileObject._id } ).toArray()
+
+    gfs.files.findOneAndDelete({ filename }, (err, docs) => {
+        if (err) return error500(res, err)
+        else console.log(`Deleted file with filename: ${filename}`)
+    })
+    conn.db.collection("fs.chunks").deleteMany({ files_id: fileObject._id }, (err, result) => {
+        if (err) return error500(res, err)
+        else console.log(`Deleted ${result.deletedCount} chunks belonging to file with filename: ${filename}`)
+    })
+
+    Märke.findOneAndDelete({ image: `/api/file/${filename}` }, (err, result) => {
+        if (err) return error500(res, err)
+        else return res.status(200).json({"status": "Märket och dess filer borttagna."})
+    })
+})
+
+router.get('/chunks', (req, res) => {
+    console.log(conn.db.collection("fs.chunks").find().toArray((err, c) => {
+        return res.status(200).json(c)
+    }))
+})
+
+router.get('/files', (req, res) => {
+    gfs.files.find().toArray((err, chunks) => {
+        return res.status(200).json(chunks)
+    })
+})
+
+router.get('/files/size', (req, res) => {
+    gfs.files.find().toArray((err, chunks) => {
+        let size = chunks.map(c => c.length).reduce((a, b) => a + b, 0)
+        return res.status(200).json({size})
     })
 })
 

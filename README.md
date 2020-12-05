@@ -44,7 +44,7 @@ En login2-nyckel fås av systemansvarig (d-sys@d.kth.se)
 |-----------------------|---------------------------------------| --------------| ------------ |
 | MONGO_URL             | URL till mongodatabasen               | -             | mongodb://localhost:27017/damm |
 | LOGIN2_API_KEY        | Login2 API-nyckel                     | -             | - |
-| LOGIN2_API_URL        | URL till login2                       | -             | https://login.datasektionen.se |
+| LOGIN2_URL            | URL till login2                       | -             | https://login.datasektionen.se |
 | PLS_API_URL           | URL till pls                          | -             | https://pls.datasektionen.se/api |
 | NODE_ENV              | Om du kör i "production" eller "development". Antagligen "development" om du kör lokalt | - | development |
 | PORT                  | Port som servern körs på, måste förmodligen också ändras i package.json (för development) om du inte kör standard | 5000 | - |

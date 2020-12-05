@@ -50,8 +50,8 @@ router.get('/marke/id/:id', (req, res) => {
     Märke.findById(req.params.id)
     .populate('tags')
     .exec((err, data) => {
-        if (data === undefined) {
-            return error(res, 404, "Patch not found", err)
+        if (!data) {
+            return error(res, 404, "Patch not found", "")
         }
         if (err) {
             return error500(res, err)
@@ -62,19 +62,20 @@ router.get('/marke/id/:id', (req, res) => {
     })
 })
 
-router.get('/marken/tag/:id', (req, res) => {
+// Gets patches who has tag with specific id
+router.get('/marken/tag/id/:id', (req, res) => {
     const id = req.params.id
     console.log(id)
     Märke.find()
     .populate('tags')
     .exec((err, data) => {
-        if (data === undefined) {
-            return error(res, 404, "Patch not found", err)
+        if (!data) {
+            return error(res, 404, "Hittade inga märken", err)
         }
         if (err) {
             return error500(res, err)
         } else {
-            return res.status(200).send(data.filter(patch => patch.tags.filter(tag => tag._id.toString() === id).length !== 0))
+            return res.status(200).json(data.filter(patch => patch.tags.filter(tag => tag._id.toString() === id).length !== 0))
         }
     })
 })
@@ -98,8 +99,9 @@ router.get('/file/:filename', (req, res) => {
         // console.log(files)
         if (err) console.log(err)
         if (!files || files.length === 0) {
-            return error(res, 404, "File not found", err)
+            return error(res, 404, "File not found", "")
         }
+        console.log("PAST")
 
         var rs = gfs.createReadStream({
             filename: files[0].filename,

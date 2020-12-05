@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import "./FileUploader.css"
 
-const FileUploader = ({setFileCallback = () => {}, style= {}}) => {
+const FileUploader = ({text = "Ladda upp en bild på märket", setFileCallback = () => {}, style= {}}) => {
 
     const fileInput = React.useRef(null);
     const [hover, setHover] = useState(false)
@@ -80,7 +80,7 @@ const FileUploader = ({setFileCallback = () => {}, style= {}}) => {
                 :
                 <div>
                     <i className="fas fa-upload"></i>
-                    <div><b>Ladda upp en bild på märket</b></div>
+                    <div><b>{text}</b></div>
                     <div style={{color: "#757575"}}><b>Du kan dra och släppa en fil här</b></div>
                     {error && <div style={{color: "red"}}>{error}</div>}
                 </div>

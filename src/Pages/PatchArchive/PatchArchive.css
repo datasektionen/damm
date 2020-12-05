@@ -20,6 +20,11 @@
     transform: scale(1.03);
 }
 
+.märke:hover .hover{
+    width: inherit;
+    height: inherit;
+}
+
 .märke .hover {
     color: white;
     font-weight: bold;

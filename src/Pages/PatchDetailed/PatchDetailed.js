@@ -28,9 +28,9 @@ class PatchDetailed extends React.Component {
         console.log(this.props)
         const priceDisplay = _ => {
             const price = this.props.data.price
-            if (price !== PRICE_TYPES.FREE && price !== PRICE_TYPES.NOT_FOR_SALE && price !== PRICE_TYPES.UNKNOWN) {
-                return price + " SEK"
-            } else return price
+            if (price.type !== PRICE_TYPES.FREE && price.type !== PRICE_TYPES.NOT_FOR_SALE && price.type !== PRICE_TYPES.UNKNOWN) {
+                return price.value + " SEK"
+            } else return price.type
         }
 
         const hasPls = this.props.pls.includes("admin") || this.props.pls.includes("prylis")

@@ -12,6 +12,7 @@ export const MÄRKESARKIV = '/markesarkiv';
 export const MÄRKE = '/marke/:id'
 export const EVENT = '/event/:id'
 export const SKAPA_MÄRKE = '/admin/marke/skapa'
+export const REDIGERA_MÄRKE = '/admin/marke/redigera/:id'
 export const MÄRKESTAGGAR = '/admin/markestaggar/hantera'
 
 //API

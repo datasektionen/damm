@@ -148,11 +148,6 @@ const Table = ({events}) => {
                         <td style={event.accepted.status === true ? {color: "green"} : {color: "red"}}>{event.accepted.status === true ? "Godkänd" : "Ej behandlad"}</td>
                     </tr>
                 )}
-                {/* <tr>
-                    <td>Jill</td>
-                    <td>Smith</td>
-                    <td>50</td>
-                </tr> */}
             </tbody>
         </table>
     )

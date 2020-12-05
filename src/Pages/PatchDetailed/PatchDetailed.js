@@ -45,7 +45,7 @@ class PatchDetailed extends React.Component {
                             </a>
                             {this.props.pls.includes("admin") &&
                                 <div>
-                                    {this.props.pls.includes("admin") && <button className="adminedit">Redigera</button>}
+                                    {this.props.pls.includes("admin") && <button className="adminedit" onClick={_ => this.props.history.push(ROUTES.REDIGERA_MÄRKE.replace(/\:id/, this.props.data._id))}>Redigera</button>}
                                 </div>
                             }
                         </div>

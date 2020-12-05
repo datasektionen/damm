@@ -18,6 +18,7 @@ import AdminEvents from './Pages/Admin/AdminEvents'
 import ProtectedContent from './components/ProtectedContent'
 import EventDetailed from './Pages/CreateEvent/EventDetailed'
 import AdminProtected, {AdminPrylisProtected, PrylisAdminProtected} from './components/AdminProtected'
+import EditPatch from './Pages/Admin/EditPatch'
 
 class App extends Component {
   constructor(props) {
@@ -76,6 +77,7 @@ class App extends Component {
             <PatchDetailed {...this.props} {...this.state} {...match} /> 
           </ProtectedContent>} />
           <Route exact path={ROUTES.SKAPA_MÄRKE} render={match => <AdminPrylisProtected component={AdminPatch} {...this.props} {...this.state} />} />
+          <Route exact path={ROUTES.REDIGERA_MÄRKE} render={match => <AdminPrylisProtected component={EditPatch} {...this.props} {...this.state} {...match} />} />
           <Route exact path={ROUTES.MÄRKESTAGGAR} render={match => <AdminPrylisProtected component={AdminTags} {...this.props} {...this.state} />} />
           <Route exact path={ROUTES.SKAPA_HÄNDELSE} render={match => <CreateEvent {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.HANTERA_HÄNDELSER} render={match => <AdminProtected component={AdminEvents} {...this.props} {...this.state} /> } />

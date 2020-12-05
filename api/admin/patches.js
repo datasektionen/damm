@@ -22,6 +22,7 @@ let storage = GridFsStorage({
     url: process.env.MONGO_URL,
     file: (req, file) => {
         return {
+            // TODO: Prefix "patch" if patch image
             filename: uuid4()
         }
     },
@@ -71,22 +72,51 @@ router.post('/create', upload.single('file'), (req, res) => {
     })
 })
 
-// Filename, not including "/api/file/"
+router.get('/replace-image/id/:id', async (req, res) => {
+    const { id } = req.params
+    if (!id) return error(res, 400, "Inget id medskickat")
+    const patch = await Märke.findById(id)
+    if (!patch) return error(res, 404, "Märket hittades ej")
+
+    deleteFileAndChunks(patch.image.split("/api/file/")[1], (err, result) => {
+        if (err) return error500(res, err)
+    })
+
+    // TODO: UPLOAD IMAGE AND UPDATE PATCH OBJECT
+
+    console.log(patch)
+    return res.status(200).json(patch)
+})
+
+//filename, not including /api/file/
+const deleteFileAndChunks = async (filename, callback) => {
+    const fileObject = await gfs.files.findOne({ filename })
+    gfs.files.findOneAndDelete({ filename }, (err, docs) => {
+        if (err) return callback(err, null)
+        
+        console.log(`Deleted file with filename: ${filename}`)
+        
+        conn.db.collection("fs.chunks").deleteMany({ files_id: fileObject._id }, (err, result) => {
+            if (err) return callback(err, null)
+            else {
+                console.log(`Deleted ${result.deletedCount} chunk(s) belonging to file with filename: ${filename}`)
+                callback(null, result)
+            }
+        })
+    })
+}
+
+// Remove the patch and its belonging image
+// Filename of image, not including "/api/file/"
+// TODO: Create endpoint for removing by patch id
 router.get('/remove/filename/:filename', async (req, res) => {
     const { filename } = req.params
+    if (!filename) return error(res, 400, "Inget filnamn medskickat")
     const patch = await Märke.findOne({ image: `/api/file/${filename}` })
     if (!patch) return error(res, 404, "Märket finns ej")
 
-    const fileObject = await gfs.files.findOne({ filename })
-    // const chunks = await conn.db.collection("fs.chunks").find( {  files_id: fileObject._id } ).toArray()
-
-    gfs.files.findOneAndDelete({ filename }, (err, docs) => {
+    deleteFileAndChunks(filename, (err, _) => {
         if (err) return error500(res, err)
-        else console.log(`Deleted file with filename: ${filename}`)
-    })
-    conn.db.collection("fs.chunks").deleteMany({ files_id: fileObject._id }, (err, result) => {
-        if (err) return error500(res, err)
-        else console.log(`Deleted ${result.deletedCount} chunks belonging to file with filename: ${filename}`)
     })
 
     Märke.findOneAndDelete({ image: `/api/file/${filename}` }, (err, result) => {
@@ -96,9 +126,9 @@ router.get('/remove/filename/:filename', async (req, res) => {
 })
 
 router.get('/chunks', (req, res) => {
-    console.log(conn.db.collection("fs.chunks").find().toArray((err, c) => {
+    conn.db.collection("fs.chunks").find().toArray((err, c) => {
         return res.status(200).json(c)
-    }))
+    })
 })
 
 router.get('/files', (req, res) => {

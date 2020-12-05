@@ -101,7 +101,6 @@ router.get('/file/:filename', (req, res) => {
         if (!files || files.length === 0) {
             return error(res, 404, "File not found", "")
         }
-        console.log("PAST")
 
         var rs = gfs.createReadStream({
             filename: files[0].filename,

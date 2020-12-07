@@ -1,7 +1,7 @@
 import React from 'react'
 import moment from 'moment'
 
-const PatchDetailedAdminInfo = ({files = [], orders = []}) => {
+const PatchDetailedAdminView = ({files = [], orders = []}) => {
     return (
         <div className="patchadmincontent">
             <div className="col files">
@@ -32,4 +32,4 @@ const PatchDetailedAdminInfo = ({files = [], orders = []}) => {
         </div>
     )
 }
-export default PatchDetailedAdminInfo
+export default PatchDetailedAdminView

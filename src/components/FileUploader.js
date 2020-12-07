@@ -17,6 +17,7 @@ const FileUploader = ({text = "Ladda upp en bild på märket", setFileCallback =
 
     const reset = _ => {
         setFile(undefined)
+        setFileCallback(undefined, reset)
         setPreview("")
         setError("")
         setHover(false)
@@ -26,12 +27,12 @@ const FileUploader = ({text = "Ladda upp en bild på märket", setFileCallback =
         setHover(false)
         // Should check bytes of file, but can do it backend...
         if (file && file.type !== "image/jpeg" && file.type !== "image/png") {
-            setError("Ogiltig filtyp... Filen måste vara en bild")
+            setError("Ogiltig filtyp! Filen måste vara av .PNG- eller .JPG/.JPEG-format.")
             return
         }
         setError("")
-        // Ugly?? hack, sends the resend function the the parent component so that it can reset the state of this component
-        // When needed, ex on submition
+        // Sends the resend function the the parent component so that it can reset the state of this component
+        // When needed, ex on submission
         setFileCallback(file, reset)
         setFile(file)
         setPreview(URL.createObjectURL(file))
@@ -74,7 +75,7 @@ const FileUploader = ({text = "Ladda upp en bild på märket", setFileCallback =
 
                 file ?
                     <div>
-                        <div><img draggable="false" src={preview} /></div>
+                        <div><img alt="preview" draggable="false" src={preview} /></div>
                         <div style={{margin: "5px"}}>{file.name}</div>
                     </div>
                 :

@@ -11,14 +11,14 @@ import CreateEvent from './Pages/CreateEvent/CreateEvent'
 import Museum from './Pages/Museum/Museum'
 import PatchArchive from './Pages/PatchArchive/PatchArchive'
 import PatchDetailed from './Pages/PatchDetailed/PatchDetailed'
-import AdminPatch from './Pages/Admin/AdminPatch'
+import AdminPatchCreate from './Pages/Admin/AdminPatchCreate'
 import NotFound from './components/NotFound'
 import AdminTags from './Pages/Admin/AdminTags'
 import AdminEvents from './Pages/Admin/AdminEvents'
 import ProtectedContent from './components/ProtectedContent'
 import EventDetailed from './Pages/CreateEvent/EventDetailed'
 import AdminProtected, {AdminPrylisProtected, PrylisAdminProtected} from './components/AdminProtected'
-import EditPatch from './Pages/Admin/EditPatch'
+import AdminPatchEdit from './Pages/Admin/AdminPatchEdit'
 
 class App extends Component {
   constructor(props) {
@@ -76,8 +76,8 @@ class App extends Component {
           <Route exact path={ROUTES.MÄRKE} render={match => <ProtectedContent contentURL={`${ROUTES.API_GET_PATCH}${match.match.params.id}`}>
             <PatchDetailed {...this.props} {...this.state} {...match} /> 
           </ProtectedContent>} />
-          <Route exact path={ROUTES.SKAPA_MÄRKE} render={match => <AdminPrylisProtected component={AdminPatch} {...this.props} {...this.state} />} />
-          <Route exact path={ROUTES.REDIGERA_MÄRKE} render={match => <AdminPrylisProtected component={EditPatch} {...this.props} {...this.state} {...match} />} />
+          <Route exact path={ROUTES.SKAPA_MÄRKE} render={match => <AdminPrylisProtected component={AdminPatchCreate} {...this.props} {...this.state} />} />
+          <Route exact path={ROUTES.REDIGERA_MÄRKE} render={match => <AdminPrylisProtected component={AdminPatchEdit} {...this.props} {...this.state} {...match} />} />
           <Route exact path={ROUTES.MÄRKESTAGGAR} render={match => <AdminPrylisProtected component={AdminTags} {...this.props} {...this.state} />} />
           <Route exact path={ROUTES.SKAPA_HÄNDELSE} render={match => <CreateEvent {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.HANTERA_HÄNDELSER} render={match => <AdminProtected component={AdminEvents} {...this.props} {...this.state} /> } />

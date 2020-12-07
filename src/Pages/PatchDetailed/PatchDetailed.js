@@ -3,7 +3,7 @@ import * as ROUTES from '../../routes'
 import moment from 'moment'
 import './PatchDetailed.css'
 import Tag from '../../components/Tag'
-import PatchDetailedAdminInfo from './PatchDetailedAdminInfo'
+import PatchDetailedAdminView from './components/PatchDetailedAdminView'
 import { PRICE_TYPES } from '../../config/constants'
 
 class PatchDetailed extends React.Component {
@@ -71,7 +71,7 @@ class PatchDetailed extends React.Component {
                             </div>
                         </div>
                     </div>
-                    {hasPls && <PatchDetailedAdminInfo files={this.props.data.files} orders={this.props.data.orders} />}
+                    {hasPls && <PatchDetailedAdminView files={this.props.data.files} orders={this.props.data.orders} />}
                 </div>
             </div>
         )

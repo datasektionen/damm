@@ -56,7 +56,6 @@ router.get('/marke/id/:id', (req, res) => {
         if (err) {
             return error500(res, err)
         } else {
-            console.log(data)
             return res.status(200).send(data)
         }
     })

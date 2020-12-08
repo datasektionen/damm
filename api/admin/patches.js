@@ -58,10 +58,8 @@ conn.once('open', () => {
 let storage = GridFsStorage({
     url: process.env.MONGO_URL,
     file: (req, file) => {
-        console.log(file)
         return {
-            filename: "patch-" + uuid4(),
-            originalName: file.originalname
+            filename: "patch-image-" + uuid4()
         }
     },
     root: 'files',
@@ -77,7 +75,8 @@ let upload = multer({
     fileFilter: (req, file, callback) => {
         // TODO: VERY IMPORTANT: Check mimebytes of file to see if it really is an image
         // Right now you can rename an image to .png and fool the system. Is a secrity risk, however
-        // only admins can upload, but fix anyways.
+        // only admins can upload
+        // Update: doesn't seem to be possible in here, since "file" in here is just an object with metadata, can't read first bytes
 
         // TODO: Catch error and send back an error message. This works though.
         // When creating a patch: The error is caught in the hasFile middleware

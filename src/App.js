@@ -5,6 +5,7 @@ import * as ROUTES from './routes'
 
 import './App.css'
 
+import Home from './Pages/Home/Home'
 import Historia from './Pages/Historia/Historia'
 import Admin from './Pages/Admin/Admin'
 import CreateEvent from './Pages/CreateEvent/CreateEvent'
@@ -28,7 +29,8 @@ class App extends Component {
       pls: [],
       adminFetchDone: false,
       methoneLinks: [
-        <Link to={ROUTES.HOME}>Tidslinje</Link>,
+        <Link to={ROUTES.HOME}>Hem</Link>,
+        <Link to={ROUTES.TIDSLINJE}>Tidslinje</Link>,
         <Link to={ROUTES.MUSEUM}>Historiska artefakter</Link>,
         <Link to={ROUTES.MÄRKESARKIV}>Märkesarkiv</Link>,
         <Link to={ROUTES.SKAPA_HÄNDELSE}>Skapa händelse</Link>
@@ -70,7 +72,8 @@ class App extends Component {
         }} />
         <div className="MethoneSpan"></div>
         <Switch>
-          <Route exact path={ROUTES.HOME} render={match => <Historia {...this.props} {...this.state} /> } />
+          <Route exact path={ROUTES.HOME} render={match => <Home {...this.props} {...this.state} /> } />
+          <Route exact path={ROUTES.TIDSLINJE} render={match => <Historia {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.MUSEUM} render={match => <Museum {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.MÄRKESARKIV} render={match => <PatchArchive {...this.props} {...this.state} {...match}/> } />
           <Route exact path={ROUTES.MÄRKE} render={match => <ProtectedContent contentURL={`${ROUTES.API_GET_PATCH}${match.match.params.id}`}>

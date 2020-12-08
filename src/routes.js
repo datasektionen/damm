@@ -1,6 +1,7 @@
 export const TOKEN = '/token/:token'
 
 export const HOME = '/';
+export const TIDSLINJE = '/timeline';
 export const ADMIN = '/admin';
 export const MUSEUM = '/museum';
 export const SKAPA_HÄNDELSE = '/skapa/handelse';

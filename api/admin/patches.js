@@ -22,11 +22,10 @@ const hasFile = (req, res, next) => {
 }
 
 // Middleware that validates a patch name
-// TODO: Trim? Is done in model?
 const nameValidator = (req, res, next) => {
     const name = JSON.parse(req.body.name)
     if (!name) return error(res, 403, "Ingen namn angett.")
-    if (name.length < 1) return error(res, 403, "Namnet är för kort.")
+    if (name.trim().length < 1) return error(res, 403, "Namnet är för kort.")
     next()
 }
 
@@ -92,7 +91,7 @@ let upload = multer({
 //----------
 
 // Route for creating a patch. Takes data as formdata.
-router.post('/create', upload.single('file'), hasFile, nameValidator, priceValidator, (req, res) => {
+router.post('/create', upload.single('file'), hasFile, nameValidator, priceValidator, async (req, res) => {
     const body = {}
     Object.keys(req.body).forEach(key => {
         body[key] = JSON.parse(req.body[key])
@@ -100,19 +99,22 @@ router.post('/create', upload.single('file'), hasFile, nameValidator, priceValid
 
     const { name, description, date, price, orders, tags } = body
 
-    Märke.create({
-        name,
-        description,
-        date,
-        price,
-        // IF YOU CHANGE THIS, MAKE SURE TO CHANGE IN THE REMOVE FUNCTIONS ASWELL
-        image: "/api/file/" + req.file.filename,
-        orders,
-        tags
-    }, (marke) => {
-        console.log(marke)
-      res.json({"success":"true"})
-    })
+    try {
+        await Märke.create({
+            name,
+            description,
+            date,
+            price,
+            // IF YOU CHANGE THIS, MAKE SURE TO CHANGE IN THE REMOVE FUNCTIONS ASWELL
+            image: "/api/file/" + req.file.filename,
+            orders,
+            tags
+        })
+        return res.status(200).json({"success":"true"})
+    } catch(err) {
+        console.log(err)
+        return error500(res, err)
+    }
 })
 
 // Route to edit a patch

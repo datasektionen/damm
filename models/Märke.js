@@ -33,18 +33,23 @@ var markeSchema = new Schema({
 }, {timestamps: true})
 
 
-markeSchema.statics.create = function(x, callback) {
-    var märke = new this({
-        name: x.name,
-        description: x.description,
-        date: x.date,
-        image: x.image,
-        price: x.price,
-        tags: x.tags ? x.tags : [],
-        createdBy: x.createdBy,
-        orders: x.orders,
+markeSchema.statics.create = async function(x, callback) {
+    return new Promise((resolve, reject) => {
+        var märke = new this({
+            name: x.name,
+            description: x.description,
+            date: x.date,
+            image: x.image,
+            price: x.price,
+            tags: x.tags ? x.tags : [],
+            createdBy: x.createdBy,
+            orders: x.orders,
+        })
+
+        märke.save()
+        .then(resolve)
+        .catch(reject)
     })
-    märke.save().then(m => callback(m))
 }
 
 markeSchema.pre('save', function() {
@@ -53,6 +58,10 @@ markeSchema.pre('save', function() {
     // https://stackoverflow.com/questions/35948669/how-to-check-if-a-value-exists-in-an-object-using-javascript
     if (Object.values(PRICE_TYPES).indexOf(type) < 0) {
         type = PRICE_TYPES.UNKNOWN
+        this.price.value = ""
+    }
+    // Set price value to empty string if type is other than SET_PRICE
+    if (this.price.type !== PRICE_TYPES.SET_PRICE) {
         this.price.value = ""
     }
 })

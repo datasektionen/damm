@@ -38,34 +38,33 @@ var eventSchema = new Schema({
 })
 
 eventSchema.statics.createFromUgkthid = function(x, callback) {
-    console.log(x)
-    User.findOne({ugkthid: x.ugkthid})
-    .then(user => {
-        console.log(user)
-        if (user) {
-            const event = new this({
-                title: x.title,
-                content: x.content,
-                date: x.date,
-                template: x.template,
-                accepted: {
-                    status: false,
-                    accepted: undefined,
-                    user: undefined,
-                    date: undefined,
-                    comment: ""
-                },
-                author: {
-                    user: user._id,
-                    date: moment()
-                },
-                comment: x.comment,
-            })
+    return new Promise(async (resolve, reject) => {
 
-            event.save().then(m => callback(m))
-        } else {
-            callback("500: Error when creating event...")
-        }
+        const user = await User.findOne({ugkthid: x.ugkthid})
+        if (!user) return reject()
+
+        const event = new this({
+            title: x.title,
+            content: x.content,
+            date: x.date,
+            template: x.template,
+            accepted: {
+                status: false,
+                accepted: undefined,
+                user: undefined,
+                date: undefined,
+                comment: ""
+            },
+            author: {
+                user: user._id,
+                date: moment()
+            },
+            comment: x.comment,
+        })
+
+        event.save()
+        .then(resolve)
+        .catch(reject)
     })
 }
 

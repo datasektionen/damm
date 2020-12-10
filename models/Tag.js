@@ -19,18 +19,28 @@ var tagSchema = new Schema({
 }, {timestamps: true})
 
 tagSchema.statics.create = function(x, callback) {
-    var tag = new this({
-        text: x.text,
-        color: x.color,
-        backgroundColor: x.backgroundColor,
-        hoverText: x.hoverText,
+    return new Promise((resolve, reject) => {
+        var tag = new this({
+            text: x.text,
+            color: x.color,
+            backgroundColor: x.backgroundColor,
+            hoverText: x.hoverText,
+        })
+
+        tag.save()
+        .then(resolve)
+        .catch(reject)
     })
-    tag.save().then(tag => callback(tag))
 }
 
 tagSchema.statics.updateTag = function(_id, text, hoverText, color, backgroundColor, callback) {
-    Tag.updateOne({_id}, {$set: {text, hoverText, color, backgroundColor}}, (err, _) => {
-        callback(err)
+    return new Promise( async (resolve, reject) => {
+        try {
+            await Tag.updateOne({_id}, {$set: {text, hoverText, color, backgroundColor}})
+        } catch (err) {
+            return reject(err)
+        }
+        return resolve()
     })
 }
 

@@ -39,35 +39,38 @@ const doesExist = async (req, res, next) => {
     next()
 }
 
-router.post('/update', idMiddleware, checkName, doesExist, validColors, (req, res) => {
+router.post('/update', idMiddleware, checkName, doesExist, validColors, async (req, res) => {
     const {text, hoverText, color, backgroundColor, _id} = req.body
 
-    Tag.updateTag(_id, text, hoverText, color, backgroundColor, (err) => {
-        if (err) {
-            return error500(res, err)
-        }
-        return res.status(200).json({"status":"Updated tag successfully."})
-    })
+    try {
+        await Tag.updateTag(_id, text, hoverText, color, backgroundColor)
+    } catch (err) {
+        return error500(res, err)
+    }
+    return res.status(200).json({"status":"Updated tag successfully."})
 })
   
 router.post('/create', checkName, doesExist, validColors, async (req, res) => {
     const {text, hoverText, color, backgroundColor} = req.body
 
     console.log(req.body)
-    Tag.create({text, hoverText, color, backgroundColor}, (tag) => {
-        return res.json({"status":"success"})
-    })
+    try {
+        await Tag.create({text, hoverText, color, backgroundColor})
+    } catch (err) {
+        return error500(res, err)
+    }
+    return res.status(200).json({"status":"success"})
 })
   
-router.post('/delete', idMiddleware, (req, res) => {
+router.post('/delete', idMiddleware, async (req, res) => {
     const {_id} = req.body
 
-    console.log(req.body)
-    Tag.deleteOne({_id}, (err) => {
-        if (err) {
-            return error500(res, err)
-        } else return res.json({"status":"success"})
-    })
+    try {
+        await Tag.deleteOne({_id})
+    } catch (err) {
+        return error500(res, err)
+    }
+    return res.json({"status":"success"})
 })
 
 module.exports = router

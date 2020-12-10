@@ -110,11 +110,11 @@ router.post('/create', upload.single('file'), hasFile, nameValidator, priceValid
             orders,
             tags
         })
-        return res.status(200).json({"success":"true"})
     } catch(err) {
         console.log(err)
         return error500(res, err)
     }
+    return res.status(200).json({"success":"true"})
 })
 
 // Route to edit a patch

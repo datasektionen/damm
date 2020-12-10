@@ -18,30 +18,28 @@ router.post('/create', middlewares.hasToken,(req, res) => {
     //Get user info from provided token
     fetch(`${process.env.LOGIN2_URL}/verify/${token}.json?api_key=${process.env.LOGIN2_API_KEY}`)
     .then(x => x.json())
-    .then(json => {
+    .then(async (json) => {
         console.log(json)
 
         //Create event
-        Event.createFromUgkthid({
-            ugkthid: json.ugkthid,
-            title,
-            content: description,
-            date,
-            template,
-            comment
-        }, (event) => {
-            if (!event.error) {
-                return res.json({"message":"success"})
-            } else {
-                return error500(res)
-            }
-        })
+        try {
+            await Event.createFromUgkthid({
+                ugkthid: json.ugkthid,
+                title,
+                content: description,
+                date,
+                template,
+                comment
+            })
+            return res.json({"message":"success"})
+        } catch (err) {
+            return error500(res)
+        }
     })
     .catch(err => {
         console.log(err)
         return error(res, 403, "Invalid token.")
     })
-
 })
 
 router.get('/all', dauth.adminAuth, (req, res) => {

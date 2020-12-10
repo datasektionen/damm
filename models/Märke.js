@@ -33,7 +33,7 @@ var markeSchema = new Schema({
 }, {timestamps: true})
 
 
-markeSchema.statics.create = async function(x, callback) {
+markeSchema.statics.create = function(x, callback) {
     return new Promise((resolve, reject) => {
         var märke = new this({
             name: x.name,

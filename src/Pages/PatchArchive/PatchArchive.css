@@ -21,8 +21,8 @@
 }
 
 .märke:hover .hover{
-    width: inherit;
-    height: inherit;
+    width: 100%;
+    height: 100%;
 }
 
 .märke .hover {
@@ -230,6 +230,15 @@ div > .märken {
 }
 
 @media screen and (max-width: 600px) {
+
+    .märke:hover {
+        transform: none;
+    }
+    
+    .märke:hover .hover{
+        width: inherit;
+        height: inherit;
+    }
 
     .märke {
         width: 90%;

@@ -34,7 +34,7 @@ const AdminPatchView = ({
                 <form onSubmit={onSubmit}>
                     {rest.children}
                     <h3 id="obligatorisk">Bild på märket</h3>
-                    <h4>Ta en så bra bild av märket som möjligt. Skriv en lätt instruktion alternativt länka till en sida med instruktioner</h4>
+                    <h4>Ta en så bra bild av märket som möjligt.</h4>
                     <FileUploader style={{width: "100%"}} setFileCallback={setFileCallback}/>
                     <h3 id="obligatorisk">Namn</h3>
                     <input id="name" name="name" type="text" autoComplete="off" placeholder="Namn" value={name} onChange={handleChange} />

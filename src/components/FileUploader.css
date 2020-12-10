@@ -5,6 +5,7 @@
     padding: 20px;
     text-align: center;
     user-select: none;
+    background-color: white;
 }
 
 .FileUploader i.fa-upload {

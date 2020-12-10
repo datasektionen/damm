@@ -95,8 +95,8 @@ class AdminPatchCreate extends React.Component {
             }
         })
         .catch(err => {
-            console.log(err)
-            //TODO: Visa "något gick fel, försök igen"
+            window.scroll(0,0)
+            this.setState({error: err.toString(), submitting: false})
         })
         console.log("SUBMIT")
     }

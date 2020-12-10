@@ -26,6 +26,7 @@
 }
 
 .märke .hover {
+    overflow: hidden;
     color: white;
     font-weight: bold;
     width: inherit;

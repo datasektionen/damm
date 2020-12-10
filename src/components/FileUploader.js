@@ -57,10 +57,13 @@ const FileUploader = ({text = "Ladda upp en bild på märket", setFileCallback =
             className="FileUploader"
             onDrop={e => {handleDrop(e)}}
             onDropCapture={e => handleDrop(e)}
-            onDragOver={e => {e.preventDefault();setHover(true)}}
+            onDragOver={e => {
+                e.preventDefault()
+                setHover(true)}
+            }
             onDrag={e => setHover(true)}
-            onDragEnter={e => {setHover(true)}}
-            onDragLeave={e => {setHover(false)}}
+            onDragEnter={e => setHover(true)}
+            onDragLeave={e => setHover(false)}
             onClick={handleClick}
             style={!file ? {cursor: "pointer", ...style} : {...style}}
         >

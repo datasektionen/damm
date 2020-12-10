@@ -26,7 +26,7 @@ const Patch = ({image, date, name, description, numProduced = "?", tags = [], pr
             onTouchEnd={_ => setHovered(false)}
         >
             {hovered &&
-                <div className="hover">
+                <div className="hover" title="Klicka för detaljer">
                     <div className="tags">
                         {tags.length === 0 ?
                             "Inga taggar"
@@ -42,7 +42,9 @@ const Patch = ({image, date, name, description, numProduced = "?", tags = [], pr
                             )
                         }
                     </div>
-                    Klicka för detaljer
+                    <div>
+                        Klicka för detaljer
+                    </div>
                 </div>
             }
             <div className="image" style={{backgroundImage: `url(${image})`}}></div>

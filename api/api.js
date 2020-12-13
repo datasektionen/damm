@@ -40,6 +40,7 @@ router.get('/tags', (req, res) => {
 router.get('/marken', (req, res) => {
     Märke.find()
     .populate('tags')
+    .lean()
     .exec((err, data) => {
         if (err) return error500(res, err)
         return res.status(200).json(data)
@@ -67,6 +68,7 @@ router.get('/marken/tag/id/:id', (req, res) => {
     console.log(id)
     Märke.find()
     .populate('tags')
+    .lean()
     .exec((err, data) => {
         if (!data) {
             return error(res, 404, "Hittade inga märken", err)

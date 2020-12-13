@@ -46,6 +46,7 @@ router.get('/all', dauth.adminAuth, (req, res) => {
     Event.find()
     .populate('author.user')
     .populate('accepted.user')
+    .lean()
     .exec((err, events) => {
         if (err) {
             console.log(err)

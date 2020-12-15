@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import "./FileUploader.css"
 
-const FileUploader = ({text = "Ladda upp en bild på märket", setFileCallback = () => {}, style= {}}) => {
+const FileUploader = ({text = "Ladda upp en bild på märket", imageOnly = true, setFileCallback = () => {}, style= {}}) => {
 
     const fileInput = React.useRef(null);
     const [hover, setHover] = useState(false)
@@ -26,7 +26,7 @@ const FileUploader = ({text = "Ladda upp en bild på märket", setFileCallback =
     const handleFile = file => {
         setHover(false)
         // Should check bytes of file, but can do it backend...
-        if (file && file.type !== "image/jpeg" && file.type !== "image/png") {
+        if (file && imageOnly && file.type !== "image/jpeg" && file.type !== "image/png") {
             setError("Ogiltig filtyp! Filen måste vara av .PNG- eller .JPG/.JPEG-format.")
             return
         }
@@ -35,7 +35,7 @@ const FileUploader = ({text = "Ladda upp en bild på märket", setFileCallback =
         // When needed, ex on submission
         setFileCallback(file, reset)
         setFile(file)
-        setPreview(URL.createObjectURL(file))
+        if (file) setPreview(URL.createObjectURL(file))
     }
 
     const handleChange = e => {
@@ -78,7 +78,7 @@ const FileUploader = ({text = "Ladda upp en bild på märket", setFileCallback =
 
                 file ?
                     <div>
-                        <div><img alt="preview" draggable="false" src={preview} /></div>
+                        {imageOnly && <div><img alt="preview" draggable="false" src={preview} /></div>}
                         <div style={{margin: "5px"}}>{file.name}</div>
                     </div>
                 :

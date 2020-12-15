@@ -8,6 +8,7 @@ import { EVENT_TYPE_TO_STRING, EVENT_TYPES } from '../../config/constants'
 import * as ROUTES from '../../routes'
 
 const EventDetailed = ({data, ...rest}) => {
+    data = data[0]
     console.log(data)
     console.log(rest)
     const [localTitle, setLocalTitle] = useState(data.title)

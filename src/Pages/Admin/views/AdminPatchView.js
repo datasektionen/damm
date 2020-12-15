@@ -12,13 +12,14 @@ const AdminPatchView = ({
         name,
         description,
         date,
-        price,
-        tags,
+        price = {type: "", value: ""},
+        tags = [],
         handleChange,
         handleRadioChange,
         selectedTags,
         submitting,
         toggleTag,
+        setImageCallback,
         setFileCallback,
         ...rest
     }) => {
@@ -35,7 +36,7 @@ const AdminPatchView = ({
                     {rest.children}
                     <h3 id="obligatorisk">Bild på märket</h3>
                     <h4>Ta en så bra bild av märket som möjligt.</h4>
-                    <FileUploader style={{width: "100%"}} setFileCallback={setFileCallback}/>
+                    <FileUploader style={{width: "100%"}} setFileCallback={setImageCallback}/>
                     <h3 id="obligatorisk">Namn</h3>
                     <input id="name" name="name" type="text" autoComplete="off" placeholder="Namn" value={name} onChange={handleChange} />
                     <h3>Beskrivning</h3>
@@ -77,6 +78,13 @@ const AdminPatchView = ({
                             )}
                         </div>}
                     </div>
+                    <FileUploader
+                        text="Ladda upp tillhörande filer till märket"
+                        style={{width: "100%"}}
+                        setFileCallback={setFileCallback}
+                        imageOnly={false}
+                    />
+                    
                     {/* <div className="orders">
                         <h3>Ordrar</h3>
                         <h4>Ordernummer eller referensnummer från tidigare beställningar. För att underlätta framtida beställningar</h4>
@@ -89,7 +97,7 @@ const AdminPatchView = ({
                         {this.state.orders.map((x,i) => <div className="order" key={i}>{x.company} {x.order}<i class="fa fa-times" onClick={(e) => removeOrder(e, i)}></i></div>)}
                     </div> */}
                     <div className="BottomButtons">
-                        <button disabled={submitting} formAction="submit">Spara märke</button>
+                        <button disabled={submitting} formAction="submit">{submitting ? "Sparar märke..." : "Spara märke"}</button>
                         <button className="rensa" onClick={(e) => {
                             e.preventDefault();
                             onReset()

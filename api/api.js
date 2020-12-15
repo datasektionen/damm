@@ -37,31 +37,48 @@ router.get('/tags', (req, res) => {
     })
 })
   
-router.get('/marken', (req, res) => {
-    Märke.find()
-    .populate('tags')
-    .lean()
-    .exec((err, data) => {
-        if (err) return error500(res, err)
-        return res.status(200).json(data)
-    })
+router.get('/marken', async (req, res) => {
+    let getPatches
+
+    if (req.query.token) {
+        const pls = await dAuth.getPls(req.query.token)
+        if (pls.includes("admin") || pls.includes("prylis")) {
+            getPatches = Märke.getAllAdmin
+        } else getPatches = Märke.getAll
+    } else {
+        getPatches = Märke.getAll
+    }
+    
+    try {
+        const patches = await getPatches()
+        return res.status(200).json(patches)
+    } catch (err) {
+        return error500(res, err)
+    }
 })
   
-router.get('/marke/id/:id', (req, res) => {
-    Märke.findById(req.params.id)
-    .populate('tags')
-    .exec((err, data) => {
-        if (!data) {
-            return error(res, 404, "Patch not found", "")
-        }
-        if (err) {
-            return error500(res, err)
-        } else {
-            return res.status(200).send(data)
-        }
-    })
+router.get('/marke/id/:id', async (req, res) => {
+    let getPatch
+
+    if (req.query.token) {
+        const pls = await dAuth.getPls(req.query.token)
+        if (pls.includes("admin") || pls.includes("prylis")) {
+            getPatch = Märke.getByIdAdmin
+        } else getPatch = Märke.getById
+    } else {
+        getPatch = Märke.getById
+    }
+
+    try {
+        const patch = await getPatch(req.params.id)
+        if (!patch) return error(res, 404, "Patch not found")
+        return res.status(200).json(patch)
+    } catch (err) {
+        return error500(res, err)
+    }
 })
 
+// TODO: populate files for admin
 // Gets patches who has tag with specific id
 router.get('/marken/tag/id/:id', (req, res) => {
     const id = req.params.id
@@ -78,38 +95,6 @@ router.get('/marken/tag/id/:id', (req, res) => {
         } else {
             return res.status(200).json(data.filter(patch => patch.tags.filter(tag => tag._id.toString() === id).length !== 0))
         }
-    })
-})
-
-let Grid = require('gridfs-stream')
-const mongoose = require('mongoose')
-
-let conn = mongoose.connection
-var gfs
-conn.once('open', () => {
-    var mongoDriver = mongoose.mongo
-    gfs = new Grid(conn.db, mongoDriver)
-})
-
-router.get('/file/:filename', (req, res) => {
-    // console.log(req.params.filename)
-    // gfs.collection('fs.files')
-    // console.log(gfs.files.find())
-    gfs.files.find({filename: req.params.filename}).toArray((err, files) => {
-
-        // console.log(files)
-        if (err) console.log(err)
-        if (!files || files.length === 0) {
-            return error(res, 404, "File not found", "")
-        }
-
-        var rs = gfs.createReadStream({
-            filename: files[0].filename,
-            // root: 'files'
-        })
-
-        res.set('Content-Type', files[0].contentType)
-        return rs.pipe(res)
     })
 })
 

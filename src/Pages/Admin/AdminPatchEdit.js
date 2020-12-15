@@ -1,12 +1,11 @@
 import React from 'react'
 import Alert from '../../components/Alert'
-import FileUploader from '../../components/FileUploader'
-import TagClickable from '../../components/TagClickable'
 import * as ROUTES from '../../routes'
 import { PRICE_TYPES } from '../../config/constants'
 
 import './Admin.css'
 import AdminPatchView from './views/AdminPatchView'
+import { Link } from 'react-router-dom'
 
 class AdminPatchEdit extends React.Component {
     constructor(props) {
@@ -15,61 +14,52 @@ class AdminPatchEdit extends React.Component {
         this.state = {
             selectedTags: [],
             tags: [],
-            file: undefined,
-            resetFile: () => {},
+            imageFile: undefined,
+            files: [],
+            resetImage: () => {},
             success: "",
             error: "",
             radioValues: Object.values(PRICE_TYPES),
             price: {type: "", value: ""},
             original: {
                 image: ""
-            }
+            },
+            fetching: false
         }
 
         this.submit = this.submit.bind(this)
-        this.fetchPatch = this.fetchPatch.bind(this)
+        this.updateState = this.updateState.bind(this)
+    }
+
+    updateState() {
+        this.setState({
+            original: {...this.props.data[0]},
+            name: this.props.data[0].name,
+            description: this.props.data[0].description,
+            date: this.props.data[0].date,
+            image: this.props.data[0].image,
+            orders: this.props.data[0].orders,
+            price: this.props.data[0].price,
+            selectedTags: this.props.data[0].tags,
+            // All possible tags
+            tags: this.props.data[1]
+        })
     }
 
     componentDidMount() {
-        const fetchTags = _ => {
-            fetch(ROUTES.API_GET_TAGS)
-            .then(res => res.json())
-            .then(tags => {
-                this.setState({tags})
-            })
-            .catch(err => {
-
-            })
-        }
-        
-        this.fetchPatch()
-        fetchTags()
+        this.updateState()
     }
 
-    fetchPatch() {
-        fetch(`${ROUTES.API_GET_PATCH}${this.props.match.params.id}`)
-        .then(res => res.json())
-        .then(json => {
-            this.setState({
-                original: {...json},
-                name: json.name,
-                description: json.description,
-                date: json.date,
-                image: json.image,
-                orders: json.orders,
-                price: json.price,
-                selectedTags: json.tags
-            })
-        })
-        .catch(err => {
-
-        })
+    componentDidUpdate(prev) {
+        if (this.props.data[0] !== prev.data[0]) {
+            this.updateState()
+        }
     }
 
     submit(e) {
         e.preventDefault()
         const {name, description, date, selectedTags, orders, price} = this.state
-
+        this.setState({fetching: true})
         const body = {
             name,
             description,
@@ -87,8 +77,8 @@ class AdminPatchEdit extends React.Component {
             formData.append(key, JSON.stringify(body[key]))
         })
 
-        formData.append("file", this.state.file)
-        // data.append("body", JSON.stringify({name, description, date, orders, price: {type: price.type, value: price.value}, tags: selectedTags}))
+        if (this.state.imageFile) formData.append("image", this.state.imageFile)
+        if (this.state.files.length > 0) this.state.files.forEach(file => formData.append("files", file))
 
         fetch(`${ROUTES.API_EDIT_PATCH.replace(/\:id/, this.state.original._id)}?token=${localStorage.getItem("token")}`, {
             method: "POST",
@@ -97,16 +87,20 @@ class AdminPatchEdit extends React.Component {
         .then(res => res.json())
         .then(json => {
             console.log(json)
+            this.setState({fetching: false})
             window.scrollTo(0, 0)
             if (!json.error) {
-                this.fetchPatch()
-                this.state.resetFile()
-                this.setState({success: json.status})
+                this.props.fetchData()
+                this.state.resetImage()
+                this.setState({success: json.status, error: ""})
             } else {
-                this.setState({error: json.error})
+                this.setState({error: json.error, success: ""})
             }
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            this.setState({fetching: false})
+            this.setState({error: err.error, success: ""})
+        })
     }
 
     render() {
@@ -120,9 +114,9 @@ class AdminPatchEdit extends React.Component {
                 orders: this.state.original.orders,
                 price: this.state.original.price,
                 selectedTags: this.state.original.tags,
-                file: undefined
+                imageFile: undefined
             })
-            this.state.resetFile()
+            this.state.resetImage()
             window.scrollTo(0,0)
         }
 
@@ -162,17 +156,21 @@ class AdminPatchEdit extends React.Component {
                 selectedTags={this.state.selectedTags}
                 handleChange={handleChange}
                 handleRadioChange={handleRadioChange}
-                submitting={false}
+                submitting={this.state.fetching}
                 toggleTag={tag => {
                     // If tag is not in selectedTags array, add the tag
                     // Else remove it
                     if (this.state.selectedTags.filter(t => t._id === tag._id).length === 0) this.setState({selectedTags: this.state.selectedTags.concat(tag)})
                     else this.setState({selectedTags: this.state.selectedTags.filter(t => t._id !== tag._id)})
                 }}
-                setFileCallback={(file, resetFile) => this.setState({file: file, resetFile})}
+                setImageCallback={(image, resetImage) => this.setState({imageFile: image, resetImage})}
+                setFileCallback={(file, resetFile) => this.setState({files: this.state.files.concat(file)})}
                 >
                     {this.state.success && <Alert type="success">Märket sparat!</Alert>}
                     {this.state.error && <Alert type="error">{this.state.error}</Alert>}
+                    <div style={{padding: "10px"}}>
+                        <Link to={ROUTES.MÄRKE.replace(/\:id/, this.state.original._id)}>Tillbaka</Link>
+                    </div>
                     <img draggable="false" src={this.state.image} style={{maxHeight: "200px", maxWidth: "100%"}}/>
             </AdminPatchView>
         )

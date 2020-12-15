@@ -5,7 +5,7 @@ import { PRICE_TYPES } from '../../../config/constants'
 import * as ROUTES from '../../../routes'
 
 // Component that displays a patch.
-const Patch = ({image, date, name, description, numProduced = "?", tags = [], price, ...rest}) => {
+const Patch = ({image, date, name, description, numProduced = "?", tags = [], price, produced = 0, ...rest}) => {
 
     const [hovered, setHovered] = useState(false)
     let displayPrice
@@ -54,6 +54,9 @@ const Patch = ({image, date, name, description, numProduced = "?", tags = [], pr
                     title="Utgivningsdatum (första utgåvan)"
                 >
                     <div><i className="far fa-clock"></i> {date ? moment(date).format("D MMM YYYY") : "Okänt"}</div>
+                </div>
+                <div className="produced">
+                    <div><i className="fas fa-hashtag"></i> {produced} st</div>
                 </div>
                 <div
                     className="price"

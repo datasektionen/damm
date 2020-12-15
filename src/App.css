@@ -51,7 +51,7 @@ time.Year {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-right: 50px;
+  /* padding-right: 50px; */
 }
 .Header h1, .Header h2 {
   margin: 0;
@@ -651,4 +651,14 @@ textarea {
   max-width: 100%;
   height: 150px;
   box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.1);
+}
+
+i.fa-trash {
+  color: rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+i.fa-trash:hover {
+  color: rgb(0,0,0,0.8);
+  transform: scale(1.1);
 }

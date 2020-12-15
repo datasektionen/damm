@@ -60,7 +60,7 @@
     font-weight: 300;
     background: #e83d84;
     color: #fff;
-    min-width: 50%;
+    min-width: 40%;
     height: 50px;
     display: inline-block;
     text-align: center;
@@ -72,10 +72,10 @@
     justify-content: center;
 }
 
-/* .märke .head .produced {
+.märke .head .produced {
     font-weight: 300;
     background: #E5C100;
-    min-width: 33.33%;
+    min-width: 30%;
     height: 50px;
     display: inline-block;
     text-align: center;
@@ -85,14 +85,14 @@
     flex-flow: column wrap;
     align-items: center;
     justify-content: center;
-} */
+}
 
 .märke .head .price {
     font-weight: 300;
     /* background: #278032;
     color: #fff; */
-    background: #E5C100;
-    min-width: 50%;
+    background: #8BC34A;
+    min-width: 30%;
     height: 50px;
     display: inline-block;
     text-align: center;

@@ -5,6 +5,7 @@ import Alert from '../../components/Alert'
 
 const INITIAL_STATE = {
     image: undefined,
+    files: [],
     resetFile: () => {},
     selectedTags: [],
     name: "",
@@ -54,7 +55,7 @@ class AdminPatchCreate extends React.Component {
 
         this.setState({success: false, submitting: true})
 
-        const {name, description, date, selectedTags, orders, price, image} = this.state
+        const {name, description, date, selectedTags, orders, price, image, files} = this.state
 
         const body = {
             name,
@@ -73,8 +74,11 @@ class AdminPatchCreate extends React.Component {
         Object.keys(body).forEach(key => {
             formData.append(key, JSON.stringify(body[key]))
         })
-
-        formData.append('file', image)
+        console.log(formData)
+        formData.append('image', image)
+        files.forEach(file => {
+            formData.append('files', file)
+        })
 
         fetch(`${window.location.origin}${ROUTES.API_CREATE_PATCH}?token=${localStorage.getItem('token')}`, {
             method: "POST",
@@ -166,7 +170,8 @@ class AdminPatchCreate extends React.Component {
                     if (this.state.selectedTags.filter(t => t._id === tag._id).length === 0) this.setState({selectedTags: this.state.selectedTags.concat(tag)})
                     else this.setState({selectedTags: this.state.selectedTags.filter(t => t._id !== tag._id)})
                 }}
-                setFileCallback={(file, resetFile) => this.setState({image: file, resetFile})}
+                setImageCallback={(image, resetFile) => this.setState({image, resetFile})}
+                setFileCallback={(file, resetFile) => this.setState({files: this.state.files.concat(file)})}
             >
                 {this.state.success && <Alert type="success">Märket sparat!</Alert>}
                 {this.state.error && <Alert type="error">{this.state.error}</Alert>}

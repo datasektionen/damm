@@ -76,16 +76,19 @@ class App extends Component {
           <Route exact path={ROUTES.TIDSLINJE} render={match => <Historia {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.MUSEUM} render={match => <Museum {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.MÄRKESARKIV} render={match => <PatchArchive {...this.props} {...this.state} {...match}/> } />
-          <Route exact path={ROUTES.MÄRKE} render={match => <ProtectedContent contentURL={`${ROUTES.API_GET_PATCH}${match.match.params.id}`}>
+          <Route exact path={ROUTES.MÄRKE} render={match => <ProtectedContent allowNoLogin={true} contentURL={[`${ROUTES.API_GET_PATCH}${match.match.params.id}?token=${localStorage.getItem("token") ? localStorage.getItem("token") : ""}`]}>
             <PatchDetailed {...this.props} {...this.state} {...match} /> 
           </ProtectedContent>} />
           <Route exact path={ROUTES.SKAPA_MÄRKE} render={match => <AdminPrylisProtected component={AdminPatchCreate} {...this.props} {...this.state} />} />
-          <Route exact path={ROUTES.REDIGERA_MÄRKE} render={match => <AdminPrylisProtected component={AdminPatchEdit} {...this.props} {...this.state} {...match} />} />
+          {/* <Route exact path={ROUTES.REDIGERA_MÄRKE} render={match => <AdminPrylisProtected component={AdminPatchEdit} {...this.props} {...this.state} {...match} />} /> */}
+          <Route exact path={ROUTES.REDIGERA_MÄRKE} render={match => <ProtectedContent contentURL={[`${ROUTES.API_GET_PATCH}${match.match.params.id}`, ROUTES.API_GET_TAGS]}>
+            <AdminPatchEdit />
+          </ProtectedContent>} />
           <Route exact path={ROUTES.MÄRKESTAGGAR} render={match => <AdminPrylisProtected component={AdminTags} {...this.props} {...this.state} />} />
           <Route exact path={ROUTES.SKAPA_HÄNDELSE} render={match => <CreateEvent {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.HANTERA_HÄNDELSER} render={match => <AdminProtected component={AdminEvents} {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.EVENT} render={match =>
-            <ProtectedContent contentURL={`${ROUTES.API_GET_EVENT}/${match.match.params.id}?token=${localStorage.getItem("token" || "")}`}>
+            <ProtectedContent contentURL={[`${ROUTES.API_GET_EVENT}/${match.match.params.id}?token=${localStorage.getItem("token" || "")}`]}>
               <EventDetailed {...this.props} {...this.state} {...match}/>
             </ProtectedContent>}
           />

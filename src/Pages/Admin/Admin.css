@@ -8,7 +8,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    /* padding-right: 50px; */
+    padding-right: 0px;
 }
 
 .Admin .Header h2,
@@ -314,12 +314,6 @@
     font-size: 2em;
     position: relative;
     top: 5px;
-    cursor: pointer;
-    color: rgba(0, 0, 0, 0.3);
-}
-
-.Admin .Tags .content .buttons i.fa-trash:hover {
-    color: rgb(0,0,0,0.8)
 }
 
 .Admin .Body {
@@ -433,6 +427,7 @@
     .Admin .Header {
         display: flex;
         flex-direction: column;
+        padding-right: 0px;
     }
 
     .Admin .Tags {

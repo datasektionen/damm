@@ -5,6 +5,7 @@ const Event = require('../models/Event')
 const {error, error500} = require('../util/error')
 const middlewares = require('../util/middlewares')
 const dauth = require('../dauth')
+const mongoose = require('mongoose')
 
 router.post('/create', middlewares.hasToken,(req, res) => {
     const token = req.query.token
@@ -58,6 +59,8 @@ router.get('/all', dauth.adminAuth, (req, res) => {
 
 router.get('/id/:id', dauth.adminAuth, (req, res) => {
     const id = req.params.id
+
+    if (!mongoose.isValidObjectId(id)) return error(res, 404, "Event not found")
 
     Event.findById(id)
     .populate('author.user')

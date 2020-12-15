@@ -24,7 +24,9 @@
 }
 
 .MarkeInfo .patch .patchimg img {
-    width: 300px;
+    /* width: 300px; */
+    max-width: 400px;
+    max-height: 400px;
     cursor: pointer;
 }
 
@@ -132,7 +134,8 @@
 
 
 .MarkeInfo .patch .patchadmincontent .col.files{
-    width: 30%;
+    /* width: 50%; */
+    max-width: 430px;
 }
 
 .MarkeInfo .patch .patchadmincontent .col {

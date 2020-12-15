@@ -159,11 +159,11 @@ class PatchArchive extends React.Component {
 
             if (sortRule === this.state.sortOptions[3].value) {
                 return [...this.state.märken].sort((a, b) => {
-                    let A = a.price.toLowerCase()
-                    let B = b.price.toLowerCase()
+                    let A = a.price.value.toLowerCase()
+                    let B = b.price.value.toLowerCase()
                     // Puts free first
-                    if (B === PRICE_TYPES.FREE.toLowerCase()) {
-                        B = "0"
+                    if (b.price.type !== PRICE_TYPES.SET_PRICE) {
+                        B = 0
                     }
                     if (A < B) return -1
                     if (A > B) return 1
@@ -173,10 +173,10 @@ class PatchArchive extends React.Component {
 
             if (sortRule === this.state.sortOptions[4].value) {
                 return [...this.state.märken].sort((a, b) => {
-                    let A = a.price.toLowerCase()
-                    let B = b.price.toLowerCase()
+                    let A = a.price.value.toLowerCase()
+                    let B = b.price.value.toLowerCase()
                     // Puts free last
-                    if (B === PRICE_TYPES.FREE.toLowerCase()) {
+                    if (b.price.type !== PRICE_TYPES.SET_PRICE) {
                         B = 0
                     }
                     if (A > B) return -1

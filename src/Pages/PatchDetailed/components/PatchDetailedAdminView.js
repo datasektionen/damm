@@ -1,12 +1,21 @@
 import React from 'react'
 import moment from 'moment'
 
-const PatchDetailedAdminView = ({files = [], orders = []}) => {
+const PatchDetailedAdminView = ({files = [], orders = [], removeFile}) => {
     return (
         <div className="patchadmincontent">
             <div className="col files">
                 <h4><b>Filer</b></h4>
-                {files.map((file,i) => <div key={"file-"+i} className="file"><i className="far fa-file"></i><a href={file.url} target="_blank" rel="noopener noreferrer">{file.name}</a></div>)}
+                {files.map((file,i) =>
+                    <div
+                        key={"file-"+i}
+                        className="file"
+                    >
+                        <i className="fas fa-trash" onClick={_ => removeFile(file.url)}/>
+                        {" "}
+                        <a href={file.url} target="_blank" rel="noopener noreferrer"> {file.name}</a>
+                    </div>
+                )}
             </div>
             <div className="col">
                 <h4><b>Beställningar</b></h4>

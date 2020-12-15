@@ -9,7 +9,7 @@ const error = (res, code = 500, message = "", err = "") => {
 }
 
 const error500 = (res, err = "") => {
-    error(res, 500, "Something went wrong", err)
+    error(res, 500, "Something went wrong.", err)
 }
 
 module.exports = {

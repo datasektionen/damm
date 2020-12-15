@@ -2,10 +2,12 @@ var express = require('express')
 var router = express.Router()
 const dauth = require('../../dauth')
 const Märke = require('../../models/Märke')
+const FileLink = require('../../models/FileLink')
 const mongoose = require('mongoose')
 const uuid4 = require('uuid4')
 const {error, error500} = require('../../util/error')
 const { PRICE_TYPES } = require('../../src/config/constants')
+const constants = require('../../util/constants')
 
 let multer = require('multer')
 let GridFsStorage = require('multer-gridfs-storage')
@@ -15,9 +17,9 @@ let Grid = require('gridfs-stream')
 // ALL routes on this route use this one
 router.use(dauth.patchesAuth)
 
-// Middleware that checks if the request contains a file, specifically "req.file"
-const hasFile = (req, res, next) => {
-    if (!req.file) return error(res, 403, "Ingen fil medskickad.")
+// Middleware that checks if the request contains an image
+const hasImage = (req, res, next) => {
+    if (!req.files.image) return error(res, 403, "Ingen fil medskickad.")
     next()
 }
 
@@ -57,7 +59,10 @@ conn.once('open', () => {
 let storage = GridFsStorage({
     url: process.env.MONGO_URL,
     file: (req, file) => {
-        return {
+        if (file.fieldname === "files") return {
+            filename: "patch-file-" + uuid4()
+        }
+        else return {
             filename: "patch-image-" + uuid4()
         }
     },
@@ -76,7 +81,9 @@ let upload = multer({
         // Right now you can rename an image to .png and fool the system. Is a secrity risk, however
         // only admins can upload
         // Update: doesn't seem to be possible in here, since "file" in here is just an object with metadata, can't read first bytes
-
+        
+        // Not the patch image, allow all files
+        if (file.fieldname === "files") return callback(null, true)
         // TODO: Catch error and send back an error message. This works though.
         // When creating a patch: The error is caught in the hasFile middleware
         // When editing, there is no need to send a file (if we don't want to replace image). If you therefore
@@ -90,8 +97,10 @@ let upload = multer({
 })
 //----------
 
+const patchFiles = upload.fields([{ name: "image", maxCount: 1 }, { name: "files", maxCount: 10 },])
+
 // Route for creating a patch. Takes data as formdata.
-router.post('/create', upload.single('file'), hasFile, nameValidator, priceValidator, async (req, res) => {
+router.post('/create', patchFiles, hasImage, nameValidator, priceValidator, async (req, res) => {
     const body = {}
     Object.keys(req.body).forEach(key => {
         body[key] = JSON.parse(req.body[key])
@@ -100,15 +109,17 @@ router.post('/create', upload.single('file'), hasFile, nameValidator, priceValid
     const { name, description, date, price, orders, tags } = body
 
     try {
+        const fileObjects = await createFileLinks(req.files.files)
+        
         await Märke.create({
             name,
             description,
             date,
             price,
-            // IF YOU CHANGE THIS, MAKE SURE TO CHANGE IN THE REMOVE FUNCTIONS ASWELL
-            image: "/api/file/" + req.file.filename,
+            image: constants.createFileURL(req.files.image[0].filename),
             orders,
-            tags
+            tags,
+            files: fileObjects.map(x => x._id)
         })
     } catch(err) {
         console.log(err)
@@ -118,19 +129,24 @@ router.post('/create', upload.single('file'), hasFile, nameValidator, priceValid
 })
 
 // Route to edit a patch
-router.post('/edit/id/:id', upload.single('file'), nameValidator, priceValidator, async (req, res) => {
+router.post('/edit/id/:id', patchFiles, nameValidator, priceValidator, async (req, res) => {
     const body = {}
+    console.log(req.body)
     Object.keys(req.body).forEach(key => {
-        // If file, it will try to parse 'undefined' which is not valid JSON, throws big error
-        if (key === "file") return
         body[key] = JSON.parse(req.body[key])
     })
+
+    console.log(req.files)
 
     const { id } = req.params
 
     try {
         const patch = await Märke.findByIdAndUpdate(id, {$set: {...body}})
-        if (req.file) await replaceFileAndUpdatePatch(patch, req.file.filename)
+        if (req.files.image) await replaceImageAndUpdatePatch(patch, req.files.image[0].filename)
+        if (req.files.files) {
+            const fileObjects = await createFileLinks(req.files.files)
+            await Märke.findByIdAndUpdate(id, {$push: {files: fileObjects.map(x => x._id)}})
+        }
     } catch (err) {
         console.log(err)
         return error500(res, err)
@@ -140,7 +156,7 @@ router.post('/edit/id/:id', upload.single('file'), nameValidator, priceValidator
 })
 
 // Replaces the image file of a patch and removes the old one.
-router.post('/replace-image/id/:id', upload.single('file'), hasFile, async (req, res) => {
+router.post('/replace-image/id/:id', upload.single('image'), hasImage, async (req, res) => {
     const { id } = req.params
     if (!id) return error(res, 400, "Inget id medskickat")
 
@@ -148,7 +164,7 @@ router.post('/replace-image/id/:id', upload.single('file'), hasFile, async (req,
     if (!patch) return error(res, 404, "Märket hittades ej")
     console.log(patch)
     try {
-        await replaceFileAndUpdatePatch(patch, req.file.filename)
+        await replaceImageAndUpdatePatch(patch, req.file.filename)
     } catch (err) {
         console.log(err)
         return error500(res, err)
@@ -159,16 +175,35 @@ router.post('/replace-image/id/:id', upload.single('file'), hasFile, async (req,
 
 // Function that replaces a file of a patch
 // Removes the old file from the database (deletes it) and inserts a new link to the file into the patch model
-const replaceFileAndUpdatePatch = async (patch, filename) => {
+const replaceImageAndUpdatePatch = async (patch, filename) => {
     return new Promise(async (resolve, reject) => {
         try {
-            await deleteFileAndChunks(patch.image.split("/api/file/")[1])
-            await Märke.findByIdAndUpdate(patch._id, {$set: {image: `/api/file/${filename}`}})
+            await deleteFileAndChunks(patch.image.split(constants.FILE_ROUTE + "/")[1])
+            console.log(patch.image.split(constants.FILE_ROUTE + "/"))
+            await Märke.findByIdAndUpdate(patch._id, {$set: {image: constants.createFileURL(filename)}})
             resolve()
         } catch (err) {
             return reject(err)
         }
     })
+}
+
+const createFileLinks = async (files = []) => {
+    return await Promise.all(
+        files === undefined ? []
+        :
+        files.map(file => {
+            return new Promise((resolve, reject) => {
+                console.log(file)
+                const f = new FileLink({ name: file.originalname, url: constants.createFileURL(file.filename) })
+                f.save()
+                .then(x => {
+                    resolve(x)
+                })
+                .catch(reject)
+            })
+        })
+    )
 }
 
 // Function that removes a file from the file database.
@@ -189,68 +224,46 @@ const deleteFileAndChunks = async (filename) => {
     })
 }
 
-// Removes a patch AND its belonging image file by patch id
+// Removes a patch, its image and its files by patch id
 router.get('/remove/id/:id', async (req, res) => {
     const { id } = req.params
     if (!id) return error(res, 400, "Inget id medskickat")
     const patch = await Märke.findById(id)
     if (!patch) return error(res, 404, "Märket finns ej")
 
-    const filename = patch.image.split("/api/file/")[1]
+    const filename = patch.image.split(constants.FILE_ROUTE + "/")[1]
 
     try {
         await deleteFileAndChunks(filename)
-        await Märke.findOneAndDelete({ image: `/api/file/${filename}` })
-    } catch (err) {
-        console.log(err)
-        return error500(res, err)
-    }
-
-    return res.status(200).json({"status": "Märket och dess filer borttagna."})
-})
-
-// Remove the patch AND its belonging image by a filename
-// Filename of image, not including "/api/file/"
-router.get('/remove/filename/:filename', async (req, res) => {
-    const { filename } = req.params
-    if (!filename) return error(res, 400, "Inget filnamn medskickat")
-    const patch = await Märke.findOne({ image: `/api/file/${filename}` })
-    if (!patch) return error(res, 404, "Märket finns ej")
-
-    try {
-        await deleteFileAndChunks(filename)
-        await Märke.findOneAndDelete({ image: `/api/file/${filename}` })
-    } catch (err) {
-        console.log(err)
-        return error500(res, err)
-    }
-
-    return res.status(200).json({"status": "Märket och dess filer borttagna."})
-})
-
-router.get('/chunks', (req, res) => {
-    conn.db.collection("fs.chunks").find().toArray((err, c) => {
-        return res.status(200).json(c)
-    })
-})
-
-router.get('/files', (req, res) => {
-    gfs.files.find().toArray((err, files) => {
-        return res.status(200).json(files)
-    })
-})
-
-// Gets the combined size of all files.
-router.get('/files/size', (req, res) => {
-    gfs.files.find().toArray((err, chunks) => {
-        let size = chunks.map(c => c.length).reduce((a, b) => a + b, 0)
-        return res.status(200).json({
-            bytes: size,
-            kilobytes: size/1024,
-            megabytes: size/(1024*1024),
-            gigabytes: size/(1024*1024*1024),
+        const patch = await Märke.findOneAndDelete({ image: constants.createFileURL(filename) }).populate("files").lean()
+        patch.files.forEach(async (file) => {
+            FileLink.deleteOne({_id: file._id})
+            deleteFileAndChunks(constants.URLToFilename(file.url))
         })
-    })
+    } catch (err) {
+        console.log(err)
+        return error500(res, err)
+    }
+
+    return res.status(200).json({"status": "Märket och dess filer borttagna."})
+})
+
+// Removes a file from a patch (not image)
+router.get('/remove/file/:filename', async (req, res) => {
+    const { filename } = req.params
+
+    try {
+        const file = await FileLink.find({ url: constants.createFileURL(filename) }).lean()
+        if (!file) return error(res, 404, "File not found.")
+
+        await FileLink.deleteOne({url: constants.createFileURL(filename)})
+        await deleteFileAndChunks(filename)
+        return res.status(200).json({"status":"Removed file from patch"})
+
+    } catch (err) {
+        console.log(err)
+        return error500(res, err)
+    }
 })
 
 module.exports = router

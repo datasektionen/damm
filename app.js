@@ -16,11 +16,15 @@ const database = require('./adapters/database')
 const {error} = require('./util/error')
 
 
+const constants = require('./util/constants')
+
 const dAuth = require('./dauth')
 const api = require('./api/api')
 const adminTags = require('./api/admin/tags')
 const adminPatches = require('./api/admin/patches')
 const adminEvents = require('./api/admin/events')
+const files = require('./api/file')
+const adminFiles = require('./api/admin/files')
 
 const bodyParser = require('body-parser')
 
@@ -98,6 +102,8 @@ app.get('/fuzzyfile', (req, res) => res.json(JSON.parse(fuzzyfile)))
 app.use('/api/admin/tag', adminTags)
 app.use('/api/admin/marke', adminPatches)
 app.use('/api/admin/event', adminEvents)
+app.use(constants.FILE_ROUTE, files)
+app.use('/api/admin/files', adminFiles)
 app.use('/api', api)
 
 // console.log(`${__dirname}/build/index.html`)

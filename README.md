@@ -48,19 +48,26 @@ En login2-nyckel fås av systemansvarig (d-sys@d.kth.se)
 | PLS_API_URL           | URL till pls                          | -             | https://pls.datasektionen.se/api |
 | NODE_ENV              | Om du kör i "production" eller "development". Antagligen "development" om du kör lokalt | - | development |
 | PORT                  | Port som servern körs på, måste förmodligen också ändras i package.json (för development) om du inte kör standard | 5000 | - |
+
+### I client/
+| Variable              | Description                           | Standardvärde | Exempelvärde |
+|-----------------------|---------------------------------------| --------------| ------------ |
 | HOST                  | När du utvecklar damm lokalt och inte kör login lokalt måste du ange detta som `localhost.datasektionen.se`, annars får du dels `Invalid host header` samt att login kommer neka din callback eftersom `localhost` inte är en subdomän till datasektionen. | -             | - |
 
 ## Testning/lokalt
+
+Kör ```npm install``` i roten så kommer den automatiskt köra ```npm install``` i både client och server.
+
 ### Server
 Det finns två alternativ:
 
-1. Kör ```npm run dev``` i ett terminalfönster så startar servern(på port 5000 om inget annat anges). Detta kräver att du har nodemon, kör ```npm install -g nodemon``` om du ej har det installerat. Nodemon gör att servern automatiskt kommer starta om när du gör ändringar i koden.
+1. Kör ```npm run dev:server``` från ```/``` i ett terminalfönster så startar servern (på port 5000 om inget annat anges). Detta kräver att du har nodemon, kör ```npm install -g nodemon``` om du ej har det installerat. Nodemon gör att servern automatiskt kommer starta om när du gör ändringar i koden.
 
-2. Kör ```npm run start-server``` i ett terminalfönster så startar servern (på port 5000 om inget annat anges). Du måste döda processen och köra om kommandot för att dina ändringar ska köras.
+2. Kör ```npm start``` från ```server/``` i ett terminalfönster så startar servern (på port 5000 om inget annat anges). Du måste döda processen och köra om kommandot för att dina ändringar ska köras.
 
 ### Klient
-Kör ```npm run start-client``` i ett annat terminalfönster så startar klienten (på port 3000 om inget annat anges). React kommer automatiskt uppdatera när du gör ändringar i koden.
+Kör ```npm run dev:client``` från ```/``` i ett annat terminalfönster så startar klienten (på port 3000 om inget annat anges). React kommer automatiskt uppdatera när du gör ändringar i koden.
 
 ## Produktion
-Kör ```npm run build``` så byggs React-applikationen (klienten) och läggs i /build.
+Kör ```npm install``` i ```/``` så installeras både server och klient. React-applikationen (klienten) byggs och läggs i /build.
 Kör ```npm start``` så byggs körs Node.js-applikationen (servern) på defaultport 5000 och servar /api och /build (React-builden) (på /).

@@ -9,7 +9,7 @@
     "gridfs-stream": "^1.1.1",
     "markdown-react-js": "^1.0.2",
     "memoize-one": "^5.1.1",
-    "methone": "^0.3.5",
+    "methone": "github:datasektionen/Methone#test2",
     "moment": "^2.20.1",
     "mongodb": "^3.6.0",
     "mongoose": "^5.10.0",
@@ -19,9 +19,8 @@
     "node-fetch": "^2.6.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-moment": "^0.6.8",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "1.0.17",
+    "react-scripts": "^4.0.1",
     "uuid4": "^2.0.2"
   },
   "scripts": {
@@ -30,8 +29,20 @@
     "start-client": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "postinstall": "npm run build"
+    "postinstall": "npm run build",
+    "eject": "react-scripts eject"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
   "proxy": "http://localhost:5000"
 }

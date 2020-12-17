@@ -161,7 +161,8 @@ time.Year {
   content: "";
   width: 0;
   height: 0;
-  border-color: #f9f9f9;
+  /* border-color: #f9f9f9; */
+  color: #f9f9f9;
   border-top: 25px solid transparent;
   border-bottom: 25px solid transparent;
   border-right-width: 25px;

@@ -24,8 +24,8 @@
     "uuid4": "^2.0.2"
   },
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js",
+    "start": "node server/app.js",
+    "dev": "nodemon server/app.js",
     "start-client": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",

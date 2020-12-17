@@ -6,7 +6,7 @@ const FileLink = require('../../models/FileLink')
 const mongoose = require('mongoose')
 const uuid4 = require('uuid4')
 const {error, error500} = require('../../util/error')
-const { PRICE_TYPES } = require('../../../src/config/constants')
+const { PRICE_TYPES } = require('../../../client/src/config/constants')
 const constants = require('../../util/constants')
 
 let multer = require('multer')

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const { PRICE_TYPES } = require('../../src/config/constants')
+const { PRICE_TYPES } = require('../../client/src/config/constants')
 
 var markeSchema = new Schema({
     name: {

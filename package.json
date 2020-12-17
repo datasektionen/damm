@@ -9,7 +9,7 @@
     "gridfs-stream": "^1.1.1",
     "markdown-react-js": "^1.0.2",
     "memoize-one": "^5.1.1",
-    "methone": "github:datasektionen/Methone#test2",
+    "methone": "datasektionen/Methone#master",
     "moment": "^2.20.1",
     "mongodb": "^3.6.0",
     "mongoose": "^5.10.0",

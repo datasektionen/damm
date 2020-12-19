@@ -126,7 +126,6 @@ markeSchema.statics.getByIdAdmin = function(id) {
             .populate('tags')
             .populate('files')
             .lean()
-            console.log(patch)
             if (!patch) return resolve(null)
 
             resolve(patch)

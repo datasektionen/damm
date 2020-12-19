@@ -19,7 +19,7 @@ router.use(dauth.patchesAuth)
 
 // Middleware that checks if the request contains an image
 const hasImage = (req, res, next) => {
-    if (!req.files.image) return error(res, 403, "Ingen fil medskickad.")
+    if (!req.files || !req.files.image) return error(res, 403, "Ingen fil medskickad.")
     next()
 }
 
@@ -111,7 +111,7 @@ router.post('/create', patchFiles, hasImage, nameValidator, priceValidator, asyn
     try {
         const fileObjects = await createFileLinks(req.files.files)
         
-        await Märke.create({
+        const patch = await Märke.create({
             name,
             description,
             date,
@@ -121,11 +121,11 @@ router.post('/create', patchFiles, hasImage, nameValidator, priceValidator, asyn
             tags,
             files: fileObjects.map(x => x._id)
         })
+        return res.status(200).json({"success":"true", patch})
     } catch(err) {
         console.log(err)
         return error500(res, err)
     }
-    return res.status(200).json({"success":"true"})
 })
 
 // Route to edit a patch

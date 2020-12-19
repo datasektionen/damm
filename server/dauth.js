@@ -7,6 +7,14 @@ exports.adminAuth = (req, res, next) => {
     const token = req.query.token
     //If token provided
     if (token) {
+
+        // When testing
+        if (process.env.NODE_ENV === "test") {
+            if (token === "admintoken") return next()
+            else if (token === "prylistoken") return next()
+            else return error(res, 401, "No admin, no access")
+        }
+
         //Verify token with login2
         fetch(`${process.env.LOGIN2_URL}/verify/${token}.json?api_key=${process.env.LOGIN2_API_KEY}`)
         .then(x => x.json())
@@ -43,6 +51,14 @@ exports.patchesAuth = (req, res, next) => {
     const token = req.query.token
     //If token provided
     if (token) {
+
+        // When testing
+        if (process.env.NODE_ENV === "test") {
+            if (token === "admintoken") return next()
+            else if (token === "prylistoken") return next()
+            else return error(res, 401, "No admin, no access")
+        }
+
         //Verify token with login2
         fetch(`${process.env.LOGIN2_URL}/verify/${token}.json?api_key=${process.env.LOGIN2_API_KEY}`)
         .then(x => x.json())
@@ -77,6 +93,15 @@ exports.patchesAuth = (req, res, next) => {
 //Check the user's pls access rights
 exports.getPls = (token) => {
     return new Promise((resolve, reject) => {
+        // When testing
+        if (process.env.NODE_ENV === "test") {
+            // Our admin token when testing
+            if (token === "admintoken") return resolve(["admin"])
+            else if (token === "prylistoken") return resolve(["prylis"])
+            // No access
+            else return resolve([])
+        }
+
         fetch(`${process.env.LOGIN2_URL}/verify/${token}.json?api_key=${process.env.LOGIN2_API_KEY}`)
         .then(res => res.json())
         .then(json => {

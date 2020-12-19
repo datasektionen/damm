@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node server/app.js",
+    "test": "cd server && npm test",
     "dev:server": "nodemon server/app.js",
     "dev:client": "cd client && npm start",
     "postinstall": "cd server && npm install && cd ../client && npm install"

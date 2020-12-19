@@ -54,7 +54,8 @@ app.use(function(req, res, next) {
 app.disable("x-powered-by")
 
 if (process.env.NODE_ENV === "development") app.use(morgan('dev'))
-else app.use(morgan("common"))
+// Use this if not testing, i.e. in production
+else if (process.env.NODE_ENV !== "test") app.use(morgan("common"))
 
 app.use('/', express.static('build'))
 
@@ -79,7 +80,13 @@ app.get('/api/admin/refresh', dAuth.adminAuth, (req, res) => {
   }
 })
 
-mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true,  useUnifiedTopology: true, useFindAndModify: false })
+let MONGO_URL
+// Do not test on real database when testing
+if (process.env.NODE_ENV === "test") {
+  MONGO_URL = "mongodb://localhost/damm-testdb"
+} else MONGO_URL = process.env.MONGO_URL
+
+mongoose.connect(MONGO_URL, { useNewUrlParser: true,  useUnifiedTopology: true, useFindAndModify: false })
 .then(console.log("DB connected"))
 .catch(err => {
     console.log("DB connection error: " + err)
@@ -111,3 +118,6 @@ console.log(`${__dirname}/../build`)
 app.get('*', (req, res) => res.sendFile(path.resolve(__dirname + "/../build/index.html")))
 const PORT = process.env.PORT || 5000
 app.listen(PORT, () => console.log(`Listening on port ${PORT}!`))
+
+// FOR UNIT TESTS OF ENDPOINTS
+module.exports = app

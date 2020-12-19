@@ -18,6 +18,7 @@ const INITIAL_STATE = {
     company: "",
     order: "",
     error: "",
+    inStock: false,
 }
 
 const SUCCESS_STATE = {...INITIAL_STATE, success: true}
@@ -55,7 +56,7 @@ class AdminPatchCreate extends React.Component {
 
         this.setState({success: false, submitting: true})
 
-        const {name, description, date, selectedTags, orders, price, image, files} = this.state
+        const {name, description, date, selectedTags, orders, price, image, files, inStock} = this.state
 
         const body = {
             name,
@@ -67,6 +68,7 @@ class AdminPatchCreate extends React.Component {
             },
             tags: selectedTags.map(tag => tag._id),
             orders,
+            inStock
         }
 
         const formData = new FormData()
@@ -164,6 +166,8 @@ class AdminPatchCreate extends React.Component {
                 handleChange={this.handleChange}
                 handleRadioChange={this.handleRadioChange}
                 submitting={this.state.submitting}
+                inStock={this.state.inStock}
+                handleCheckbox={_ => this.setState({inStock: !this.state.inStock})}
                 toggleTag={tag => {
                     // If tag is not in selectedTags array, add the tag
                     // Else remove it

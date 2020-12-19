@@ -6,6 +6,8 @@
     text-align: center;
     user-select: none;
     background-color: white;
+    max-width: 800px;
+    width: 100%;
 }
 
 .FileUploader i.fa-upload {

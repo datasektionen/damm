@@ -23,7 +23,7 @@ class PatchDetailed extends React.Component {
         const data = this.props.data[0]
         const priceDisplay = _ => {
             const price = data.price
-            if (price.type !== PRICE_TYPES.FREE && price.type !== PRICE_TYPES.NOT_FOR_SALE && price.type !== PRICE_TYPES.UNKNOWN) {
+            if (price.type === PRICE_TYPES.SET_PRICE) {
                 return price.value + " SEK"
             } else return price.type
         }
@@ -69,12 +69,16 @@ class PatchDetailed extends React.Component {
                                 <h1>{data.name}</h1>
                             </div>
                             <div className="meta">
-                                <span title="Datum">
+                                <span title="Första försäljningsdatum">
                                     <i className="far fa-clock"></i> {data.date ? moment(data.date).format("DD MMM YYYY") : "Okänt"}
                                 </span>
                                 <i className="fas fa-circle"></i>
                                 <span title="Pris">
                                     <i className="fas fa-dollar-sign"></i> {priceDisplay()}
+                                </span>
+                                <i className="fas fa-circle"></i>
+                                <span title="Lagerstatus">
+                                    <i className="fas fa-box-open"></i> {data.inStock === true ? "I lager" : "Ej i lager"}
                                 </span>
                                 <i className="fas fa-circle"></i>
                                 <span title="Antal producerade">

@@ -35,6 +35,7 @@ var markeSchema = new Schema({
         ref: 'FileLink'
     }],
     produced: Number,
+    inStock: Boolean,
 }, {timestamps: true})
 
 
@@ -50,7 +51,8 @@ markeSchema.statics.create = function(x) {
             createdBy: x.createdBy,
             orders: x.orders,
             files: x.files ? x.files : [],
-            produced: x.produced ? x.produced : 0
+            produced: x.produced ? x.produced : 0,
+            inStock: x.inStock ? x.inStock : false
         })
 
         märke.save()

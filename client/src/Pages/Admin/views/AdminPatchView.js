@@ -21,6 +21,8 @@ const AdminPatchView = ({
         toggleTag,
         setImageCallback,
         setFileCallback,
+        inStock = false,
+        handleCheckbox,
         ...rest
     }) => {
 
@@ -36,7 +38,7 @@ const AdminPatchView = ({
                     {rest.children}
                     <h3 id="obligatorisk">Bild på märket</h3>
                     <h4>Ta en så bra bild av märket som möjligt.</h4>
-                    <FileUploader style={{width: "100%"}} setFileCallback={setImageCallback}/>
+                    <FileUploader setFileCallback={setImageCallback}/>
                     <h3 id="obligatorisk">Namn</h3>
                     <input id="name" name="name" type="text" autoComplete="off" placeholder="Namn" value={name} onChange={handleChange} />
                     <h3>Beskrivning</h3>
@@ -46,18 +48,31 @@ const AdminPatchView = ({
                         <h4>Lämna tomt om okänt</h4>
                         <input name="date" type="date" value={date} onChange={handleChange}/>
                     </div>
-                    <div className="price">
-                        <h3 id="obligatorisk">Pris</h3>
-                        <h4>Ange pris för märket</h4>
-                        <div>
-                            {radioValues.map((x,i) =>
-                                <div key={"radioprice-"+i} className="radio">
-                                    <input id={x} type="radio" checked={price.type === x} onChange={handleRadioChange}/>
-                                    <label htmlFor={x}>{x}</label>
-                                </div>    
-                            )}
+                    <div className="priceandstock">
+                        <div className="price">
+                            <h3 id="obligatorisk">Pris</h3>
+                            <h4>Ange pris för märket</h4>
+                            <div>
+                                {radioValues.map((x,i) =>
+                                    <div key={"radioprice-"+i} className="radio">
+                                        <input id={x} type="radio" checked={price.type === x} onChange={handleRadioChange}/>
+                                        <label htmlFor={x}>{x}</label>
+                                    </div>    
+                                )}
+                            </div>
+                            {price.type === PRICE_TYPES.SET_PRICE && <input name="price" type="text" placeholder="Pris" value={price.value} onChange={handleChange}/>}
                         </div>
-                        {price.type === PRICE_TYPES.SET_PRICE && <input name="price" type="text" placeholder="Pris" value={price.value} onChange={handleChange}/>}
+                        <div className="stock">
+                            <h3>Finns i lager</h3>
+                            <h4>Huruvida märket finns i lager, med andra ord om märket är till salu</h4>
+                            <div className="chkboxprnt">
+                                <div className="checkbox">
+                                    <input type="checkbox" name="inStock" id="inStock" checked={inStock} onChange={handleCheckbox} />
+                                    <label htmlFor="inStock">I lager</label>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                     <div className="tagsection">
                         <h3>Taggar</h3>
@@ -80,7 +95,6 @@ const AdminPatchView = ({
                     </div>
                     <FileUploader
                         text="Ladda upp tillhörande filer till märket"
-                        style={{width: "100%"}}
                         setFileCallback={setFileCallback}
                         imageOnly={false}
                     />

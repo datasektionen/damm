@@ -12,7 +12,6 @@ const EVENT_TYPE_TO_STRING = {
 
 const PRICE_TYPES = {
     FREE: "Gratis",
-    NOT_FOR_SALE: "Säljs ej",
     UNKNOWN: "Okänt",
     SET_PRICE: "Ange pris",
 }

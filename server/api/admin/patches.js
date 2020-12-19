@@ -106,7 +106,7 @@ router.post('/create', patchFiles, hasImage, nameValidator, priceValidator, asyn
         body[key] = JSON.parse(req.body[key])
     })
 
-    const { name, description, date, price, orders, tags } = body
+    const { name, description, date, price, orders, tags, inStock } = body
 
     try {
         const fileObjects = await createFileLinks(req.files.files)
@@ -119,7 +119,8 @@ router.post('/create', patchFiles, hasImage, nameValidator, priceValidator, asyn
             image: constants.createFileURL(req.files.image[0].filename),
             orders,
             tags,
-            files: fileObjects.map(x => x._id)
+            files: fileObjects.map(x => x._id),
+            inStock,
         })
         return res.status(200).json({"success":"true", patch})
     } catch(err) {
@@ -180,8 +181,8 @@ router.post('/replace-image/id/:id', upload.single('image'), hasImage, async (re
 const replaceImageAndUpdatePatch = async (patch, filename) => {
     return new Promise(async (resolve, reject) => {
         try {
-            await deleteFileAndChunks(patch.image.split(constants.FILE_ROUTE + "/")[1])
-            console.log(patch.image.split(constants.FILE_ROUTE + "/"))
+            await deleteFileAndChunks(constants.URLToFilename(patch.image))
+            console.log(constants.URLToFilename(patch.image))
             await Märke.findByIdAndUpdate(patch._id, {$set: {image: constants.createFileURL(filename)}})
             resolve()
         } catch (err) {
@@ -233,7 +234,7 @@ router.get('/remove/id/:id', async (req, res) => {
     const patch = await Märke.findById(id)
     if (!patch) return error(res, 404, "Märket finns ej")
 
-    const filename = patch.image.split(constants.FILE_ROUTE + "/")[1]
+    const filename = constants.URLToFilename(patch.image)
 
     try {
         await deleteFileAndChunks(filename)

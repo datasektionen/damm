@@ -5,7 +5,7 @@ import TagClickable from '../../components/TagClickable'
 import Patch from './components/Patch'
 import logo from '../../skold.png'
 
-const PatchArchiveView = ({numPatches = 0, tags, selectedTags, toggleShowTags, toggleTag, sortResults, patchTagsMatchesSelected, matchesSearch, clearSelectedTags, clearAll, searchQuery, sortRule, sortOptions, showTags, filterTagsQuery, handleSearch, clearSearch, handleSort, history}) => {
+const PatchArchiveView = ({numPatches = 0, tags, selectedTags, toggleShowTags, toggleTag, sortResults, patchTagsMatchesSelected, matchesSearch, clearSelectedTags, clearAll, searchQuery, sortRule, sortOptions, showTags, filterTagsQuery, handleSearch, clearSearch, handleSort, history, stockFilter = false, stockFilterOptions, matchesStockFilter, handleStockFilter}) => {
     return (
         <div className="MärkesArkiv">
             <div className="Header">
@@ -41,6 +41,13 @@ const PatchArchiveView = ({numPatches = 0, tags, selectedTags, toggleShowTags, t
                     <select name="sortera" onChange={handleSort} value={sortRule}>
                         {sortOptions.map((x, i) => <option key={"option-"+i} value={x.value}>{x.text}</option>)}
                     </select>
+                    <select name="stockFilter" onChange={handleStockFilter} value={stockFilter}>
+                        {stockFilterOptions.map((x) => <option key={"option-stock-"+x.value} value={x.value}>{x.text}</option>)}
+                    </select>
+                    {/* <div className="checkbox">
+                        <input type="checkbox" name="inStock" id="inStock" checked={stockFilter} onChange={handleStockFilter} />
+                        <label htmlFor={"inStock"}>I lager</label>
+                    </div> */}
                 </div>
                 {showTags && 
                     <div>
@@ -75,7 +82,7 @@ const PatchArchiveView = ({numPatches = 0, tags, selectedTags, toggleShowTags, t
                 }
             </div>
             <div className="märken">
-                {sortResults().map((x,i) => (patchTagsMatchesSelected(x) && matchesSearch(x)) ? <Patch key={"patch-"+i} {...x} history={history}/> : undefined)}
+                {sortResults().map((x,i) => (patchTagsMatchesSelected(x) && matchesSearch(x) && matchesStockFilter(x)) ? <Patch key={"patch-"+i} {...x} history={history}/> : undefined)}
             </div>
         </div>
     )

@@ -27,6 +27,12 @@ class PatchArchive extends React.Component {
             {text: "Uppladdningsdatum (Äldst-Nyast)", value: "date-creation-asc"},
         ]
 
+        const stockFilterOptions = [
+            {text: "Lagerstatus: Alla", value: "all"},
+            {text: "I lager", value: "true"},
+            {text: "Ej i lager", value: "false"},
+        ]
+
         this.state = {
             tags: [],
             filterTagsQuery: "",
@@ -37,7 +43,9 @@ class PatchArchive extends React.Component {
             numPatches: 0,
             sortRule: sortOptions[0].value,
             file: undefined,
-            sortOptions: sortOptions
+            sortOptions: sortOptions,
+            stockFilter: stockFilterOptions[0].value,
+            stockFilterOptions: stockFilterOptions
         }
     }
 
@@ -117,6 +125,15 @@ class PatchArchive extends React.Component {
             if (this.state.search.length === 0) return true
             if (märke.name.toLowerCase().match(new RegExp(this.state.search.toLowerCase(), "g"))) return true
             else return false
+        }
+
+        const matchesStockFilter = märke => {
+            const { stockFilter, stockFilterOptions } = this.state
+
+            if (stockFilter === stockFilterOptions[0].value) return true
+            if (stockFilter === stockFilterOptions[1].value) return märke.inStock === true
+            if (stockFilter === stockFilterOptions[2].value) return märke.inStock === false
+            else return true
         }
 
         //Clears both selected tags and search query
@@ -232,6 +249,10 @@ class PatchArchive extends React.Component {
                 clearAll={clearAll}
                 clearSelectedTags={_ => this.setState({selectedTags: []})}
                 history={this.props.history}
+                stockFilter={this.state.stockFilter}
+                stockFilterOptions={this.state.stockFilterOptions}
+                matchesStockFilter={matchesStockFilter}
+                handleStockFilter={e => this.setState({stockFilter: e.target.value})}
             />
         )
     }

@@ -5,12 +5,12 @@ import { PRICE_TYPES } from '../../../config/constants'
 import * as ROUTES from '../../../routes'
 
 // Component that displays a patch.
-const Patch = ({image, date, name, description, numProduced = "?", tags = [], price, produced = 0, ...rest}) => {
+const Patch = ({image, date, name, description, numProduced = "?", tags = [], price, produced = 0, inStock = false, ...rest}) => {
 
     const [hovered, setHovered] = useState(false)
     let displayPrice
 
-    if (price.type !== PRICE_TYPES.FREE && price.type !== PRICE_TYPES.NOT_FOR_SALE && price.type !== PRICE_TYPES.UNKNOWN) {
+    if (price.type === PRICE_TYPES.SET_PRICE) {
         displayPrice = price.value + " SEK"
     } else displayPrice = price.type
 
@@ -55,8 +55,8 @@ const Patch = ({image, date, name, description, numProduced = "?", tags = [], pr
                 >
                     <div><i className="far fa-clock"></i> {date ? moment(date).format("D MMM YYYY") : "Okänt"}</div>
                 </div>
-                <div className="produced">
-                    <div><i className="fas fa-hashtag"></i> {produced} st</div>
+                <div className="stock">
+                    <div><i className="fas fa-box-open"></i> {inStock ? "I lager" : "Ej i lager"}</div>
                 </div>
                 <div
                     className="price"

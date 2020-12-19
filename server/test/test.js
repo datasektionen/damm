@@ -325,6 +325,35 @@ describe("Patches", _ => {
                 })
             })
 
+            describe("inStock", _ => {
+                it("should default to false when not specifying if in stock", done => {
+                    chai.request(app)
+                    .post(`/api/admin/marke/create?token=admintoken`)
+                    .attach("image", image, "PUNG.jpg")
+                    .field("name", name)
+                    .field("price", price)
+                    .end((err, res) => {
+                        assert(res.body.patch.inStock === false)
+                        res.should.have.status(200)
+                        done()
+                    })
+                })
+
+                it("should be true when inStock set to true", done => {
+                    chai.request(app)
+                    .post(`/api/admin/marke/create?token=admintoken`)
+                    .attach("image", image, "PUNG.jpg")
+                    .field("name", name)
+                    .field("price", price)
+                    .field("inStock", JSON.stringify(true))
+                    .end((err, res) => {
+                        assert(res.body.patch.inStock === true)
+                        res.should.have.status(200)
+                        done()
+                    })
+                })
+            })
+
         })
     })
 

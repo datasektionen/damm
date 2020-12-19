@@ -41,8 +41,9 @@ class AdminPatchEdit extends React.Component {
             orders: this.props.data[0].orders,
             price: this.props.data[0].price,
             selectedTags: this.props.data[0].tags,
+            inStock: this.props.data[0].inStock,
             // All possible tags
-            tags: this.props.data[1]
+            tags: this.props.data[1],
         })
     }
 
@@ -58,7 +59,7 @@ class AdminPatchEdit extends React.Component {
 
     submit(e) {
         e.preventDefault()
-        const {name, description, date, selectedTags, orders, price} = this.state
+        const {name, description, date, selectedTags, orders, price, inStock} = this.state
         this.setState({fetching: true})
         const body = {
             name,
@@ -70,6 +71,7 @@ class AdminPatchEdit extends React.Component {
             },
             tags: selectedTags.map(tag => tag._id),
             orders,
+            inStock,
         }
         console.log(body)
         const formData = new FormData()
@@ -157,6 +159,8 @@ class AdminPatchEdit extends React.Component {
                 handleChange={handleChange}
                 handleRadioChange={handleRadioChange}
                 submitting={this.state.fetching}
+                inStock={this.state.inStock}
+                handleCheckbox={_ => this.setState({inStock: !this.state.inStock})}
                 toggleTag={tag => {
                     // If tag is not in selectedTags array, add the tag
                     // Else remove it

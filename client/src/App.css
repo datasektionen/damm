@@ -455,6 +455,7 @@ time.Year {
 
 
 .checkbox {
+  user-select: none;
   width: 240px;
   max-width: 100%;
   height: 30px;
@@ -650,7 +651,7 @@ textarea {
   resize: none;
   width: 500px;
   max-width: 100%;
-  height: 150px;
+  min-height: 150px;
   box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.1);
 }
 

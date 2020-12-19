@@ -2,6 +2,7 @@ import React from 'react'
 import * as ROUTES from '../../routes'
 import AdminPatchView from './views/AdminPatchView'
 import Alert from '../../components/Alert'
+import e from 'cors'
 
 const INITIAL_STATE = {
     image: undefined,
@@ -20,6 +21,8 @@ const INITIAL_STATE = {
     error: "",
     inStock: false,
     comment: "",
+    creators: [],
+    creatorField: "",
 }
 
 const SUCCESS_STATE = {...INITIAL_STATE, success: true}
@@ -57,7 +60,7 @@ class AdminPatchCreate extends React.Component {
 
         this.setState({success: false, submitting: true})
 
-        const {name, description, date, selectedTags, orders, price, image, files, inStock, comment} = this.state
+        const {name, description, date, selectedTags, orders, price, image, files, inStock, comment, creators} = this.state
 
         const body = {
             name,
@@ -70,7 +73,8 @@ class AdminPatchCreate extends React.Component {
             tags: selectedTags.map(tag => tag._id),
             orders,
             inStock,
-            comment
+            comment,
+            creators
         }
 
         const formData = new FormData()
@@ -171,6 +175,15 @@ class AdminPatchCreate extends React.Component {
                 inStock={this.state.inStock}
                 handleCheckbox={_ => this.setState({inStock: !this.state.inStock})}
                 comment={this.state.comment}
+                creators={this.state.creators}
+                creatorField={this.state.creatorField}
+                addCreator={e => {
+                    e.preventDefault()
+                    this.setState({creators: this.state.creators.concat({name: this.state.creatorField, GDPR: true})}, _ => this.setState({creatorField: ""}))
+                }}
+                removeCreator={index => {
+                    this.setState({creators: this.state.creators.filter((x,i) => i !== index)})
+                }}
                 toggleTag={tag => {
                     // If tag is not in selectedTags array, add the tag
                     // Else remove it

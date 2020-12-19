@@ -17,6 +17,7 @@ var markeSchema = new Schema({
     image: String,
     orders: [{
         company: String,
+        amount: Number,
         order: String,
         date: String,
     }],
@@ -39,7 +40,15 @@ var markeSchema = new Schema({
     comment: {
         type: String,
         trim: true
-    }
+    },
+    creators: [{
+        name: {
+            type: String,
+            trim: true,
+            required: true
+        },
+        _id: false,
+    }]
 }, {timestamps: true})
 
 
@@ -52,8 +61,8 @@ markeSchema.statics.create = function(x) {
             image: x.image,
             price: x.price,
             tags: x.tags ? x.tags : [],
-            createdBy: x.createdBy,
-            orders: x.orders,
+            creators: x.creators ? x.creators : [],
+            orders: x.orders ? x.orders : [],
             files: x.files ? x.files : [],
             produced: x.produced ? x.produced : 0,
             inStock: x.inStock ? x.inStock : false,
@@ -77,6 +86,7 @@ markeSchema.statics.getAll = function() {
             //Remove the files (They are not populated, so it will just be a list of strings, removing them looks nicer)
             patches.forEach(patch => delete patch.files)
             patches.forEach(patch => delete patch.comment)
+            patches.forEach(patch => delete patch.orders)
             resolve(patches)
         } catch (err) {
             reject(err)
@@ -116,6 +126,7 @@ markeSchema.statics.getById = function(id) {
             //Remove the files (list of strings since not populated)
             delete patch.files
             delete patch.comment
+            delete patch.orders
 
             resolve(patch)
         } catch (err) {

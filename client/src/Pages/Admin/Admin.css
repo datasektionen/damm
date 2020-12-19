@@ -169,7 +169,15 @@
 }
 
 .Admin form .creators {
-    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; 
+}
+
+.Admin form .creators #remove {
+    color: red;
+    cursor: pointer;
 }
 
 .Admin form .creators .add {

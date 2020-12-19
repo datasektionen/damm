@@ -106,7 +106,7 @@ router.post('/create', patchFiles, hasImage, nameValidator, priceValidator, asyn
         body[key] = JSON.parse(req.body[key])
     })
 
-    const { name, description, date, price, orders, tags, inStock, comment } = body
+    const { name, description, date, price, orders, tags, inStock, comment, creators } = body
 
     try {
         const fileObjects = await createFileLinks(req.files.files)
@@ -121,10 +121,12 @@ router.post('/create', patchFiles, hasImage, nameValidator, priceValidator, asyn
             tags,
             files: fileObjects.map(x => x._id),
             inStock,
-            comment
+            comment,
+            creators
         })
         return res.status(200).json({"success":"true", patch})
     } catch(err) {
+        if (process.env.NODE_ENV !== "test")
         console.log(err)
         return error500(res, err)
     }

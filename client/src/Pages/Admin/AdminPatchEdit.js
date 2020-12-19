@@ -25,6 +25,7 @@ class AdminPatchEdit extends React.Component {
                 image: ""
             },
             fetching: false,
+            creatorField: ""
         }
 
         this.submit = this.submit.bind(this)
@@ -43,6 +44,7 @@ class AdminPatchEdit extends React.Component {
             selectedTags: this.props.data[0].tags,
             inStock: this.props.data[0].inStock,
             comment: this.props.data[0].comment,
+            creators: this.props.data[0].creators,
             // All possible tags
             tags: this.props.data[1],
         })
@@ -60,7 +62,7 @@ class AdminPatchEdit extends React.Component {
 
     submit(e) {
         e.preventDefault()
-        const {name, description, date, selectedTags, orders, price, inStock, comment} = this.state
+        const {name, description, date, selectedTags, orders, price, inStock, comment, creators} = this.state
         this.setState({fetching: true})
         const body = {
             name,
@@ -73,7 +75,8 @@ class AdminPatchEdit extends React.Component {
             tags: selectedTags.map(tag => tag._id),
             orders,
             inStock,
-            comment
+            comment,
+            creators,
         }
         console.log(body)
         const formData = new FormData()
@@ -120,7 +123,9 @@ class AdminPatchEdit extends React.Component {
                 selectedTags: this.state.original.tags,
                 inStock: this.state.original.inStock,
                 comment: this.state.original.comment,
-                imageFile: undefined
+                creators: this.state.original.creators,
+                imageFile: undefined,
+                creatorField: ""
             })
             this.state.resetImage()
             window.scrollTo(0,0)
@@ -166,6 +171,15 @@ class AdminPatchEdit extends React.Component {
                 inStock={this.state.inStock}
                 handleCheckbox={_ => this.setState({inStock: !this.state.inStock})}
                 comment={this.state.comment}
+                creators={this.state.creators}
+                creatorField={this.state.creatorField}
+                addCreator={e => {
+                    e.preventDefault()
+                    this.setState({creators: this.state.creators.concat({name: this.state.creatorField, GDPR: true})}, _ => this.setState({creatorField: ""}))
+                }}
+                removeCreator={index => {
+                    this.setState({creators: this.state.creators.filter((x,i) => i !== index)})
+                }}
                 toggleTag={tag => {
                     // If tag is not in selectedTags array, add the tag
                     // Else remove it

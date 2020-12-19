@@ -384,6 +384,36 @@ describe("Patches", _ => {
                 })
             })
 
+            describe("creators", _ => {
+                it("should add creator", done => {
+                    chai.request(app)
+                    .post(`/api/admin/marke/create?token=admintoken`)
+                    .attach("image", image, "PUNG.jpg")
+                    .field("name", name)
+                    .field("price", price)
+                    .field("creators", JSON.stringify([{name: "Axel Elmarsson"}]))
+                    .end((err, res) => {
+                        assert(res.body.patch.creators.length === 1)
+                        assert(res.body.patch.creators[0].name = "Axel Elmarsson")
+                        res.should.have.status(200)
+                        done()
+                    })
+                })
+
+                it("should fail when adding creator", done => {
+                    chai.request(app)
+                    .post(`/api/admin/marke/create?token=admintoken`)
+                    .attach("image", image, "PUNG.jpg")
+                    .field("name", name)
+                    .field("price", price)
+                    .field("creators", JSON.stringify([{adwdaw: "Axel Elmarsson"}]))
+                    .end((err, res) => {
+                        res.should.not.have.status(200)
+                        done()
+                    })
+                })
+            })
+
         })
     })
 

@@ -24,7 +24,7 @@ class AdminPatchEdit extends React.Component {
             original: {
                 image: ""
             },
-            fetching: false
+            fetching: false,
         }
 
         this.submit = this.submit.bind(this)
@@ -42,6 +42,7 @@ class AdminPatchEdit extends React.Component {
             price: this.props.data[0].price,
             selectedTags: this.props.data[0].tags,
             inStock: this.props.data[0].inStock,
+            comment: this.props.data[0].comment,
             // All possible tags
             tags: this.props.data[1],
         })
@@ -59,7 +60,7 @@ class AdminPatchEdit extends React.Component {
 
     submit(e) {
         e.preventDefault()
-        const {name, description, date, selectedTags, orders, price, inStock} = this.state
+        const {name, description, date, selectedTags, orders, price, inStock, comment} = this.state
         this.setState({fetching: true})
         const body = {
             name,
@@ -72,6 +73,7 @@ class AdminPatchEdit extends React.Component {
             tags: selectedTags.map(tag => tag._id),
             orders,
             inStock,
+            comment
         }
         console.log(body)
         const formData = new FormData()
@@ -116,6 +118,8 @@ class AdminPatchEdit extends React.Component {
                 orders: this.state.original.orders,
                 price: this.state.original.price,
                 selectedTags: this.state.original.tags,
+                inStock: this.state.original.inStock,
+                comment: this.state.original.comment,
                 imageFile: undefined
             })
             this.state.resetImage()
@@ -161,6 +165,7 @@ class AdminPatchEdit extends React.Component {
                 submitting={this.state.fetching}
                 inStock={this.state.inStock}
                 handleCheckbox={_ => this.setState({inStock: !this.state.inStock})}
+                comment={this.state.comment}
                 toggleTag={tag => {
                     // If tag is not in selectedTags array, add the tag
                     // Else remove it

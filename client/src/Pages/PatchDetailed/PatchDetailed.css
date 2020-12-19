@@ -101,7 +101,6 @@
 .MarkeInfo .patch .patchcontent .description {
     margin: 25px 0 25px 0;
     white-space: pre-wrap;
-    /* word-break: break-word; */
 }
 
 .MarkeInfo .patch .patchcontent .tags {
@@ -109,12 +108,12 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    border-top: solid 1px #afafaf;
     border-radius: 1px;
 }
 
 .MarkeInfo .patch .patchadmincontent {
     display: flex;
+    flex-direction: column;
 }
 
 .table {
@@ -122,8 +121,6 @@
     max-width: 100%;
     margin-bottom: 20px;
 }
-
-
 
 .table td {
     max-width: 100px;
@@ -133,21 +130,32 @@
 }
 
 
-.MarkeInfo .patch .patchadmincontent .col.files{
-    /* width: 50%; */
+.MarkeInfo .patch .patchadmincontent .row .col.files{
     max-width: 430px;
 }
 
-.MarkeInfo .patch .patchadmincontent .col {
+.MarkeInfo .patch .patchadmincontent .row .col {
     width: 100%;
 }
 
-.MarkeInfo .patch .patchadmincontent .col .file {
+.MarkeInfo .patch .patchadmincontent .row .colcol {
+    padding: 10px 0 10px 0;
+}
+
+.MarkeInfo .patch .patchadmincontent .row .col .file {
     padding: 5px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
     max-width: 90%;
+}
+
+.MarkeInfo .patch .patchadmincontent .row.admin{
+    border-top: solid 1px #afafaf4f;
+}
+
+.MarkeInfo .patch .patchadmincontent .comment {
+    white-space: pre-wrap;
 }
 
 
@@ -158,7 +166,8 @@
     }
 
     .MarkeInfo .patch {
-        width: 95%;
+        width: 100%;
+        padding: 20px;
     }
 
     .MarkeInfo .patch .patchbody {
@@ -167,9 +176,9 @@
         width: 100%;
     }
 
-    .MarkeInfo .patch .patchimg,
     .MarkeInfo .patch .patchimg img {
-        width: 100%;
+        max-width: 100%;
+        max-height: 100%;
     }
 
     .MarkeInfo .patch .patchcontent {
@@ -187,11 +196,8 @@
         align-items: center;
     }
 
-    .MarkeInfo .patch .patchadmincontent {
-        display: none;
-    }
-
-    button.adminedit {
-        display: none;
+    .MarkeInfo .patch .patchadmincontent .row .colcol,
+    .MarkeInfo .patch .patchadmincontent .row .col {
+        width: 100%;
     }
 }

@@ -352,6 +352,36 @@ describe("Patches", _ => {
                         done()
                     })
                 })
+
+                it("should be false when inStock set to false", done => {
+                    chai.request(app)
+                    .post(`/api/admin/marke/create?token=admintoken`)
+                    .attach("image", image, "PUNG.jpg")
+                    .field("name", name)
+                    .field("price", price)
+                    .field("inStock", JSON.stringify(false))
+                    .end((err, res) => {
+                        assert(res.body.patch.inStock === false)
+                        res.should.have.status(200)
+                        done()
+                    })
+                })
+            })
+
+            describe("comment", _ => {
+                it("should trim comment", done => {
+                    chai.request(app)
+                    .post(`/api/admin/marke/create?token=admintoken`)
+                    .attach("image", image, "PUNG.jpg")
+                    .field("name", name)
+                    .field("price", price)
+                    .field("comment", JSON.stringify("         hej då  \n\n\       "))
+                    .end((err, res) => {
+                        assert(res.body.patch.comment === "hej då")
+                        res.should.have.status(200)
+                        done()
+                    })
+                })
             })
 
         })

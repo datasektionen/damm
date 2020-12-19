@@ -17,9 +17,9 @@
     "uuid4": "^2.0.2"
   },
   "scripts": {
-    "start": "node server/app.js",
+    "start": "node app.js",
     "test": "mocha",
-    "dev": "nodemon server/app.js"
+    "dev": "nodemon app.js"
   },
   "devDependencies": {
     "chai": "^4.2.0",

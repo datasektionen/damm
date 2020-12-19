@@ -23,6 +23,7 @@ const AdminPatchView = ({
         setFileCallback,
         inStock = false,
         handleCheckbox,
+        comment,
         ...rest
     }) => {
 
@@ -110,6 +111,9 @@ const AdminPatchView = ({
                         </div>
                         {this.state.orders.map((x,i) => <div className="order" key={i}>{x.company} {x.order}<i class="fa fa-times" onClick={(e) => removeOrder(e, i)}></i></div>)}
                     </div> */}
+                    <h3>Prylisinformation</h3>
+                    <h4>Information som bara prylis kan läsa, kan information om märket som känns viktigt att förmedla, exempelvis "öppna inte fil x i Adobe Illustrator"...</h4>
+                    <textarea id="comment" name="comment" placeholder="Information" value={comment} onChange={handleChange} />
                     <div className="BottomButtons">
                         <button disabled={submitting} formAction="submit">{submitting ? "Sparar märke..." : "Spara märke"}</button>
                         <button className="rensa" onClick={(e) => {

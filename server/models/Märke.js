@@ -36,14 +36,18 @@ var markeSchema = new Schema({
     }],
     produced: Number,
     inStock: Boolean,
+    comment: {
+        type: String,
+        trim: true
+    }
 }, {timestamps: true})
 
 
 markeSchema.statics.create = function(x) {
     return new Promise((resolve, reject) => {
         var märke = new this({
-            name: x.name,
-            description: x.description,
+            name: x.name ? x.name : "",
+            description: x.description ?  x.description : "",
             date: x.date,
             image: x.image,
             price: x.price,
@@ -52,7 +56,8 @@ markeSchema.statics.create = function(x) {
             orders: x.orders,
             files: x.files ? x.files : [],
             produced: x.produced ? x.produced : 0,
-            inStock: x.inStock ? x.inStock : false
+            inStock: x.inStock ? x.inStock : false,
+            comment: x.comment ? x.comment : ""
         })
 
         märke.save()
@@ -71,6 +76,7 @@ markeSchema.statics.getAll = function() {
 
             //Remove the files (They are not populated, so it will just be a list of strings, removing them looks nicer)
             patches.forEach(patch => delete patch.files)
+            patches.forEach(patch => delete patch.comment)
             resolve(patches)
         } catch (err) {
             reject(err)
@@ -109,6 +115,7 @@ markeSchema.statics.getById = function(id) {
 
             //Remove the files (list of strings since not populated)
             delete patch.files
+            delete patch.comment
 
             resolve(patch)
         } catch (err) {

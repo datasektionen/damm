@@ -81,7 +81,7 @@ class App extends Component {
           </ProtectedContent>} />
           <Route exact path={ROUTES.SKAPA_MÄRKE} render={match => <AdminPrylisProtected component={AdminPatchCreate} {...this.props} {...this.state} />} />
           {/* <Route exact path={ROUTES.REDIGERA_MÄRKE} render={match => <AdminPrylisProtected component={AdminPatchEdit} {...this.props} {...this.state} {...match} />} /> */}
-          <Route exact path={ROUTES.REDIGERA_MÄRKE} render={match => <ProtectedContent contentURL={[`${ROUTES.API_GET_PATCH}${match.match.params.id}`, ROUTES.API_GET_TAGS]}>
+          <Route exact path={ROUTES.REDIGERA_MÄRKE} render={match => <ProtectedContent contentURL={[`${ROUTES.API_GET_PATCH}${match.match.params.id}?token=${localStorage.getItem("token")}`, ROUTES.API_GET_TAGS]}>
             <AdminPatchEdit />
           </ProtectedContent>} />
           <Route exact path={ROUTES.MÄRKESTAGGAR} render={match => <AdminPrylisProtected component={AdminTags} {...this.props} {...this.state} />} />

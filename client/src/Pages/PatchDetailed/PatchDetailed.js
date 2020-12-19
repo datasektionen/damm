@@ -98,7 +98,7 @@ class PatchDetailed extends React.Component {
                             </div>
                         </div>
                     </div>
-                    {hasPls && <PatchDetailedAdminView files={data.files} orders={data.orders} removeFile={removeFile} />}
+                    {hasPls && <PatchDetailedAdminView files={data.files} orders={data.orders} removeFile={removeFile} comment={data.comment} />}
                 </div>
             </div>
         )

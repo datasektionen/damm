@@ -139,6 +139,8 @@ router.post('/edit/id/:id', patchFiles, nameValidator, priceValidator, async (re
     console.log(req.files)
 
     const { id } = req.params
+    if (!mongoose.isValidObjectId(id)) return error(res, 404, "Märket finns ej.")
+    if ((await Märke.findById(id)) === null) return error(res, 404, "Märket finns ej.")
 
     try {
         const patch = await Märke.findByIdAndUpdate(id, {$set: {...body}})

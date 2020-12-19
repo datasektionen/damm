@@ -1,0 +1,31 @@
+.FileUploader {
+    border: dashed 2px rgb(230, 220, 220);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    text-align: center;
+    user-select: none;
+    background-color: white;
+    max-width: 800px;
+    width: 100%;
+}
+
+.FileUploader i.fa-upload {
+    font-size: 4em;
+    opacity: 0.3;
+}
+
+.FileUploader i.fas.fa-times {
+    position: relative;
+    color: red;
+    left: 50%;
+}
+
+.FileUploader i.fas.fa-times::before {
+    cursor: pointer;
+}
+
+.FileUploader img {
+    max-height: 150px;
+    max-width: 100%;
+}

@@ -1,0 +1,666 @@
+body {
+  background: #eee;
+}
+
+.MethoneSpan {
+  height: 50px;
+}
+
+a {
+  color: #e83d84;
+}
+
+time.Year {
+  margin: 20px auto;
+  font-size: 3em;
+  text-align: center;
+  display: block;
+}
+
+.Tags {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.Tags li {
+  float: left;
+  margin: 0;
+  padding: 0;
+}
+.Tags li a {
+  display: inline-block;
+  padding: 5px;
+  margin: 5px 5px 0 0;
+  background: #fff;
+  color: #222;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+  border: 1px solid #eee;
+}
+.Tags li a:hover {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  background: #f4f4f4;
+}
+
+.Header {
+  min-height: 300px;
+  background: #ea4d8f;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* padding-right: 50px; */
+}
+.Header h1, .Header h2 {
+  margin: 0;
+  padding: 0;
+  font-weight: 300;
+}
+.Header h2 {
+  margin: 10px 0 0;
+  font-weight: 900;
+}
+.Header .Logo {
+  max-width: 100px;
+  max-height: 100px;
+  margin: 20px;
+}
+
+.Timeline {
+  margin: 0 50px 100px 0;
+}
+.Timeline .cards {
+  position: relative;
+  margin: auto;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: flex-start;
+  max-width: 1200px;
+  padding-top: 50px;
+}
+
+.Timeline .cards::after {
+  z-index: 1;
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  border-left: 1px solid #aaa;
+}
+
+.Timeline .cards .card {
+  width: 50%;
+  position: relative;
+}
+
+.Timeline .cards .card:nth-child(even) {
+  margin-top: 50px;
+  /* margin-bottom: -50px; */
+}
+.Timeline .cards .card:nth-child(even):last-child {
+  margin-bottom: 0;
+}
+.Timeline .cards .card:nth-child(odd) {
+  /* margin-top: -50px; */
+  margin-bottom: 50px;
+}
+.Timeline .cards .card:nth-child(odd):last-child {
+  margin-bottom: 0;
+}
+
+.Timeline .cards .card > div {
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  padding: 20px 20px 10px;
+  border-radius: 2px;
+  margin: 10px 40px;
+}
+
+.Timeline .cards .card::before {
+  position: absolute;
+  content: "";
+  width: 4px;
+  height: 4px;
+  background-color: #aaa;
+  border-radius: 5px;
+  box-shadow: 0px 0px 2px 8px #eee;
+  z-index: 2;
+  left: -2px;
+  top: 35px;
+}
+.Timeline .cards .card:nth-child(odd)::before {
+  right: -2px;
+  left: auto;
+}
+
+.Timeline .cards .card .Head {
+  word-break: break-all;
+  min-height: 50px;
+  background: #f9f9f9;
+  border-bottom: 1px solid #eee;
+  margin: -20px -20px 10px;
+}
+.Timeline .cards .card:nth-child(odd) .Head::after {
+  position: absolute;
+  content: "";
+  width: 0;
+  height: 0;
+  border-color: #f9f9f9;
+  border-top: 25px solid transparent;
+  border-bottom: 25px solid transparent;
+  border-left-width: 25px;
+  border-left-style: solid;
+  right: 15px;
+  top: 10px;
+}
+.Timeline .cards .card .Head::before {
+  position: absolute;
+  content: "";
+  width: 0;
+  height: 0;
+  /* border-color: #f9f9f9; */
+  color: #f9f9f9;
+  border-top: 25px solid transparent;
+  border-bottom: 25px solid transparent;
+  border-right-width: 25px;
+  border-right-style: solid;
+  left: 15px;
+  top: 10px;
+}
+.Timeline .cards .card:nth-child(odd) .Head::before {
+  display: none;
+}
+
+
+.Timeline .cards .card.Anniversary {
+  width: 50%;
+  margin: 0 25%;
+  position: relative;
+  text-align: center;
+  z-index: 100;
+}
+.Timeline .cards .card.Anniversary::before {
+  right: auto;
+  left: auto;
+  margin-left: -2px;
+  top: -10px;
+}
+.Timeline .cards .card.Anniversary .Head::before {
+  display: block !important;
+  left: 50%;
+  right: 50%;
+  margin: 0 -10px;
+  top: 0px;
+  border: none;
+  border-color: #E5C100;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom-width: 10px;
+  border-bottom-style: solid;
+}
+.Timeline .cards .card.Anniversary .Head {
+  word-break: break-all;
+  background: #E5C100;
+  padding: 20px 20px;
+}
+.Timeline .cards .card.Anniversary .Head h2 {
+  margin: 0;
+  padding: 0;
+}
+.Timeline .cards .card.Anniversary time {
+  font-size: 1.25em;
+  text-align: center;
+  margin: 0 auto;
+  float: none;
+  padding: 10px 0;
+  display: block;
+}
+.Timeline .cards .card.Anniversary .Head::after {
+  display: none;
+}
+.Timeline .cards .card.Anniversary i {
+  font-size: 5em;
+  display: block;
+  padding: 20px;
+  color: #E5C100;
+}
+
+
+
+.Timeline .cards .card .Head .Date {
+  display: none;
+  font-weight: 300;
+  background: #e83d84;
+  color: #fff;
+  width: 50px;
+  height: 50px;
+  display: inline-block;
+  text-align: center;
+  font-size: 0.9;
+  line-height: 1;
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+  justify-content: center;
+  float: left;
+}
+.Timeline .cards .card:nth-child(even) .Head .Date {
+  float: right;
+}
+.Timeline .cards .card .Head .Date > div {
+  width: 100%;
+  display: block;
+}
+.Timeline .cards .card .Head .Date > div ul {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.Timeline .cards time {
+  float: right;
+  color: #555;
+  font-size: 0.8em;
+}
+.Timeline .cards .card .Head h2 {
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+  font-size: 1.2em;
+  margin: 14px 20px;
+}
+.Timeline .cards p {
+  margin: 15px 0 0px;
+}
+.Timeline .cards .card > div .users {
+  margin: -10px -20px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+}
+.Timeline .cards .card > div .users .crop {
+  flex-grow: 1;
+  margin: 0;
+  height: 74.25px;
+  width: 74.25px;
+  display: inline-block;
+  background-size: cover;
+}
+.Timeline .cards .card > div .users::after {
+  content: '';
+  flex-grow: 1000000000000;
+}
+
+
+
+@media screen and (max-width: 900px) {
+  .Timeline .cards .card {
+    width: 100%;
+    padding-right: 40px;
+    margin: 0 !important;
+    left: 40px;
+  }
+  .Timeline .cards::after {
+    left: 40px !important;
+  }
+  .Timeline .cards .card:nth-child(odd) .Head::before {
+    display: block;
+  }
+  .Timeline .cards .card .Head::after {
+    display: none;
+  }
+  time.Year {
+    margin: 20px 40px;
+    text-align: left;
+  }
+  .Timeline .cards {
+    padding-top: 0px;
+  }
+  .Timeline .cards .card .Head .Date {
+    float: right;
+  }
+  .Timeline .cards .card:nth-child(odd)::before {
+    left: -2px;
+    right: auto;
+  }
+  .Timeline .cards .card > div .users .crop {
+    height: 10vw;
+    width: 10vw;
+  }
+  .Timeline .cards .card.Anniversary {
+    width: 100%;
+    margin: 0 0;
+  }
+  .Timeline .cards .card.Anniversary::before {
+    margin: 0;
+    left: -2px;
+    right: 0;
+    top: 40px;
+  }
+  .Timeline .cards .card.Anniversary .Head::before {
+    left: 20px;
+    right: auto;
+    top: 10px;
+    border: none;
+    border-color: #E5C100;
+    border-top: 32px solid transparent;
+    border-bottom: 32px solid transparent;
+    border-right-width: 30px;
+    border-right-style: solid;
+  }
+  .Timeline .cards .card.Anniversary .Head {
+    background: #E5C100;
+    padding: 20px 20px;
+  }
+  .Timeline .cards .card.Anniversary .Head h2 {
+    margin: 0;
+    padding: 0;
+  }
+  .Timeline .cards .card.Anniversary time {
+    font-size: 1.25em;
+    text-align: center;
+    margin: 0 auto;
+    float: none;
+    padding: 10px 0;
+    display: block;
+  }
+  .Timeline .cards .card.Anniversary .Head::after {
+    display: none;
+  }
+  .Timeline .cards .card.Anniversary i {
+    font-size: 5em;
+    display: block;
+    padding: 20px;
+    color: #E5C100;
+  }
+}
+
+
+@media screen and (max-width: 600px) {
+  .Timeline .cards .card {
+    padding-right: 0px;
+    right: -5px;
+    left: 20px;
+  }
+  .Timeline .cards .card > div {
+    margin: 10px 0 10px 20px;
+    padding: 15px 15px 10px;
+  }
+  .Timeline .cards::after {
+    left: 20px !important;
+  }
+  time.Year {
+    margin: 10px 20px;
+    font-size: 2em;
+  }
+  .Timeline .cards {
+    padding-top: 0px;
+  }
+  .Timeline .cards .card .Head .Date {
+    float: right;
+  }
+  .Timeline .cards .card .Head::before { 
+    display: none !important;
+  }
+  .Timeline .cards .card .Head { 
+    min-height: 40px;
+    margin: -15px -15px -5px;
+  }
+  .Timeline .cards .card .Head h2 { 
+    margin: 10px 15px 0;
+  }
+  .Timeline .cards .card .Head .Date { 
+    height: 40px;
+    display: block;
+    line-height: 40px;
+    padding: 0 3px;
+    width: auto;
+  }
+  .Timeline .cards .card .Head .Date > div {
+    width: auto;
+    display: inline-block;
+    margin: 0 2px;
+  }
+  .Timeline .cards .card ul {
+    padding-left: 17px;
+  }
+  .Header {
+    padding: 0;
+    min-height: 150px;
+  }
+  .Header h1 {
+    font-size: 1.5em;
+  }
+  .Header h2 {
+    margin-top: 0;
+    font-size: 1.5em;
+  }
+  .Header .Logo {
+    max-width: 50px;
+    max-height: 50px;
+    margin: 10px;
+  }
+  .Timeline .cards .card > div .users {
+    margin: 5px -15px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    margin-bottom: 10px;
+  }
+}
+
+
+
+
+.checkbox {
+  user-select: none;
+  width: 240px;
+  max-width: 100%;
+  height: 30px;
+  margin: -10px 0;
+  position: relative;
+  margin: 10px 0 -10px;
+ }
+ table .checkbox {
+  width: 30px;
+  margin: 3px 0 0;
+  height: 20px;
+ }
+ .checkbox label {
+  position: absolute;
+  left: 12px;
+  top: 0;
+ }
+ .checkbox label:before {
+  content: '';
+  cursor: pointer;
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  top: -2px;
+  left: -12px;
+  float: left;
+  background: #fff;
+  border:1px solid #ddd;
+  box-shadow: inset 0 2px 3px rgba(0, 0, 0, .1);
+ }
+ .checkbox label:after {
+  opacity: 0.2;
+  content: '';
+  position: absolute;
+  width: 13px;
+  height: 8px;
+  background: transparent;
+  top: 4px;
+  left: -6px;
+  border: 3px solid #fff;
+  border-top: none;
+  border-right: none;
+  transition: .1s;
+  transform: rotate(-45deg);
+ }
+ .checkbox label:hover::after {
+  opacity: 0.5;
+ }
+ .checkbox input[type=checkbox]:checked + label:after {
+  opacity: 1;
+ }
+ .checkbox input[type=checkbox]:checked + label:before {
+  background: #ec5f99;
+ }
+ .checkbox input[type=checkbox]:disabled + label:before {
+  background: #eee;
+ }
+ .checkbox input[type=checkbox]:checked:disabled + label:before {
+  background: #666;
+ }
+ .checkbox input[type=checkbox]:checked + label {
+  color: #ec5f99;
+ }
+ input[type=checkbox] {
+  visibility: hidden;
+ }
+
+ input[type=radio] {
+  visibility: hidden;
+}
+
+.radio label:before {
+  content: '';
+  cursor: pointer;
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  border-radius: 13px;
+  top: -2px;
+  left: -12px;
+  float: left;
+  background: #fff;
+  border: 1px solid #ddd;
+  box-shadow: inset 0 2px 3px rgba(0, 0, 0, .1);
+}
+
+.radio input[type=radio]:checked + label:before {
+  background-color: #ec5f99;
+}
+
+.radio input[type=radio]:checked + label {
+  color: #ec5f99;
+}
+
+.radio input[type=radio]:checked + label:after {
+  opacity: 1;
+}
+
+.radio label:after {
+  opacity: 0.2;
+  content: '';
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  border-radius: 6px;
+  background: #fff;
+  top: 5px;
+  left: -5px;
+  border-top: none;
+  border-right: none;
+  transition: .1s;
+}
+
+.radio input[type=radio]:disabled + label,
+.radio input[type=radio]:disabled + label:before,
+.radio input[type=radio]:disabled + label:after {
+  cursor: not-allowed;
+  color: gray;
+}
+
+.radio input[type=radio]:checked:disabled + label:before {
+  background-color: gray;
+}
+
+.Filter {
+  margin: 0 auto;
+  text-align: center;
+  padding: 20px 40px 10px 0;
+}
+.Filter h5 {
+  cursor: pointer;
+}
+.Filter ul {
+  list-style-type: none;
+  display: inline-block;
+}
+
+h3#obligatorisk::after {
+  content: " *";
+  color: red;
+}
+
+input:disabled {
+  cursor: not-allowed !important;
+  color: #818181;
+}
+
+textarea:disabled {
+  cursor: not-allowed;
+  color: #818181;
+}
+
+button.red {
+  background-color: #D73A4A;
+  color: white;
+}
+
+button.green {
+  background-color: #2C974B;
+  color: white;
+}
+
+button.yellow {
+  background-color: #E5C100;
+}
+
+table {
+  border: 1px solid #eeeeee;
+  /* width: 100%; */
+}
+
+th {
+  padding: 10px;
+}
+td {
+  padding: 10px;
+  color: #818181;
+}
+
+tr:nth-child(odd) {
+  background: #eeeeee;
+}
+
+input[type="text"], input[type="date"] {
+  padding: 10px;
+  width: 300px;
+  height: 50px;
+}
+
+textarea {
+  padding: 10px;
+  border: 1px solid #f7f7f7;
+  resize: none;
+  width: 500px;
+  max-width: 100%;
+  min-height: 150px;
+  box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.1);
+}
+
+i.fa-trash {
+  color: rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+i.fa-trash:hover {
+  color: rgb(0,0,0,0.8);
+  transform: scale(1.1);
+}

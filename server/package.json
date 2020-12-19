@@ -1,0 +1,29 @@
+{
+  "name": "damm-server",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "cors": "^2.8.4",
+    "dotenv": "^8.2.0",
+    "express": "^4.16.2",
+    "gridfs-stream": "^1.1.1",
+    "moment": "^2.20.1",
+    "mongodb": "^3.6.0",
+    "mongoose": "^5.10.0",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.2",
+    "multer-gridfs-storage": "^4.2.0",
+    "node-fetch": "^2.6.1",
+    "uuid4": "^2.0.2"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "test": "mocha",
+    "dev": "nodemon app.js"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "mocha": "^8.2.1"
+  }
+}

@@ -1,0 +1,138 @@
+.EventDetailed {
+    width: 100%;
+}
+
+.EventDetailedContent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.EventDetailedBox {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: center; */
+    width: 80%;
+    background-color: #f9f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2)
+}
+
+.EventDetailedBox .buttons {
+    margin: 10px 0 0 0;
+}
+
+.EventDetailedBox .buttons button{
+    margin: 5px;
+}
+
+.EventDetailedBox .row {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+.EventDetailedBox .row.layout {
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+    width: 100%;
+}
+
+.EventDetailed .row.layout .col.layout {
+    padding: 20px;
+    width: 50%;
+}
+
+.EventDetailed .row.layout .col.layout:nth-child(odd) {
+    border-right: 1px solid #eeeeee;
+}
+
+.EventDetailedBox h2#title {
+    border-bottom: 1px solid #eeeeee;
+    font-weight: bold;
+    padding-bottom: 5px;
+    color: #818181;
+}
+
+.EventDetailedBox h4 {
+    font-weight: bold;
+    margin: 5px 0 0 0;
+}
+
+.EventDetailedBox table {
+    width: 100%;
+}
+
+.EventDetailed .text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.EventDetailed .timeline {
+    padding: 20px;
+    width: 100%;
+}
+.EventDetailed .Timeline {
+    width: 100%;
+}
+
+.EventDetailedBox input {
+    width: 100%;
+    height: 50px;
+    padding: 10px;
+}
+
+.EventDetailedBox input,
+.EventDetailedBox textarea {
+    margin: 5px 0 5px 0;
+}
+
+.EventDetailedBox textarea {
+    padding: 10px;
+    border: 1px solid #f7f7f7;
+    box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.1);
+    resize: none;
+    width: 100%;
+    height: 150px;
+}
+
+@media screen and (max-width: 1000px) {
+    .EventDetailedBox {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .EventDetailed .timeline {
+        padding: 10px;
+    }
+
+    .EventDetailedBox .row.layout {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+    
+    .EventDetailed .row.layout .col.layout {
+        padding: 10px;
+        width: 100%;
+    }
+
+    .EventDetailed .row.layout .col.layout:nth-child(odd) {
+        border-right: none;
+        width: 100%;
+    }
+
+    .EventDetailed .Timeline {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .EventDetailed .Timeline {
+        width: 90%;
+    }
+}

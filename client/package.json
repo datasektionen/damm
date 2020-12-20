@@ -17,7 +17,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "postinstall": "npm run build",
+    "postinstall": "npm run build && mv build ../",
     "eject": "react-scripts eject"
   },
   "browserslist": {

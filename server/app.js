@@ -113,8 +113,6 @@ app.use('/api/admin/event', adminEvents)
 app.use(constants.FILE_ROUTE, files)
 app.use('/api/admin/files', adminFiles)
 app.use('/api', api)
-console.log(`${__dirname}/../build`)
-// console.log(`${__dirname}/build/index.html`)
 app.get('*', (req, res) => res.sendFile(path.resolve(__dirname + "/../build/index.html")))
 const PORT = process.env.PORT || 5000
 app.listen(PORT, () => console.log(`Listening on port ${PORT}!`))

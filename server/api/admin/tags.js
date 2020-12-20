@@ -33,9 +33,10 @@ const validColors = (req, res, next) => {
 }
 
 const doesExist = async (req, res, next) => {
-    const { text } = req.body
+    const { text, _id } = req.body
     const exists = await Tag.findOne({text})
-    if (exists) return error(res, 403, "En tagg med samma namn finns redan.")
+    // If "exists" exists and if "exists" is not the one we are editing.
+    if (exists && exists._id.toString() !== _id.toString()) return error(res, 403, "En tagg med samma namn finns redan.")
     next()
 }
 

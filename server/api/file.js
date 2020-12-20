@@ -2,9 +2,10 @@ var express = require('express')
 var router = express.Router()
 const {error, error500} = require('../util/error')
 
-let Grid = require('gridfs-stream')
 const mongoose = require('mongoose')
+let Grid = require('gridfs-stream')
 
+//----------FILE UPLOAD
 let conn = mongoose.connection
 var gfs
 conn.once('open', () => {

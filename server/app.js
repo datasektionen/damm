@@ -5,39 +5,11 @@ const moment = require('moment')
 const morgan = require('morgan')
 const fs = require('fs')
 const path = require('path')
-
+const bodyParser = require('body-parser')
 var mongoose = require('mongoose');
+
 //Configure process.env
 require('dotenv').config()
-
-// Adapters
-const dfunkt = require('./adapters/dfunkt')
-const sm = require('./adapters/sm')
-const database = require('./adapters/database')
-const {error} = require('./util/error')
-
-
-const constants = require('./util/constants')
-
-const dAuth = require('./dauth')
-const api = require('./api/api')
-const adminTags = require('./api/admin/tags')
-const adminPatches = require('./api/admin/patches')
-const adminEvents = require('./api/admin/events')
-const files = require('./api/file')
-const adminFiles = require('./api/admin/files')
-
-const bodyParser = require('body-parser')
-
-const dataGenerator = require('./generator')
-
-const init = _ => dataGenerator([
-  dfunkt,
-  sm,
-  database
-])
-let cachedData = init()()
-let lastCached = moment()
 
 app.use(cors());
 app.use(bodyParser.json())
@@ -53,9 +25,55 @@ app.use(function(req, res, next) {
 // Prevent attackers from knowing we use Express. They could read the source code, but defend against web bots
 app.disable("x-powered-by")
 
+//--------------
+// CONNECT TO DB
+//--------------
 if (process.env.NODE_ENV === "development") app.use(morgan('dev'))
 // Use this if not testing, i.e. in production
 else if (process.env.NODE_ENV !== "test") app.use(morgan("common"))
+
+let MONGO_URL
+// Do not test on real database when testing
+if (process.env.NODE_ENV === "test") {
+  //VERY important to not change this line to the real db, it will get overwriten...
+  MONGO_URL = "mongodb://localhost/damm-testdb"
+} else MONGO_URL = process.env.MONGO_URL
+
+mongoose.connect(MONGO_URL, { useNewUrlParser: true,  useUnifiedTopology: true, useFindAndModify: false })
+.then(console.log("DB connected"))
+.catch(err => {
+    console.log("DB connection error: " + err)
+    console.log("Shutting down...")
+    process.exit(0)
+})
+
+mongoose.Promise = global.Promise
+
+// Adapters
+const dfunkt = require('./adapters/dfunkt')
+const sm = require('./adapters/sm')
+const database = require('./adapters/database')
+const {error} = require('./util/error')
+const constants = require('./util/constants')
+
+const dAuth = require('./dauth')
+const api = require('./api/api')
+const adminTags = require('./api/admin/tags')
+const adminPatches = require('./api/admin/patches')
+const adminEvents = require('./api/admin/events')
+const files = require('./api/file')
+const adminFiles = require('./api/admin/files')
+
+const dataGenerator = require('./generator')
+
+const init = _ => dataGenerator([
+  dfunkt,
+  sm,
+  database
+])
+
+let cachedData = init()()
+let lastCached = moment()
 
 app.use('/', express.static('build'))
 
@@ -79,22 +97,6 @@ app.get('/api/admin/refresh', dAuth.adminAuth, (req, res) => {
     lastCached = moment()
   }
 })
-
-let MONGO_URL
-// Do not test on real database when testing
-if (process.env.NODE_ENV === "test") {
-  MONGO_URL = "mongodb://localhost/damm-testdb"
-} else MONGO_URL = process.env.MONGO_URL
-
-mongoose.connect(MONGO_URL, { useNewUrlParser: true,  useUnifiedTopology: true, useFindAndModify: false })
-.then(console.log("DB connected"))
-.catch(err => {
-    console.log("DB connection error: " + err)
-    console.log("Shutting down...")
-    process.exit(0)
-})
-
-mongoose.Promise = global.Promise
 
 app.get('/api', (_, res) => {
   res.send(cachedData)

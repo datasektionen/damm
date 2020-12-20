@@ -1,10 +1,10 @@
 var express = require('express')
 var router = express.Router()
 const dAuth = require('../../dauth')
-
-let Grid = require('gridfs-stream')
 const mongoose = require('mongoose')
+let Grid = require('gridfs-stream')
 
+//----------FILE UPLOAD
 let conn = mongoose.connection
 var gfs
 conn.once('open', () => {

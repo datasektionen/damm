@@ -15,6 +15,7 @@ export const EVENT = '/event/:id'
 export const SKAPA_MÄRKE = '/admin/marke/skapa'
 export const REDIGERA_MÄRKE = '/admin/marke/redigera/:id'
 export const MÄRKESTAGGAR = '/admin/markestaggar/hantera'
+export const ORDER = '/admin/order'
 
 //API
 export const API_CREATE_PATCH = '/api/admin/marke/create'

@@ -227,4 +227,42 @@ router.get('/remove/file/:filename', async (req, res) => {
     }
 })
 
+router.post('/register-orders', async (req, res) => {
+    const { orders } = req.body
+    if (!orders) return error(res, 403, "Inga beställningar medskickade.")
+
+    try {
+        // With this kind of for loop we can break, you cannot break with orders.forEach
+        // Go through all orders and check them
+        for (let x of orders) {
+            if (!mongoose.isValidObjectId(x.id)) {
+                return error(res, 403, "Ogiltigt id.")
+            }
+
+            if (!x.id) {
+                return error(res, 403, "Inget id angett.")
+            }
+
+            const patch = await Märke.findById(x.id).lean()
+
+            // if (!0) will be run without the if not zero check
+            if (!x.order.amount && x.order.amount !== 0) return error(res, 403, `Inget antal angett för "${patch.name}".`)
+            if (isNaN(parseInt(x.order.amount))) return error(res, 403, `Angivet antal för "${patch.name}" är inte ett heltal`)
+            if (parseInt(x.order.amount) < 0) return error(res, 403, `Angivet antal för "${patch.name}" är inte vara negativt.`)
+            if (!x.order.date) return error(res, 403, `Inget datum angett för "${patch.name}".`)
+            if (!x.order.company) return error(res, 403, `Inget företag angett  för "${patch.name}".`)
+            if (!x.order.order) return error(res, 403, `Inget referensmummer angett för "${patch.name}".`)
+        }
+
+        orders.forEach(async x => {
+            await Märke.findByIdAndUpdate(x.id, {$push: {orders: x.order}})
+        })
+
+    } catch (err) {
+        return error500(res, err)
+    }
+
+    return res.status(200).json({"status":"Beställningar registrerade."})
+})
+
 module.exports = router

@@ -4,7 +4,18 @@ import './Dropdown.css'
 import Add from '../../../components/add.png'
 import Placeholder from './300x300.png'
 
-const Dropdown = ({items, onClick = _ => {}, search = "", onChange, clearSearch, searchPlaceholder = "Sök"}) => {
+/**
+ * Search component that shows results in a dropdown list. Designed for the AdminOrder page.
+ * Can be redesigned to a more customizeable dropdown if needed.
+ * @param {Array} items items to search among.
+ * @param {String} search the search string
+ * @param {Function} onChange the function that handles search field change
+ * @param {Function} clearSearch function that clears the search field
+ * @param {String} searchPlaceholder the placeholder text for the search field
+ * @param {Function} itemClick function to call when clicking an item in the dropdown
+ */
+
+const Dropdown = ({items, search = "", onChange, clearSearch, searchPlaceholder = "Sök", itemClick}) => {
 
     const [visible, setVisible] = useState(false)
 
@@ -48,9 +59,8 @@ const Dropdown = ({items, onClick = _ => {}, search = "", onChange, clearSearch,
                         inStock={i.inStock}
                         produced={i.produced}
                         onClick={e => {
-                            onClick()
+                            itemClick(i)
                             setVisible(false)
-                            clearSearch()
                         }}
                     />   
                 ).slice(0, 10)}
@@ -68,7 +78,6 @@ const Item = ({image, title, date, price, inStock, produced, onClick}) => {
             return price.value + " SEK"
         } else return price.type
     }
-    console.log(onClick)
 
     return (
         <div className="item" onClick={onClick}>

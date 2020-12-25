@@ -1,14 +1,16 @@
 .Dropdown {
     max-width: 600px;
+    min-width: 600px;
     max-height: 100px;
 }
 
 .Dropdown input {
-    width: 100%;
-    margin: 0 0 0 5px;
+    width: 100% !important;
+    margin: 0 0 0 5px !important;
 }
 
 .Dropdown .sök {
+    width: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -85,7 +87,7 @@
 .Dropdown .results .item .col.image img {
     width: inherit;
     height: inherit;
-    object-fit: contain;
+    object-fit: cover;
 }
 
 @media screen and (max-width: 600px) {
@@ -93,7 +95,12 @@
         max-width: 100%;
     }
 
+    .Dropdown input {
+        width: 300px !important;
+    }
+
     .Dropdown .results {
-        width: 100%;
+        left: 0;
+        width: 100% !important;
     }
 }

@@ -19,6 +19,7 @@ class AdminOrder extends React.Component {
             success: "",
             search: "",
             orders: [],
+            fetching: false,
         }
 
         this.submit = this.submit.bind(this)
@@ -41,7 +42,7 @@ class AdminOrder extends React.Component {
     }
 
     submit() {
-        this.setState({error: "", success: ""})
+        this.setState({error: "", success: "", fetching: true})
         
         // Get the order keys
         let keys = Object.keys(this.state).filter(k => k.match(/^patch\-.*$/))
@@ -63,6 +64,7 @@ class AdminOrder extends React.Component {
         })
         .then(res => res.json())
         .then(json => {
+            this.setState({fetching: false})
             if (json.error) {
                 this.setState({error: json.error})
             } else {
@@ -70,7 +72,7 @@ class AdminOrder extends React.Component {
             }
         })
         .catch(json => {
-            this.setState({error: json.toString()})
+            this.setState({error: json.toString(), fetching: false})
         })
 
     }
@@ -107,6 +109,10 @@ class AdminOrder extends React.Component {
             })
         }
 
+        const reset = _ => {
+            this.setState({orders: [], error: "", success: "", search: ""})
+        }
+
         return (
             <div className="Admin">
                 <div className="Header">
@@ -137,8 +143,8 @@ class AdminOrder extends React.Component {
                                 />
                             )}
                             <div style={{margin: "15px"}}>
-                                <button className="yellow" onClick={this.submit}>Registrera</button>
-                                <button>Återställ</button>
+                                <button disabled={this.state.fetching} className="yellow" onClick={this.submit}>{this.state.fetching ? "Registrerar..." : "Registrera"}</button>
+                                <button disabled={this.state.fetching || this.state.orders.length === 0} onClick={reset}>Återställ</button>
                             </div>
                         </div>
                     </div>

@@ -36,7 +36,7 @@ class Admin extends React.Component {
                 title: "Registrera beställningar",
                 description: "Registrera att du beställt märken. Denna sida är till för att det ska gå snabbare än att behöva gå in på varje enskilt märke.",
                 link: ROUTES.ORDER,
-                buttonText: "Registrera beställning(ar)"
+                buttonText: "Registrera beställningar"
             },
             {
                 title: "Hantera märkestaggar",

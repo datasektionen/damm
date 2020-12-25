@@ -229,7 +229,7 @@ router.get('/remove/file/:filename', async (req, res) => {
 
 router.post('/register-orders', async (req, res) => {
     const { orders } = req.body
-    if (!orders) return error(res, 403, "Inga beställningar medskickade.")
+    if (!orders || orders.length === 0) return error(res, 403, "Inga beställningar medskickade.")
 
     try {
         // With this kind of for loop we can break, you cannot break with orders.forEach

@@ -28,6 +28,15 @@ const AdminPatchView = ({
         addCreator,
         creatorField,
         removeCreator,
+        orders = [],
+        order={
+            order: "",
+            amount: 0,
+            date: "",
+            company: ""
+        },
+        addOrder,
+        removeOrder,
         ...rest
     }) => {
 
@@ -114,17 +123,39 @@ const AdminPatchView = ({
                         </div>
                     </div>
                     
-                    {/* <div className="orders">
+                    <div className="orders">
                         <h3>Ordrar</h3>
                         <h4>Ordernummer eller referensnummer från tidigare beställningar. För att underlätta framtida beställningar</h4>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Antal</th>
+                                <th>Datum</th>
+                                <th>Referensnummer</th>
+                                <th>Företag</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {orders.map((o,i) =>
+                                    <tr>
+                                        <td>{o.amount}</td>
+                                        <td>{o.date}</td>
+                                        <td>{o.order}</td>
+                                        <td>{o.company}</td>
+                                        <td><i className="fas fa-trash" onClick={e => removeOrder(e, i)}/></td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
                         <div className="input">
-                            <input name="company" type="text" placeholder="Företag" value={this.state.company} onChange={(e) => handleChange(e)} />
-                            <input name="order" type="text" placeholder="Referens" value={this.state.order} onChange={(e) => handleChange(e)} />
-                            <input name="orderdate" type="date" value={this.state.orderdate} onChange={(e) => handleChange(e)} />
-                            <button onClick={e => addOrder(e)} disabled={this.state.company === "" || this.state.order === ""}>Lägg till</button>
+                            <input type="number" name="amount" min={0} value={order.amount} onChange={handleChange} />
+                            <input type="date" name="orderDate" value={order.date} onChange={handleChange} />
+                            <input type="text" name="order" placeholder="Referensnummer" autoComplete="off" value={order.order} onChange={handleChange} />
+                            <input type="text" name="company" placeholder="Företag" autoComplete="off" value={order.company} onChange={handleChange} />
                         </div>
-                        {this.state.orders.map((x,i) => <div className="order" key={i}>{x.company} {x.order}<i class="fa fa-times" onClick={(e) => removeOrder(e, i)}></i></div>)}
-                    </div> */}
+                        <button onClick={addOrder} disabled={order.date === "" || order.company === "" || order.order === ""}>Lägg till</button>
+                    </div>
                     <h3>Prylisinformation</h3>
                     <h4>Information som bara prylis kan läsa, kan information om märket som känns viktigt att förmedla, exempelvis "öppna inte fil x i Adobe Illustrator"...</h4>
                     <textarea id="comment" name="comment" placeholder="Information" value={comment} onChange={handleChange} />

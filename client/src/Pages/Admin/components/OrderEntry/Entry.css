@@ -4,10 +4,6 @@
     align-items: center;
 }
 
-.Entry input[type=number] {
-    width: 80px !important;
-}
-
 .Entry input[type=date] {
     width: 180px !important;
 }
@@ -19,4 +15,8 @@
 .Entry i.fa-trash {
     font-size: 2em;
     padding: 10px;
+}
+
+.Entry td {
+    padding: 0;
 }

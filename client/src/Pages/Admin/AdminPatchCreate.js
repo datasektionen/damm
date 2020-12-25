@@ -15,14 +15,15 @@ const INITIAL_STATE = {
     price: {type: "", value: ""},
     submitting: false,
     orders: [],
-    orderdate: "",
-    company: "",
-    order: "",
     error: "",
     inStock: false,
     comment: "",
     creators: [],
     creatorField: "",
+    amount: 0,
+    orderDate: "",
+    order: "",
+    company: "",
 }
 
 const SUCCESS_STATE = {...INITIAL_STATE, success: true}
@@ -146,8 +147,8 @@ class AdminPatchCreate extends React.Component {
 
         const addOrder = e => {
             e.preventDefault()
-            this.setState({orders: this.state.orders.concat({company: this.state.company, order: this.state.order, date: this.state.orderdate})}, () => {
-                this.setState({order: "", company: "", orderdate: ""})
+            this.setState({orders: this.state.orders.concat({amount: this.state.amount, company: this.state.company, order: this.state.order, date: this.state.orderDate})}, () => {
+                this.setState({amount: 0, order: "", company: "", orderDate: ""})
             })
         }
 
@@ -177,6 +178,15 @@ class AdminPatchCreate extends React.Component {
                 comment={this.state.comment}
                 creators={this.state.creators}
                 creatorField={this.state.creatorField}
+                orders={this.state.orders}
+                order={{
+                    order: this.state.order,
+                    amount: this.state.amount,
+                    date: this.state.orderDate,
+                    company: this.state.company
+                }}
+                addOrder={addOrder}
+                removeOrder={removeOrder}
                 addCreator={e => {
                     e.preventDefault()
                     this.setState({creators: this.state.creators.concat({name: this.state.creatorField, GDPR: true})}, _ => this.setState({creatorField: ""}))

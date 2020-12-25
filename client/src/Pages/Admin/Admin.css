@@ -201,19 +201,29 @@
     background-color: #E5C100;
 }
 
-.Admin form .creators .fa-times::before,
-.Admin form .orders .fa-times::before {
+.Admin form .creators .fa-times::before {
     padding-left: 10px;
 }
 
-.Admin form .creators .fa-times,
-.Admin form .orders .fa-times {
+.Admin form .creators .fa-times {
     font-size: 1.5em;
     position: relative;
     top: 4px;
 }
 
+.Admin form .orders {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.Admin form .orders button {
+    margin: 10px;
+}
+
 .Admin form .orders .input{
+    margin: 5px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -228,10 +238,8 @@
     background-color: #E5C100;
 }
 
-.Admin form .orders .order {
-    width: 100%;
-    text-align: center;
-    padding: 5px;
+.Admin form .orders table {
+    font-size: 1em;
 }
 
 .Admin .Tags {
@@ -557,6 +565,10 @@
     .Admin form .stock,
     .Admin form .price {
         width: 100%;
+    }
+
+    .Admin form .orders table {
+        font-size: 0.8em;
     }
 
 }

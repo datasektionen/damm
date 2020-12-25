@@ -20,21 +20,24 @@ import ProtectedContent from './components/ProtectedContent'
 import EventDetailed from './Pages/CreateEvent/EventDetailed'
 import AdminProtected, {AdminPrylisProtected, PrylisAdminProtected} from './components/AdminProtected'
 import AdminPatchEdit from './Pages/Admin/AdminPatchEdit'
+import AdminOrder from './Pages/Admin/AdminOrder'
 
 class App extends Component {
   constructor(props) {
     super(props)
 
+    const links = [
+      {to: ROUTES.HOME, text: "Hem"},
+      {to: ROUTES.TIDSLINJE, text: "Tidslinje"},
+      {to: ROUTES.MUSEUM, text: "Historiska artefakter"},
+      {to: ROUTES.MÄRKESARKIV, text: "Märkesarkiv"},
+      {to: ROUTES.SKAPA_HÄNDELSE, text: "Skapa händelse"},
+    ]
+
     this.state = {
       pls: [],
       adminFetchDone: false,
-      methoneLinks: [
-        <Link to={ROUTES.HOME}>Hem</Link>,
-        <Link to={ROUTES.TIDSLINJE}>Tidslinje</Link>,
-        <Link to={ROUTES.MUSEUM}>Historiska artefakter</Link>,
-        <Link to={ROUTES.MÄRKESARKIV}>Märkesarkiv</Link>,
-        <Link to={ROUTES.SKAPA_HÄNDELSE}>Skapa händelse</Link>
-      ],
+      methoneLinks: links.map((x,i) => <Link key={"link-"+i} to={x.to}>{x.text}</Link>)
     }
   }
 
@@ -49,7 +52,11 @@ class App extends Component {
           window.location=ROUTES.HOME
         } else {
           this.setState({pls: json.pls, adminFetchDone: true})
-          if ((this.state.pls.includes("admin") || this.state.pls.includes("prylis")) && localStorage.getItem('token')) this.setState({methoneLinks: this.state.methoneLinks.concat(<Link to={ROUTES.ADMIN}>Administrera</Link>)})
+          if ((this.state.pls.includes("admin") || this.state.pls.includes("prylis")) && localStorage.getItem('token')) {
+            this.setState({
+              methoneLinks: this.state.methoneLinks.concat(<Link key="link-admin" to={ROUTES.ADMIN}>Administrera</Link>)
+            })
+          }
         }
       })
       .catch(err => {
@@ -80,10 +87,10 @@ class App extends Component {
             <PatchDetailed {...this.props} {...this.state} {...match} /> 
           </ProtectedContent>} />
           <Route exact path={ROUTES.SKAPA_MÄRKE} render={match => <AdminPrylisProtected component={AdminPatchCreate} {...this.props} {...this.state} />} />
-          {/* <Route exact path={ROUTES.REDIGERA_MÄRKE} render={match => <AdminPrylisProtected component={AdminPatchEdit} {...this.props} {...this.state} {...match} />} /> */}
           <Route exact path={ROUTES.REDIGERA_MÄRKE} render={match => <ProtectedContent contentURL={[`${ROUTES.API_GET_PATCH}${match.match.params.id}?token=${localStorage.getItem("token")}`, ROUTES.API_GET_TAGS]}>
             <AdminPatchEdit />
           </ProtectedContent>} />
+          <Route exact path={ROUTES.ORDER} render={match => <AdminPrylisProtected component={AdminOrder} {...this.props} {...this.state} />} />
           <Route exact path={ROUTES.MÄRKESTAGGAR} render={match => <AdminPrylisProtected component={AdminTags} {...this.props} {...this.state} />} />
           <Route exact path={ROUTES.SKAPA_HÄNDELSE} render={match => <CreateEvent {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.HANTERA_HÄNDELSER} render={match => <AdminProtected component={AdminEvents} {...this.props} {...this.state} /> } />

@@ -15,6 +15,7 @@ export const EVENT = '/event/:id'
 export const SKAPA_MÄRKE = '/admin/marke/skapa'
 export const REDIGERA_MÄRKE = '/admin/marke/redigera/:id'
 export const MÄRKESTAGGAR = '/admin/markestaggar/hantera'
+export const ORDER = '/admin/order'
 
 //API
 export const API_CREATE_PATCH = '/api/admin/marke/create'
@@ -37,3 +38,4 @@ export const API_UPDATE_EVENT = '/api/admin/event/update'
 export const API_GET_ALL_EVENTS = '/api/event/all'
 export const API_GET_EVENT = '/api/event/id'
 export const API_REMOVE_FILE = '/api/admin/marke/remove/file/:filename'
+export const API_REGISTER_ORDERS = '/api/admin/marke/register-orders'

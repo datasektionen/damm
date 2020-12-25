@@ -1,0 +1,22 @@
+.Entry .fields {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.Entry input[type=date] {
+    width: 180px !important;
+}
+
+.Entry input[type=text] {
+    width: 200px !important;
+}
+
+.Entry i.fa-trash {
+    font-size: 2em;
+    padding: 10px;
+}
+
+.Entry td {
+    padding: 0;
+}

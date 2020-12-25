@@ -25,7 +25,11 @@ class AdminPatchEdit extends React.Component {
                 image: ""
             },
             fetching: false,
-            creatorField: ""
+            creatorField: "",
+            amount: 0,
+            orderDate: "",
+            order: "",
+            company: "",
         }
 
         this.submit = this.submit.bind(this)
@@ -152,6 +156,18 @@ class AdminPatchEdit extends React.Component {
             }})
         }
 
+        const addOrder = e => {
+            e.preventDefault()
+            this.setState({orders: this.state.orders.concat({amount: this.state.amount, company: this.state.company, order: this.state.order, date: this.state.orderDate})}, () => {
+                this.setState({amount: 0, order: "", company: "", orderDate: ""})
+            })
+        }
+
+        const removeOrder = (e, index) => {
+            e.preventDefault()
+            this.setState({orders: this.state.orders.filter((x,i) => index !== i)})
+        }
+
         return (
             <AdminPatchView
                 header={this.state.name}
@@ -180,6 +196,15 @@ class AdminPatchEdit extends React.Component {
                 removeCreator={index => {
                     this.setState({creators: this.state.creators.filter((x,i) => i !== index)})
                 }}
+                orders={this.state.orders}
+                order={{
+                    order: this.state.order,
+                    amount: this.state.amount,
+                    date: this.state.orderDate,
+                    company: this.state.company
+                }}
+                addOrder={addOrder}
+                removeOrder={removeOrder}
                 toggleTag={tag => {
                     // If tag is not in selectedTags array, add the tag
                     // Else remove it

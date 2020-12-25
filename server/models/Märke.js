@@ -16,10 +16,26 @@ var markeSchema = new Schema({
     date: String,
     image: String,
     orders: [{
-        company: String,
-        amount: Number,
-        order: String,
-        date: String,
+        company: {
+            type: String,
+            trim: true,
+            required: true
+        },
+        amount: {
+            type: Number,
+            trim: true,
+            required: true
+        },
+        order: {
+            type: String,
+            trim: true,
+            required: true
+        },
+        date: {
+            type: String,
+            trim: true,
+            required: true
+        },
     }],
     price: {
         type: {

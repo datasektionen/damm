@@ -85,23 +85,12 @@ class PatchDetailed extends React.Component {
                                     <i className="fas fa-hashtag"></i> {data.produced ? data.produced : 0} st
                                 </span>
                             </div>
-                            <div className="meta">
-                                {/* <div className="creators"> */}
-                                    Skapare:
-                                    {data.creators.length !== 0 && data.creators.map(c => <span id="cName">{c.name}</span>)}
-                                {/* </div> */}
-                            </div>
-                            {/* <div className="meta">
-                                <span title="Upphovsman/män">
-                                    <i class="fas fa-pen-fancy"></i>
-                                    {" "}
-                                    {data.creators.length === 0 ?
-                                        "Upphovsman okänd"
-                                        :
-                                        data.creators.map(c => <span id="cName">{c.name}</span>)
-                                    }
-                                </span>
-                            </div> */}
+                            {data.creators.length !== 0 && 
+                                <div className="meta">
+                                        Skapare:
+                                        {data.creators.map(c => <span id="cName">{c.name}</span>)}
+                                </div>
+                            }
                             <div className="description">
                                 {data.description ? data.description : "Ingen beskrivning"}
                             </div>

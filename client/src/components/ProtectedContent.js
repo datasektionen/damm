@@ -5,6 +5,9 @@ import NotFound from './NotFound'
 import Unauthorized from './Unauthorized'
 import InternalError from './InternalError'
 
+import spinner from '../res/spinner.svg'
+import Spinner from './Spinner'
+
 // Component that fetches data upon first mount.
 // Renders 401, 404 or the child component with injected data depending on access rights
 // Used for event and patch pages.
@@ -35,7 +38,7 @@ const ProtectedContent = ({contentURL = [], allowNoLogin = false, ...rest}) => {
 
     //Fetching, display nothing, possible display placeholder data
     if (!data) {
-        return <div></div>
+        return <Spinner height="90vh" />
     }
 
     // We are unauthorized to see the page, we are not admin.

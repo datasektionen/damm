@@ -4,8 +4,10 @@ import Add from '../../components/add.png'
 import TagClickable from '../../components/TagClickable'
 import Patch from './components/Patch'
 import logo from '../../skold.png'
+import spinner from '../../res/spinner.svg'
+import Spinner from '../../components/Spinner'
 
-const PatchArchiveView = ({numPatches = 0, tags, selectedTags, toggleShowTags, toggleTag, sortResults, patchTagsMatchesSelected, matchesSearch, clearSelectedTags, clearAll, searchQuery, sortRule, sortOptions, showTags, filterTagsQuery, handleSearch, clearSearch, handleSort, history, stockFilter = false, stockFilterOptions, matchesStockFilter, handleStockFilter}) => {
+const PatchArchiveView = ({numPatches = 0, tags, selectedTags, toggleShowTags, toggleTag, sortResults, patchTagsMatchesSelected, matchesSearch, clearSelectedTags, clearAll, searchQuery, sortRule, sortOptions, showTags, filterTagsQuery, handleSearch, clearSearch, handleSort, history, stockFilter = false, stockFilterOptions, matchesStockFilter, handleStockFilter, ...rest}) => {
     return (
         <div className="MärkesArkiv">
             <div className="Header">
@@ -82,7 +84,11 @@ const PatchArchiveView = ({numPatches = 0, tags, selectedTags, toggleShowTags, t
                 }
             </div>
             <div className="märken">
-                {sortResults().map((x,i) => (patchTagsMatchesSelected(x) && matchesSearch(x) && matchesStockFilter(x)) ? <Patch key={"patch-"+i} {...x} history={history}/> : undefined)}
+                {rest.fetching ? 
+                    <img src={spinner} className="spinner"/>
+                    :
+                    sortResults().map((x,i) => (patchTagsMatchesSelected(x) && matchesSearch(x) && matchesStockFilter(x)) ? <Patch key={"patch-"+i} {...x} history={history}/> : undefined)
+                }
             </div>
         </div>
     )

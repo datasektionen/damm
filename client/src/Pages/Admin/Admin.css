@@ -238,10 +238,6 @@
     background-color: #E5C100;
 }
 
-.Admin form .orders table {
-    font-size: 1em;
-}
-
 .Admin .Tags {
     display: flex;
     flex-direction: row;
@@ -432,6 +428,11 @@
 }
 
 @media screen and (max-width: 600px) {
+
+    table {
+        font-size: 0.8em;
+    }
+    
     .Admin .Form form {
         width: 100%;
     }

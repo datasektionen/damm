@@ -1,7 +1,3 @@
-/* .MärkesArkiv .märken * {
-    transition: none !important;
-} */
-
 .märke {
     background-color: #f9f9f9f9;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -138,16 +134,17 @@
     font-weight: normal;
 }
 
-div > .märken {
-    
-}
-
 .märken {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
+}
+
+.märken .spinner {
+    margin: 100px;
+    width: 100px;
 }
 
 .settings {
@@ -319,6 +316,10 @@ div > .märken {
     .märke .head .price {
         font-weight: 400;
         font-size: 1.2em;
+    }
+
+    .märken .spinner {
+        margin: 10px;
     }
 }
 

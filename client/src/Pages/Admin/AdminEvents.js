@@ -6,6 +6,8 @@ import { EVENT_TYPE_TO_STRING } from '../../config/constants'
 import * as ROUTES from '../../routes'
 import Add from '../../components/add.png'
 import moment from 'moment'
+import spinner from '../../res/spinner.svg'
+import Spinner from '../../components/Spinner'
 
 class AdminEvents extends React.Component {
     constructor(props) {
@@ -16,7 +18,8 @@ class AdminEvents extends React.Component {
             tabs: ["Obehandlade", "Godkända"],
             tab: "Obehandlade",
             query: "",
-            templateFilter: "all"
+            templateFilter: "all",
+            fetching: true,
         }
 
         this.fetchEvents = this.fetchEvents.bind(this)
@@ -33,10 +36,11 @@ class AdminEvents extends React.Component {
             .then(res => res.json())
             .then(json => {
                 console.log(json.events)
-                this.setState({events: json.events})
+                this.setState({events: json.events, fetching: false})
                 resolve()
             })
             .catch(err => {
+                this.setState({fetching: false})
                 reject()
             })
         })
@@ -96,6 +100,7 @@ class AdminEvents extends React.Component {
                             query={this.state.query}
                             templateFilter={this.state.templateFilter}
                             fetchEvents={this.fetchEvents}
+                            fetching={this.state.fetching}
                         />
                     </div>
                 </div>
@@ -105,7 +110,7 @@ class AdminEvents extends React.Component {
 }
 
 //Handles what to render on each tab, filters events based on search query and selected filter
-const TabBody = ({tabs, selectedTab, events, query, templateFilter, fetchEvents}) => {
+const TabBody = ({tabs, selectedTab, events, query, templateFilter, fetching}) => {
     //Filter by selected templates (dropdown)
     const filteredByTemplateEvents = templateFilter === "all" ? events : events.filter(e => e.template === templateFilter)
 
@@ -114,6 +119,10 @@ const TabBody = ({tabs, selectedTab, events, query, templateFilter, fetchEvents}
         e.title.toLowerCase().match(new RegExp(query.toLowerCase(), "g"))
         || e.content.toLowerCase().match(new RegExp(query.toLowerCase(), "g"))
         || moment(e.date).format("YYYY").match(new RegExp(query.toLowerCase(), "g"))
+    )
+
+    if (fetching) return (
+        <Spinner />
     )
 
     if (selectedTab === tabs[0]) {

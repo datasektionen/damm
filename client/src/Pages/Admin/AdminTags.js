@@ -3,6 +3,7 @@ import * as ROUTES from '../../routes'
 import TagClickable from '../../components/TagClickable'
 import EditTag from './EditTag'
 import Unauthorized from '../../components/Unauthorized'
+import Spinner from '../../components/Spinner/Spinner'
 
 const INIT_TAG = {
     text: "",
@@ -17,6 +18,7 @@ const INITIAL_STATE = {
     search: "",
     newTag: false,
     sortState: 0,
+    fetching: true,
 }
 
 class AdminTags extends React.Component {
@@ -39,9 +41,10 @@ class AdminTags extends React.Component {
         .then(res => res.json())
         .then(res => {
             console.log(res)
-            this.setState({tags: res, selectedTag: INIT_TAG})
+            this.setState({tags: res, selectedTag: INIT_TAG, fetching: false})
         })
         .catch(err => {
+            this.setState({fetching: false})
             console.log(err)
         })
     }
@@ -105,28 +108,32 @@ class AdminTags extends React.Component {
                 <div className="Header">
                     <div><h2>Hantera märkestaggar</h2></div>
                 </div>
-                <div className="Tags">
-                    <div className="bar">
-                        <div className="sök">
-                            <input name="search" autoComplete="off" type="text" placeholder="Sök" onChange={e => handleChange(e)} value={this.state.search} />
-                            {/* <img className="clearImg" src={Add} onClick={() => {this.setState({search: ""})}}/> */}
-                        </div>
-                        <button id="sort" onClick={() => this.setState({sortState: this.state.sortState === 0 ? 1 : 0})}>{sortStates[this.state.sortState]}</button>
-                        <button id="nytagg" onClick={e => newTag(e)}>Skapa ny tagg</button>
-                        <div className="tags">
-                            {sort(this.state.tags).map((x,i) => x.text.toLowerCase().match(new RegExp(this.state.search.toLowerCase(), "g")) ? <div className="barTag" key={i}><TagClickable {...x} onClick={e => {selectTag(e, i)}} selectedTags={[this.state.selectedTag]}/></div> : undefined)}
-                        </div>
-                    </div>
-                    <div className="content">
-                        {this.state.selectedTag.text !== "" || this.state.newTag ?
-                            <div ref={this.editFocus}><EditTag {...this.state.selectedTag} fetchTags={() => this.fetchTags()} edit={!this.state.newTag} /></div>
-                        :
-                            <div className="notag">
-                                Klicka på en existerande tagg eller "Skapa ny tagg"
+                {this.state.fetching ? 
+                    <Spinner height="70vh" />
+                    :
+                    <div className="Tags">
+                        <div className="bar">
+                            <div className="sök">
+                                <input name="search" autoComplete="off" type="text" placeholder="Sök" onChange={e => handleChange(e)} value={this.state.search} />
+                                {/* <img className="clearImg" src={Add} onClick={() => {this.setState({search: ""})}}/> */}
                             </div>
-                        }
+                            <button id="sort" onClick={() => this.setState({sortState: this.state.sortState === 0 ? 1 : 0})}>{sortStates[this.state.sortState]}</button>
+                            <button id="nytagg" onClick={e => newTag(e)}>Skapa ny tagg</button>
+                            <div className="tags">
+                                {sort(this.state.tags).map((x,i) => x.text.toLowerCase().match(new RegExp(this.state.search.toLowerCase(), "g")) ? <div className="barTag" key={i}><TagClickable {...x} onClick={e => {selectTag(e, i)}} selectedTags={[this.state.selectedTag]}/></div> : undefined)}
+                            </div>
+                        </div>
+                        <div className="content">
+                            {this.state.selectedTag.text !== "" || this.state.newTag ?
+                                <div ref={this.editFocus}><EditTag {...this.state.selectedTag} fetchTags={() => this.fetchTags()} edit={!this.state.newTag} /></div>
+                            :
+                                <div className="notag">
+                                    Klicka på en existerande tagg eller "Skapa ny tagg"
+                                </div>
+                            }
+                        </div>
                     </div>
-                </div>
+                }
             </div>
         )
 

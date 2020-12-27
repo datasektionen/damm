@@ -61,10 +61,14 @@ router.get('/marke/id/:id', async (req, res) => {
     let getPatch
 
     if (req.query.token) {
-        const pls = await dAuth.getPls(req.query.token)
-        if (pls.includes("admin") || pls.includes("prylis")) {
-            getPatch = Märke.getByIdAdmin
-        } else getPatch = Märke.getById
+        try {
+            const pls = await dAuth.getPls(req.query.token)
+            if (pls.includes("admin") || pls.includes("prylis")) {
+                getPatch = Märke.getByIdAdmin
+            } else getPatch = Märke.getById
+        } catch(err) {
+            return error500(res, err)
+        }
     } else {
         getPatch = Märke.getById
     }

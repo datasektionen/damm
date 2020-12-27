@@ -83,7 +83,7 @@ class App extends Component {
           <Route exact path={ROUTES.TIDSLINJE} render={match => <Historia {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.MUSEUM} render={match => <Museum {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.MÄRKESARKIV} render={match => <PatchArchive {...this.props} {...this.state} {...match}/> } />
-          <Route exact path={ROUTES.MÄRKE} render={match => <ProtectedContent allowNoLogin={true} contentURL={[`${ROUTES.API_GET_PATCH}${match.match.params.id}?token=${localStorage.getItem("token") ? localStorage.getItem("token") : ""}`]}>
+          <Route exact path={ROUTES.MÄRKE} render={match => <ProtectedContent allowNoLogin={true} contentURL={[`${ROUTES.API_GET_PATCH}${match.match.params.id}?token=${localStorage.getItem("token") ? localStorage.getItem("token") : ""}`]} {...match}>
             <PatchDetailed {...this.props} {...this.state} {...match} /> 
           </ProtectedContent>} />
           <Route exact path={ROUTES.SKAPA_MÄRKE} render={match => <AdminPrylisProtected component={AdminPatchCreate} {...this.props} {...this.state} />} />

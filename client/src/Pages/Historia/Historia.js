@@ -4,6 +4,7 @@ import '../../App.css'
 import logo from '../../skold.png'
 import ScrollLegend from './ScrollLegend'
 import templates from '../../config/templates'
+import Spinner from '../../components/Spinner/Spinner'
 
 class Historia extends React.Component {
     constructor(props) {
@@ -20,7 +21,8 @@ class Historia extends React.Component {
           events: [],
           showFilter: false,
           show: show,
-          years: []
+          years: [],
+          fetching: true,
         }
     }
 
@@ -53,7 +55,7 @@ class Historia extends React.Component {
               e.date = moment(e.date)
               return e
             })
-            this.setState({events: events, years: eventsPerYear(events)})
+            this.setState({events: events, years: eventsPerYear(events), fetching: false})
           })
       }
 
@@ -107,14 +109,18 @@ class Historia extends React.Component {
                 </ul>
                 </div>
                 <div className="Timeline">
-                { this.state.years.map(y => (
-                    <div key={'year-heading-' + y.year} id={'year-' + y.year}>
-                    <time className="Year">{ y.year }</time>
-                    <div className="cards">
-                        { y.cards.map((c, i) => templateForCard(c, i)) }
-                    </div>
-                    </div>
-                )) }
+                  {this.state.fetching ?
+                    <Spinner />
+                    :
+                    this.state.years.map(y => (
+                        <div key={'year-heading-' + y.year} id={'year-' + y.year}>
+                        <time className="Year">{ y.year }</time>
+                        <div className="cards">
+                            { y.cards.map((c, i) => templateForCard(c, i)) }
+                        </div>
+                        </div>
+                    ))
+                  }
                 </div>
             </div>
         )

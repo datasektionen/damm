@@ -50,16 +50,16 @@ const Patch = ({image, date, name, description, numProduced = "?", tags = [], pr
             <div className="image" style={{backgroundImage: `url(${image})`}}></div>
             <div className="head">
                 <div
-                    className="date"
+                    className="item date"
                     title="Utgivningsdatum (första utgåvan)"
                 >
                     <div><i className="far fa-clock"></i> {date ? moment(date).format("D MMM YYYY") : "Okänt"}</div>
                 </div>
-                <div className="stock">
+                <div className="item stock">
                     <div><i className="fas fa-box-open"></i> {inStock ? "I lager" : "Ej i lager"}</div>
                 </div>
                 <div
-                    className="price"
+                    className="item price"
                     title="Pris"
                 >
                     <div><i className="fas fa-dollar-sign"></i> {displayPrice}</div>

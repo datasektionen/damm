@@ -45,7 +45,8 @@ class PatchArchive extends React.Component {
             file: undefined,
             sortOptions: sortOptions,
             stockFilter: stockFilterOptions[0].value,
-            stockFilterOptions: stockFilterOptions
+            stockFilterOptions: stockFilterOptions,
+            fetching: true,
         }
     }
 
@@ -67,9 +68,10 @@ class PatchArchive extends React.Component {
             .then(res => res.json())
             .then(res => {
                 console.log(res)
-                this.setState({märken: res, numPatches: res.length})
+                this.setState({märken: res, numPatches: res.length, fetching: false})
             })
             .catch(err => {
+                this.setState({fetching: false})
                 console.log(err)
             })
         }
@@ -253,6 +255,7 @@ class PatchArchive extends React.Component {
                 stockFilterOptions={this.state.stockFilterOptions}
                 matchesStockFilter={matchesStockFilter}
                 handleStockFilter={e => this.setState({stockFilter: e.target.value})}
+                fetching={this.state.fetching}
             />
         )
     }

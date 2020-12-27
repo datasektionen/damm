@@ -54,52 +54,33 @@
     flex-direction: row;
 }
 
-.märke .head .date {
+.märke .head .item {
     font-weight: 300;
+    height: 50px;
+    display: inline-block;
+    text-align: center;
+    font-size: 0.9;
+    line-height: 1;
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.märke .head .date {
     background: #e83d84;
     color: #fff;
     min-width: 40%;
-    height: 50px;
-    display: inline-block;
-    text-align: center;
-    font-size: 0.9;
-    line-height: 1;
-    display: flex;
-    flex-flow: column wrap;
-    align-items: center;
-    justify-content: center;
 }
 
 .märke .head .stock {
-    font-weight: 300;
     background: #E5C100;
     min-width: 30%;
-    height: 50px;
-    display: inline-block;
-    text-align: center;
-    font-size: 0.9;
-    line-height: 1;
-    display: flex;
-    flex-flow: column wrap;
-    align-items: center;
-    justify-content: center;
 }
 
 .märke .head .price {
-    font-weight: 300;
-    /* background: #278032;
-    color: #fff; */
     background: #8BC34A;
     min-width: 30%;
-    height: 50px;
-    display: inline-block;
-    text-align: center;
-    font-size: 0.9;
-    line-height: 1;
-    display: flex;
-    flex-flow: column wrap;
-    align-items: center;
-    justify-content: center;
 }
 
 .märke .title {
@@ -236,14 +217,28 @@
     }
 
     .märke {
-        width: 90%;
-        margin-top: 10px;
+        width: 47%;
+        height: 280px;
+        margin: 5px;
     }
 
-    .märke img {
-        width: 100%;
-        height: 300px;
-        object-fit: cover;
+    .märke .head {
+        font-size: 0.7em;
+    }
+
+    .märke .head .item {
+        height: 30px;
+    }
+
+    .märke .head .date,
+    .märke .head .stock,
+    .märke .head .price {
+        min-width: 33.33%;
+    }
+
+    .märke .title {
+        font-size: 0.7em;
+        margin: 5px;
     }
 
     .settings {

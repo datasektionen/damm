@@ -109,7 +109,7 @@ class AdminTags extends React.Component {
                     <div><h2>Hantera märkestaggar</h2></div>
                 </div>
                 {this.state.fetching ? 
-                    <Spinner height="70vh" />
+                    <Spinner style={{height: "70vh"}} />
                     :
                     <div className="Tags">
                         <div className="bar">

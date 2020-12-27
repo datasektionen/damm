@@ -44,7 +44,7 @@ const ProtectedContent = ({contentURL = [], allowNoLogin = false, ...rest}) => {
 
     //Fetching, display nothing, possible display placeholder data
     if (!data) {
-        return <Spinner height="90vh" />
+        return <Spinner style={{height: "90vh"}} />
     }
 
     // We are unauthorized to see the page, we are not admin.

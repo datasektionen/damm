@@ -1,9 +1,9 @@
 import spinner from '../../res/spinner.svg'
 import './Spinner.css'
 
-const Spinner = ({height = "100%", ...rest}) => {
+const Spinner = ({...rest}) => {
     return (
-        <div className="Spinner" style={{height}, {...rest.style}}>
+        <div className="Spinner" style={{...rest.style}}>
             <img style={{width: "100px"}} src={spinner} />
         </div>
     )

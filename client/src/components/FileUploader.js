@@ -78,7 +78,7 @@ const FileUploader = ({text = "Ladda upp en bild på märket", imageOnly = true,
 
                 file ?
                     <div>
-                        {imageOnly && <div><img alt="preview" draggable="false" src={preview} /></div>}
+                        {(imageOnly || file.type.split("/")[0] === "image") && <div><img alt="preview" draggable="false" src={preview} /></div>}
                         <div style={{margin: "5px"}}>{file.name}</div>
                     </div>
                 :

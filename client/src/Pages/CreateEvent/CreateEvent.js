@@ -8,6 +8,7 @@ import moment from 'moment'
 import General from '../Historia/cards/General'
 import Anniversary from '../Historia/cards/Anniversary'
 import { EVENT_TYPES } from '../../config/constants'
+import SubmitButton from '../../components/SubmitButton/SubmitButton'
 
 const INITIAL_STATE = {
     title: "",
@@ -134,7 +135,7 @@ class CreateEvent extends React.Component {
                             </div>
                             {/* Knappar */}
                             <div className="Skapa">
-                                <button id="Skapa" onClick={onSubmit} disabled={invalid || this.state.fetching}>Skapa händelseförslag</button>
+                                <SubmitButton text="Skapa händelseförslag" loading={this.state.fetching} onClick={onSubmit} disabled={invalid || this.state.fetching}/>
                                 <button onClick={togglePreview} disabled={this.state.checked === ""}>{"Förhandsgrankning: " + (this.state.togglePreview ? "På" : "Av")}</button>
                                 <button onClick={clear} disabled={!clearDisabled}>Återställ</button>
                             </div>

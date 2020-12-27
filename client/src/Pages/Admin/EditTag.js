@@ -3,6 +3,7 @@ import * as ROUTES from '../../routes'
 import TagClickable from '../../components/TagClickable'
 import Alert from '../../components/Alert'
 import memoize from "memoize-one";
+import SubmitButton from '../../components/SubmitButton/SubmitButton';
 
 class EditTag extends React.Component {
     constructor(props) {
@@ -145,7 +146,7 @@ class EditTag extends React.Component {
                         </div>
                         <div className="buttons">
                             <button onClick={e => reset(e)}>Ångra ändringar</button>
-                            <button id="save" onClick={e => save(e)} disabled={noChange() || this.state.fetching}>Spara</button>
+                            <SubmitButton onClick={save} loading={this.state.fetching} disabled={noChange() || this.state.fetching} />
                             {this.props.edit ? <i onClick={e => deleteTag(e)} title="Ta bort" disabled={this.state.fetching} className="fas fa-trash"></i> : undefined}
                         </div>
                     </form>

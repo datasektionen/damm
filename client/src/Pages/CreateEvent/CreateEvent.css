@@ -55,10 +55,6 @@
     height: 150px;
 }
 
-.SkapaHändelse .Body .Box button#Skapa {
-    background-color: #E5C100;
-}
-
 .SkapaHändelse .Body .Box button {
     margin: 5px;
 }

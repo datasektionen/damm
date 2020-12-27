@@ -36,7 +36,11 @@ const doesExist = async (req, res, next) => {
     const { text, _id } = req.body
     const exists = await Tag.findOne({text})
     // If "exists" exists and if "exists" is not the one we are editing.
-    if (exists && exists._id.toString() !== _id.toString()) return error(res, 403, "En tagg med samma namn finns redan.")
+    if (_id) {
+        if (exists && exists._id.toString() !== _id.toString()) return error(res, 403, "En tagg med samma namn finns redan.")
+    } else {
+        if (exists) return error(res, 403, "En tagg med samma namn finns redan")
+    }
     next()
 }
 

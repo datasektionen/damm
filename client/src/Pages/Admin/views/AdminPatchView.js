@@ -2,6 +2,7 @@ import React from 'react'
 import TagClickable from '../../../components/TagClickable'
 import { PRICE_TYPES } from '../../../config/constants'
 import FileUploader from '../../../components/FileUploader'
+import SubmitButton from '../../../components/SubmitButton/SubmitButton'
 
 const AdminPatchView = ({
         header = "Header",
@@ -160,7 +161,7 @@ const AdminPatchView = ({
                     <h4>Information som bara prylis kan läsa, kan information om märket som känns viktigt att förmedla, exempelvis "öppna inte fil x i Adobe Illustrator"...</h4>
                     <textarea id="comment" name="comment" placeholder="Information" value={comment} onChange={handleChange} />
                     <div className="BottomButtons">
-                        <button disabled={submitting} formAction="submit">{submitting ? "Sparar märke..." : "Spara märke"}</button>
+                        <SubmitButton loading={submitting} text="Spara märke" loadingText="Sparar märke..." formAction="submit" disabled={submitting} />
                         <button className="rensa" onClick={(e) => {
                             e.preventDefault();
                             onReset()

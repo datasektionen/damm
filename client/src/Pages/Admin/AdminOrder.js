@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Alert from '../../components/Alert'
+import SubmitButton from '../../components/SubmitButton/SubmitButton'
 import * as ROUTES from '../../routes'
 import Dropdown from './components/Dropdown'
 import Entry from './components/OrderEntry/Entry'
@@ -143,7 +144,7 @@ class AdminOrder extends React.Component {
                                 />
                             )}
                             <div style={{margin: "15px"}}>
-                                <button disabled={this.state.fetching} className="yellow" onClick={this.submit}>{this.state.fetching ? "Registrerar..." : "Registrera"}</button>
+                                <SubmitButton text="Registrera" loadingText="Registrerar..." loading={this.state.fetching} onClick={this.submit} disabled={this.state.fetching}/>
                                 <button disabled={this.state.fetching || this.state.orders.length === 0} onClick={reset}>Återställ</button>
                             </div>
                         </div>

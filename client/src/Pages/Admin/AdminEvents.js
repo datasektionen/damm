@@ -120,8 +120,8 @@ const TabBody = ({tabs, selectedTab, events, query, templateFilter, fetching}) =
         || moment(e.date).format("YYYY").match(new RegExp(query.toLowerCase(), "g"))
     )
 
-    if (fetching) return (
-        <Spinner />
+    if (true) return (
+        <Spinner style={{width: "100%"}}/>
     )
 
     if (selectedTab === tabs[0]) {

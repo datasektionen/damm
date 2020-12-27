@@ -427,6 +427,13 @@
     justify-content: center;
 }
 
+.Admin .centerrow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
 @media screen and (max-width: 600px) {
 
     table {
@@ -434,6 +441,10 @@
     }
     
     .Admin .Form form {
+        width: 100%;
+    }
+
+    .Admin .Form #description {
         width: 100%;
     }
 

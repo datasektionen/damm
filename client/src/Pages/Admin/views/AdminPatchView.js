@@ -107,18 +107,22 @@ const AdminPatchView = ({
                             )}
                         </div>}
                     </div>
-                    <FileUploader
-                        text="Ladda upp tillhörande filer till märket"
-                        setFileCallback={setFileCallback}
-                        imageOnly={false}
-                    />
+                    <div style={{margin: "20px", width: "100%"}} className="center">
+                        <h3>Filer</h3>
+                        <h4>Tillhörande filer till märket. Kan exempelvis vara vektorkällfilen. Går endast att lägga upp en fil i taget.</h4>
+                        <FileUploader
+                            text="Ladda upp tillhörande filer till märket"
+                            setFileCallback={setFileCallback}
+                            imageOnly={false}
+                        />
+                    </div>
                     <div className="creators">
                         <h3>Upphovsmän</h3>
                         <h4>Observera att enligt GDPR måste du be om tillåtelse från personen ifall denna data ska sparas.</h4>
                         <div style={{padding: "10px"}}>
                             {creators.map((c,i) => <div key={"creator-"+i}>{c.name}<span id="remove" onClick={_ => removeCreator(i)}><i className="fas fa-times"></i></span></div>)}
                         </div>
-                        <div>
+                        <div className="centerrow">
                             <input autoComplete="off" name="creatorField" id="creatorField" type="text" placeholder="Namn eller nämnd" value={creatorField} onChange={handleChange} />
                             <button onClick={addCreator}>Lägg till</button>
                         </div>

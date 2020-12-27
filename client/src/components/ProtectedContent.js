@@ -5,8 +5,7 @@ import NotFound from './NotFound'
 import Unauthorized from './Unauthorized'
 import InternalError from './InternalError'
 
-import spinner from '../res/spinner.svg'
-import Spinner from './Spinner'
+import Spinner from './Spinner/Spinner'
 
 // Component that fetches data upon first mount.
 // Renders 401, 404 or the child component with injected data depending on access rights

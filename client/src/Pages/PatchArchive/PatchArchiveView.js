@@ -5,7 +5,6 @@ import TagClickable from '../../components/TagClickable'
 import Patch from './components/Patch'
 import logo from '../../skold.png'
 import spinner from '../../res/spinner.svg'
-import Spinner from '../../components/Spinner'
 
 const PatchArchiveView = ({numPatches = 0, tags, selectedTags, toggleShowTags, toggleTag, sortResults, patchTagsMatchesSelected, matchesSearch, clearSelectedTags, clearAll, searchQuery, sortRule, sortOptions, showTags, filterTagsQuery, handleSearch, clearSearch, handleSort, history, stockFilter = false, stockFilterOptions, matchesStockFilter, handleStockFilter, ...rest}) => {
     return (

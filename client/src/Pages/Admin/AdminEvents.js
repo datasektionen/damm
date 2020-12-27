@@ -6,8 +6,7 @@ import { EVENT_TYPE_TO_STRING } from '../../config/constants'
 import * as ROUTES from '../../routes'
 import Add from '../../components/add.png'
 import moment from 'moment'
-import spinner from '../../res/spinner.svg'
-import Spinner from '../../components/Spinner'
+import Spinner from '../../components/Spinner/Spinner'
 
 class AdminEvents extends React.Component {
     constructor(props) {

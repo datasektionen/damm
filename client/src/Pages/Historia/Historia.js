@@ -4,8 +4,7 @@ import '../../App.css'
 import logo from '../../skold.png'
 import ScrollLegend from './ScrollLegend'
 import templates from '../../config/templates'
-import spinner from '../../res/spinner.svg'
-import Spinner from '../../components/Spinner'
+import Spinner from '../../components/Spinner/Spinner'
 
 class Historia extends React.Component {
     constructor(props) {

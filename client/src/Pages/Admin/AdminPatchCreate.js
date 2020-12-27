@@ -96,7 +96,7 @@ class AdminPatchCreate extends React.Component {
         .then(res => res.json())
         .then(json => {
             this.setState({submitting: false})
-            if (json.success) {
+            if (!json.error) {
                 this.state.resetFile()
                 this.setState({...SUCCESS_STATE, tags: this.state.tags})
                 window.scrollTo(0, 0)

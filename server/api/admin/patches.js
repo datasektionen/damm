@@ -29,10 +29,16 @@ const hasImage = (req, res, next) => {
 
 // Middleware that validates a patch name
 const nameValidator = (req, res, next) => {
-    const name = JSON.parse(req.body.name)
+    const name = req.body.name
     if (!name) return error(res, 403, "Ingen namn angett.")
     if (name.trim().length < 1) return error(res, 403, "Namnet är för kort.")
     next()
+}
+
+const nameValidatorEdit = (req, res, next) => {
+    const name = req.body.name
+    if (name) nameValidator(req, res, next)
+    else next()
 }
 
 // Middleware that validates price (price type and values)
@@ -52,13 +58,23 @@ const priceValidator = (req, res, next) => {
     next()
 }
 
+const priceValidatorEdit = (req, res, next) => {
+    if (req.body.price) {
+        priceValidator(req, res, next)
+    } else next()
+}
+
 const patchFiles = upload.fields([{ name: "image", maxCount: 1 }, { name: "files", maxCount: 10 },])
 
 // Route for creating a patch. Takes data as formdata.
 router.post('/create', patchFiles, hasImage, nameValidator, priceValidator, async (req, res) => {
     const body = {}
     Object.keys(req.body).forEach(key => {
-        body[key] = JSON.parse(req.body[key])
+        try {
+            body[key] = JSON.parse(req.body[key])
+        } catch (err) {
+            body[key] = req.body[key]
+        }
     })
 
     const { name, description, date, price, orders, tags, inStock, comment, creators } = body
@@ -79,7 +95,7 @@ router.post('/create', patchFiles, hasImage, nameValidator, priceValidator, asyn
             comment,
             creators
         })
-        return res.status(200).json({"success":"true", patch})
+        return res.status(200).json({"status":"Märket skapat.", patch})
     } catch(err) {
         if (process.env.NODE_ENV !== "test")
         console.log(err)
@@ -88,19 +104,21 @@ router.post('/create', patchFiles, hasImage, nameValidator, priceValidator, asyn
 })
 
 // Route to edit a patch
-router.post('/edit/id/:id', patchFiles, nameValidator, priceValidator, async (req, res) => {
-    const body = {}
+router.post('/edit/id/:id', patchFiles, nameValidatorEdit, priceValidatorEdit, async (req, res) => {
     console.log(req.body)
-    Object.keys(req.body).forEach(key => {
-        body[key] = JSON.parse(req.body[key])
-    })
-
-    console.log(req.files)
-
     const { id } = req.params
     if (!mongoose.isValidObjectId(id)) return error(res, 404, "Märket finns ej.")
     if ((await Märke.findById(id)) === null) return error(res, 404, "Märket finns ej.")
-
+    
+    const body = {}
+    Object.keys(req.body).forEach(key => {
+        try {
+            body[key] = JSON.parse(req.body[key])
+        } catch (err) {
+            body[key] = req.body[key]
+        }
+    })
+    
     try {
         const patch = await Märke.findByIdAndUpdate(id, {$set: {...body}})
         if (req.files.image) await replaceImageAndUpdatePatch(patch, req.files.image[0].filename)
@@ -114,15 +132,16 @@ router.post('/edit/id/:id', patchFiles, nameValidator, priceValidator, async (re
     }
 
     return res.status(200).json({"status":"Märket uppdaterat"})
+
 })
 
 // Replaces the image file of a patch and removes the old one.
 router.post('/replace-image/id/:id', upload.single('image'), hasImage, async (req, res) => {
     const { id } = req.params
-    if (!id) return error(res, 400, "Inget id medskickat")
 
     const patch = await Märke.findById(id)
     if (!patch) return error(res, 404, "Märket hittades ej")
+    if (req.body.image) return error(res, 403, "Ingen bild medskickad.")
     console.log(patch)
     try {
         await replaceImageAndUpdatePatch(patch, req.file.filename)
@@ -188,7 +207,6 @@ const deleteFileAndChunks = async (filename) => {
 // Removes a patch, its image and its files by patch id
 router.get('/remove/id/:id', async (req, res) => {
     const { id } = req.params
-    if (!id) return error(res, 400, "Inget id medskickat")
     const patch = await Märke.findById(id)
     if (!patch) return error(res, 404, "Märket finns ej")
 

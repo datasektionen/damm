@@ -82,26 +82,6 @@ router.get('/marke/id/:id', async (req, res) => {
     }
 })
 
-// TODO: populate files for admin
-// Gets patches who has tag with specific id
-router.get('/marken/tag/id/:id', (req, res) => {
-    const id = req.params.id
-    console.log(id)
-    Märke.find()
-    .populate('tags')
-    .lean()
-    .exec((err, data) => {
-        if (!data) {
-            return error(res, 404, "Hittade inga märken", err)
-        }
-        if (err) {
-            return error500(res, err)
-        } else {
-            return res.status(200).json(data.filter(patch => patch.tags.filter(tag => tag._id.toString() === id).length !== 0))
-        }
-    })
-})
-
 router.use('/event', eventsNoAdmin)
 
 router.get('/*', (req, res) => {

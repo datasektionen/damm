@@ -14,14 +14,14 @@ conn.once('open', () => {
 
 router.use(dAuth.adminAuth)
 
-router.get('/files', (req, res) => {
+router.get('/all', (req, res) => {
     gfs.files.find().toArray((err, files) => {
         return res.status(200).json(files)
     })
 })
 
 // Gets the combined size of all files.
-router.get('/files/size', (req, res) => {
+router.get('/size', (req, res) => {
     gfs.files.find().toArray((err, chunks) => {
         let size = chunks.map(c => c.length).reduce((a, b) => a + b, 0)
         return res.status(200).json({

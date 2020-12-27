@@ -11,7 +11,6 @@ exports.adminAuth = (req, res, next) => {
         // When testing
         if (process.env.NODE_ENV === "test") {
             if (token === "admintoken") return next()
-            else if (token === "prylistoken") return next()
             else return error(res, 401, "No admin, no access")
         }
 

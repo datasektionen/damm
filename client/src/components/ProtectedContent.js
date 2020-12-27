@@ -21,10 +21,17 @@ const ProtectedContent = ({contentURL = [], allowNoLogin = false, ...rest}) => {
             let data = await Promise.all(contentURL.map(url =>
                 fetch(url)
                 .then(res => res.json())
+                .then(json => {
+                    if (!json.error) return json
+                    else {
+                        rest.history.push(ROUTES.LOGIN)
+                        return {}
+                    }
+                })
             ))
             setData(data)
         } catch(err) {
-            console.log(err)
+            rest.history.push(ROUTES.LOGIN)
         }
         console.log("FETCHING")
     }

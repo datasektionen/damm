@@ -4,26 +4,130 @@ Här finns API-dokumentationen för damm.
 Senast uppdaterad 2020-12-27.
 
 # Innehållsförteckning
+- [API-dokumentation](#api-dokumentation)
+- [Innehållsförteckning](#inneh-llsf-rteckning)
+- [Modeller](#modeller)
+  * [Märke (Patch)](#m-rke--patch-)
+  * [FileLink](#filelink)
+  * [Tag (Taggar)](#tag--taggar-)
+  * [User](#user)
+  * [Events](#events)
+- [Error-meddelanden](#error-meddelanden)
+    + [Exempel](#exempel)
+- [Tokens](#tokens)
+- [Admin endpoints](#admin-endpoints)
+- [General endpoints](#general-endpoints)
+  * [GET /api](#get--api)
+  * [GET /damm](#get--damm)
+  * [GET /fuzzyfile](#get--fuzzyfile)
+  * [GET api/isAdmin](#get-api-isadmin)
+  * [GET api/file/:filename](#get-api-file--filename)
+  * [GET api/\*invalid path\*](#get-api---invalid-path--)
+- [General - Admin](#general---admin)
+  * [GET /api/admin/refresh](#get--api-admin-refresh)
+- [Märkesrelaterat](#m-rkesrelaterat)
+  * [GET api/marken](#get-api-marken)
+  * [GET api/marke/id/:id](#get-api-marke-id--id)
+  * [GET api/tags](#get-api-tags)
+- [Märkesrelaterat - Admin](#m-rkesrelaterat---admin)
+  * [POST /api/admin/marke/create](#post--api-admin-marke-create)
+  * [POST /api/admin/marke/edit/id/:id](#post--api-admin-marke-edit-id--id)
+  * [POST /api/admin/marke/replace-image/id/:id](#post--api-admin-marke-replace-image-id--id)
+  * [GET /api/admin/marke/remove/id/:id](#get--api-admin-marke-remove-id--id)
+  * [POST /api/admin/marke/register-orders](#post--api-admin-marke-register-orders)
+  * [GET /remove/file/:filename](#get--remove-file--filename)
+
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
+---
 # Modeller
 ## Märke (Patch)
+Modell för ett märke. Hänvisas till som `Patch` i detta API.
 
+För att inte icke-admins ska få tillgång till "känslig" information (`files`, `comment` och `orders`) så strippas denna information i de endpoints där icke-admins kan hämta märken.
 
-### <a id="pricetypes"></a>Pristyper
+### Generell information
+- `name`, `price` och `image` är de enda fälten som är `required`.
+- Märkets bild sparas i databasen och `image` håller URL:en till denna bild. När man uppdaterar bild tas den gamla bilden bort från databasen, den nya läggs upp och nya URL:en sparas.
+- `date` har formatet YYYY-MM-DD
+- `tags` är en `array` med id:s till Tag-objekt.
+- Filer sparas liksom märken i databasen. `FileLink`-objekt håller koll på filens originalnamn och URL:en till filen. Därför sparar vi `FileLink`-objekt i en `array` i `files`.
+
+<a id="pricetypes"></a>
+### Pristyper
 - Gratis
 - Okänt
 - Ange pris
 
+### Modellen
+```js
+{
+    name: String,
+    description: String,
+    date: String,
+    image: String,
+    orders: [{
+        date: String,
+        amount: String,
+        order: String,
+        company: String
+    }],
+    price: {
+        type: String,
+        value: String
+    },
+    tags: [Tag.ObjectID],
+    files: [FileLink.ObjectID],
+    produced: Number,
+    inStock: Boolean,
+    comment: String,
+    creators: [{
+        name: String
+    }]
+}
+```
+
+Se även [Märke.js](server/models/Märke.js)
+
 ## FileLink
+Modell som håller koll på filers URL:er och originalnamn (vi skriver över filens namn med en `uuid4`-sträng). Ett `FileLink`-objekt måste tas bort när filen den länkar till tas bort, detta görs i bland annat i [GET api/admin/marke/remove/file/:filename](#removefile).
+
+Hänvisas till som `FileLink` i detta API.
+
+### Modellen
+```js
+{
+    name: String,
+    url: String
+}
+```
+Se även [FileLink.js](server/models/FileLink.js)
 
 ## Tag (Taggar)
+Modell för märkestaggar. Hänvisas till som `Tag` i detta API.
 
-## Users
+### Generell information
+- `name` är det enda fältet som måste vara med.
+- `color` och `backgroundColor` måste vara RGB-färger på formatet `#RRGGBB`.
+- Lämnas `color` tom gör frontenden den vit, lämnas `backgroundColor` tom gör frotenden den cerise.
+- `hoverText` är en textruta som visas när du hoovrar med musen över taggen.
+
+### Modellen
+```js
+{
+    text: String,
+    color: String,
+    backgroundColor: String,
+    hoverText: String
+}
+```
+Se även [Tag.js](server/models/Tag.js)
+
+## User
 
 ## Events
 
-
+---
 # Error-meddelanden
 Error-meddelanden följer samma konvention för alla endpoints. Alla errormeddelanden kommer i JSON-format och ser ut såhär:
 
@@ -49,10 +153,10 @@ Error-meddelanden följer samma konvention för alla endpoints. Alla errormeddel
     "httpStatus": 401
 }
 ```
-
+---
 # Tokens
 För vissa endpoints krävs en token. En token läggs till med `?token=banankaka` på slutet av URL:en, exempelvis: `https://damm.datasektionen.se/api/admin/refresh?token=banankaka`
-
+---
 # Admin endpoints
 Adminendpoints förväntar sig att du har en token. Token läggs till med `?token=banankaka` på slutet av URL:en, exempelvis: `https://damm.datasektionen.se/api/admin/refresh?token=banankaka`
 
@@ -60,7 +164,7 @@ För dessa adminendpoints gäller:
 - Har du ingen token svarar servern med `403`.
 - Har du ingen access svarar servern med `401`.
 - Gick något fel svarar servern med `500`.
-
+---
 # General endpoints
 
 ## GET /api
@@ -123,17 +227,42 @@ För dessa adminendpoints gäller:
     "httpStatus": 404
 }
 ```
+---
 # General - Admin
 ## GET /api/admin/refresh
 **Beskrivning:** Refreshar tidslinjen, hämtar all data från olika källor och cachar den. Kan bara köras max en gång per minut.
 
 Notera att servern kör refresh automatiskt varje dygn (görs med en `setInterval` i `app.js`).
 
+### Request
+**REQUIRED**: `token`
+
 ### Response
 **Format:** `JSON`
 - Om mindre än en minut gått sen senaste refresh svarar servern med `403`.
 - Annars svarar servern med `200`.
 
+## GET /api/admin/files/all
+**Beskrivning:** Hämtar alla fil-objekt från databasen (Inte `FileLink`-objekt).
+
+### Request
+**REQUIRED**: `token`
+
+### Response
+**Format:** `JSON`
+- `200`
+
+## GET /api/admin/files/size
+**Beskrivning:** Hämtar hur mycket plats alla filer tar upp i databasen. Visar i bytes, kilobytes, megabytes och gigabytes.
+
+### Request
+**REQUIRED**: `token`
+
+### Response
+**Format:** `JSON`
+- `200`
+
+---
 # Märkesrelaterat
 Märkesrelaterade endpoints.
 
@@ -182,10 +311,13 @@ Märkesrelaterade endpoints.
     ```
 - `500` om något gick fel.
 
+---
 # Märkesrelaterat - Admin
 
 ## POST /api/admin/marke/create
 **Beskrivning:** Skapar ett nytt märke.
+
+För filer: Lägg till alla filer i form-datan med namnet "files".
 
 ### Request
 **REQUIRED**: `token`
@@ -230,6 +362,8 @@ Se [pristyper](#pricetypes).
 ## POST /api/admin/marke/edit/id/:id
 **Beskrivning:** Redigerar märket. Ändrar de fält du skickar.
 
+För filer: Lägg till alla filer i form-datan med namnet "files".
+
 TODO: Separera filuppladdning till en egen endpoint, det kan bli knasigt nu när vi kör formdata och parsar objekt och arrayer till JSON för att de ska fungera. Kör man curl kan det bli konstigt.
 
 ### Request
@@ -253,7 +387,7 @@ Optional fields:
 [{"company": "String", "amount": "Number", "order": "String", "date": "String"}]
 ```
 - tags : `[ObjectID]`
-- files : `[ObjectID]`
+- files : `[binary]`
 - inStock : `Boolean`
 - comment : `String`
 - creators : `[{"name": "String"}]`
@@ -335,3 +469,22 @@ Required fields:
 - `404` om märket ej finns.
 - `403` om något är fel med den skickade kroppen.
 - `500` om något gick fel.
+---
+<a id="removefile"></a>
+## GET api/admin/marke/remove/file/:filename
+**Beskrivning:** Tar bort en fil. Tar bort både filen från databasen samt det tillhörande `FileLink`-objektet.
+
+### Request
+**REQUIRED**: `token`
+
+### Response
+**Format:** `JSON`
+- `200` om allt gick rätt till.
+    
+    **Body format:**
+    ```js
+    {status: String}
+    ```
+- `404` om filen inte hittades.
+- `500` om något gick fel.
+---

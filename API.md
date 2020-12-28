@@ -1,7 +1,7 @@
 # API-dokumentation
 Här finns API-dokumentationen för damm.
 
-Senast uppdaterad 2020-12-27.
+Senast uppdaterad 2020-12-28.
 
 # Innehållsförteckning
 - [API-dokumentation](#api-dokumentation)
@@ -156,9 +156,10 @@ Error-meddelanden följer samma konvention för alla endpoints. Alla errormeddel
 ---
 # Tokens
 För vissa endpoints krävs en token. En token läggs till med `?token=banankaka` på slutet av URL:en, exempelvis: `https://damm.datasektionen.se/api/admin/refresh?token=banankaka`
+
 ---
 # Admin endpoints
-Adminendpoints förväntar sig att du har en token. Token läggs till med `?token=banankaka` på slutet av URL:en, exempelvis: `https://damm.datasektionen.se/api/admin/refresh?token=banankaka`
+Adminendpoints förväntar sig att du har en token.
 
 För dessa adminendpoints gäller:
 - Har du ingen token svarar servern med `403`.

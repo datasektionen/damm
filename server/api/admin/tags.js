@@ -1,3 +1,6 @@
+/*
+    This file contain endpoints for tags. Creating, editing and deleting tags.
+*/
 var express = require('express')
 var router = express.Router()
 const mongoose = require('mongoose')

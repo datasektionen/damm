@@ -1,3 +1,13 @@
+/*
+	Adapter that gathers information about sm and dms.
+	Fetches from the bawang-content github (organisation/protokoll).
+
+	During dark times (mörkläggning) bawang-content is probably made a private repo. To fetch the url
+	you therefore would need a token. Because of this, no sm or dms can be visible on the timeline during
+	those times.
+
+	Written by Jonas Dahl.
+*/
 const moment = require('moment')
 const fetch = require('node-fetch')
 

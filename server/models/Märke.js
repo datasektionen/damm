@@ -1,3 +1,8 @@
+/*
+    This file contains the database model for patches.
+
+    It also contains the create patch database function, and some usefull getters.
+*/
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const { PRICE_TYPES } = require('../../client/src/config/constants')
@@ -67,7 +72,7 @@ var markeSchema = new Schema({
     }]
 }, {timestamps: true})
 
-
+// Creates a patch
 markeSchema.statics.create = function(x) {
     return new Promise((resolve, reject) => {
         var märke = new this({
@@ -91,6 +96,7 @@ markeSchema.statics.create = function(x) {
     })
 }
 
+// Gets all patches and deletes admin information, i.e. for the regular user (pöbeln).
 markeSchema.statics.getAll = function() {
     return new Promise(async (resolve, reject) => {
         try {
@@ -110,6 +116,7 @@ markeSchema.statics.getAll = function() {
     })
 }
 
+// Gets all patches and keeps admin information.
 markeSchema.statics.getAllAdmin = function() {
     return new Promise(async (resolve, reject) => {
         try {
@@ -126,6 +133,7 @@ markeSchema.statics.getAllAdmin = function() {
     })
 }
 
+// Gets a patch and deletes admin information, i.e. for the regular user (pöbeln).
 markeSchema.statics.getById = function(id) {
     return new Promise(async (resolve, reject) => {
         try {
@@ -151,6 +159,7 @@ markeSchema.statics.getById = function(id) {
     })
 }
 
+// Gets a patch and keeps admin data
 markeSchema.statics.getByIdAdmin = function(id) {
     return new Promise(async (resolve, reject) => {
         try {
@@ -171,6 +180,7 @@ markeSchema.statics.getByIdAdmin = function(id) {
     })
 }
 
+// Function called prior to save to database
 markeSchema.pre('save', function() {
     const type = this.price.type
     // If type isn't present in PRICE_TYPES
@@ -182,6 +192,11 @@ markeSchema.pre('save', function() {
     // Set price value to empty string if type is other than SET_PRICE
     if (this.price.type !== PRICE_TYPES.SET_PRICE) {
         this.price.value = ""
+    }
+
+    // If date doesn't match format, set it to empy (Okänt)
+    if (!this.date.match(/^(19|20)\d{2}\-\d{2}\-\d{2}$/)) {
+        this.date = ""
     }
 })
 

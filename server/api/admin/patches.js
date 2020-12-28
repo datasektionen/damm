@@ -1,3 +1,7 @@
+/*
+    This file contains admin endpoints for patches. Creating, editing patches, replacing files,
+    registering orders etc.
+*/
 var express = require('express')
 var router = express.Router()
 const dauth = require('../../dauth')
@@ -35,6 +39,7 @@ const nameValidator = (req, res, next) => {
     next()
 }
 
+// Middleware for the edit endpoint
 const nameValidatorEdit = (req, res, next) => {
     const name = req.body.name
     if (name) nameValidator(req, res, next)
@@ -58,12 +63,14 @@ const priceValidator = (req, res, next) => {
     next()
 }
 
+// Middleware for the edit endpoint
 const priceValidatorEdit = (req, res, next) => {
     if (req.body.price) {
         priceValidator(req, res, next)
     } else next()
 }
 
+// Parses form data
 const patchFiles = upload.fields([{ name: "image", maxCount: 1 }, { name: "files", maxCount: 10 },])
 
 // Route for creating a patch. Takes data as formdata.
@@ -168,6 +175,7 @@ const replaceImageAndUpdatePatch = async (patch, filename) => {
     })
 }
 
+// Creates FileLinks for files
 const createFileLinks = async (files = []) => {
     return await Promise.all(
         files === undefined ? []
@@ -245,6 +253,7 @@ router.get('/remove/file/:filename', async (req, res) => {
     }
 })
 
+// Registers multiple orders for multiple different patches.
 router.post('/register-orders', async (req, res) => {
     const { orders } = req.body
     if (!orders || orders.length === 0) return error(res, 403, "Inga beställningar medskickade.")

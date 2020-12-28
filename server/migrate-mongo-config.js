@@ -1,4 +1,6 @@
-// In this file you can configure migrate-mongo
+/*
+  Configure file for migrations
+*/
 require('dotenv').config({path: '../.env'})
 
 const config = {

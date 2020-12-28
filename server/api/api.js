@@ -1,3 +1,8 @@
+/*
+    Contains some general api endpoints. also redirects /event/... endpoints to a separate file.
+
+    
+*/
 var express = require('express')
 var router = express.Router()
 const dAuth = require('../dauth')

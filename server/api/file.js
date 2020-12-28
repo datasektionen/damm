@@ -1,3 +1,8 @@
+/*
+    This file contains the endpoint for fetching a file.
+
+    Files are fetched by their names.
+*/
 var express = require('express')
 var router = express.Router()
 const {error, error500} = require('../util/error')

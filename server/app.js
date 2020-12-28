@@ -1,3 +1,12 @@
+/*
+  Root server file
+
+  This file is the root file. It starts the server. It configures the server, sets some headers,
+  connects to the database, sets up auto refresh of timeline every 24 hours, sets up routes.
+
+  The export is used when testing, see test.js.
+*/
+
 const express = require('express')
 const app = express()
 const cors = require('cors')

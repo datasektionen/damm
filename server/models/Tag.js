@@ -1,6 +1,11 @@
+/*
+    This file contains the database model for tags and some useful functions.
+*/
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+// As far I'm aware this is not used anywhere anymore except in this file.
+// Remove export?
 const MAX_TAG_TEXT_LENGTH = 18
 
 var tagSchema = new Schema({
@@ -33,7 +38,8 @@ tagSchema.statics.create = function(x, callback) {
     })
 }
 
-tagSchema.statics.updateTag = function(_id, text, hoverText, color, backgroundColor, callback) {
+// Don't ask why I created this function, it was a long time ago...
+tagSchema.statics.updateTag = function(_id, text, hoverText, color, backgroundColor) {
     return new Promise( async (resolve, reject) => {
         try {
             await Tag.updateOne({_id}, {$set: {text, hoverText, color, backgroundColor}})

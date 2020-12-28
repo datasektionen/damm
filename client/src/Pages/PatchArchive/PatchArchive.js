@@ -124,8 +124,15 @@ class PatchArchive extends React.Component {
 
         //Function which checks if a patch matches the search query
         const matchesSearch = (märke) => {
+            // If search query is 0 length, match everything
             if (this.state.search.length === 0) return true
+            // If match regex, matches the patch
             if (märke.name.toLowerCase().match(new RegExp(this.state.search.toLowerCase(), "g"))) return true
+            // If match any creator on the patch, matches the patch
+            if (märke.creators
+                .map(c => c.name.toLowerCase().match(new RegExp(this.state.search.toLowerCase(), "g"))  !== null)
+                .reduce((acc, curr) => acc + curr, 0) > 0
+               ) return true
             else return false
         }
 

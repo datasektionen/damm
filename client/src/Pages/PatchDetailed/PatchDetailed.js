@@ -73,11 +73,13 @@ class PatchDetailed extends React.Component {
                                     <i className="far fa-clock"></i> {data.date ? moment(data.date).format("DD MMM YYYY") : "Okänt"}
                                 </span>
                                 <i className="fas fa-circle"></i>
+                                <span title="Uppladdningsdatum"><i className="fas fa-cloud-upload-alt"></i> {moment(data.createdAt).format("DD MMM YYYY")}</span>
+                                <i className="fas fa-circle"></i>
                                 <span title="Pris">
                                     <i className="fas fa-dollar-sign"></i> {priceDisplay()}
                                 </span>
                                 <i className="fas fa-circle"></i>
-                                <span title="Lagerstatus">
+                                <span title="Lagerstatus (till salu)">
                                     <i className="fas fa-box-open"></i> {data.inStock === true ? "I lager" : "Ej i lager"}
                                 </span>
                                 <i className="fas fa-circle"></i>

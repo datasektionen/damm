@@ -17,6 +17,7 @@ class AdminPatchEdit extends React.Component {
             imageFile: undefined,
             files: [],
             resetImage: () => {},
+            resetFile: () => {},
             success: "",
             error: "",
             radioValues: Object.values(PRICE_TYPES),
@@ -103,6 +104,7 @@ class AdminPatchEdit extends React.Component {
             if (!json.error) {
                 this.props.fetchData()
                 this.state.resetImage()
+                this.state.resetFile()
                 this.setState({success: json.status, error: ""})
             } else {
                 this.setState({error: json.error, success: ""})
@@ -132,6 +134,7 @@ class AdminPatchEdit extends React.Component {
                 creatorField: ""
             })
             this.state.resetImage()
+            this.state.resetFile()
             window.scrollTo(0,0)
         }
 
@@ -212,7 +215,7 @@ class AdminPatchEdit extends React.Component {
                     else this.setState({selectedTags: this.state.selectedTags.filter(t => t._id !== tag._id)})
                 }}
                 setImageCallback={(image, resetImage) => this.setState({imageFile: image, resetImage})}
-                setFileCallback={(file, resetFile) => this.setState({files: this.state.files.concat(file)})}
+                setFileCallback={(file, resetFile) => this.setState({files: this.state.files.concat(file), resetFile})}
                 >
                     {this.state.success && <Alert type="success">Märket sparat!</Alert>}
                     {this.state.error && <Alert type="error">{this.state.error}</Alert>}

@@ -7,6 +7,7 @@ import e from 'cors'
 const INITIAL_STATE = {
     image: undefined,
     files: [],
+    resetImage: () => {},
     resetFile: () => {},
     selectedTags: [],
     name: "",
@@ -97,6 +98,7 @@ class AdminPatchCreate extends React.Component {
         .then(json => {
             this.setState({submitting: false})
             if (!json.error) {
+                this.state.resetImage()
                 this.state.resetFile()
                 this.setState({...SUCCESS_STATE, tags: this.state.tags})
                 window.scrollTo(0, 0)
@@ -142,6 +144,7 @@ class AdminPatchCreate extends React.Component {
             this.setState({
                 ...RESET_STATE,
             })
+            this.state.resetImage()
             this.state.resetFile()
         }
 
@@ -200,8 +203,8 @@ class AdminPatchCreate extends React.Component {
                     if (this.state.selectedTags.filter(t => t._id === tag._id).length === 0) this.setState({selectedTags: this.state.selectedTags.concat(tag)})
                     else this.setState({selectedTags: this.state.selectedTags.filter(t => t._id !== tag._id)})
                 }}
-                setImageCallback={(image, resetFile) => this.setState({image, resetFile})}
-                setFileCallback={(file, resetFile) => this.setState({files: this.state.files.concat(file)})}
+                setImageCallback={(image, resetImage) => this.setState({image, resetImage})}
+                setFileCallback={(file, resetFile) => this.setState({files: this.state.files.concat(file), resetFile})}
             >
                 {this.state.success && <Alert type="success">Märket sparat!</Alert>}
                 {this.state.error && <Alert type="error">{this.state.error}</Alert>}

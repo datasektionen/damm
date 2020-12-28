@@ -5,7 +5,7 @@ import { PRICE_TYPES } from '../../../config/constants'
 import * as ROUTES from '../../../routes'
 
 // Component that displays a patch.
-const Patch = ({image, date, name, description, numProduced = "?", tags = [], price, produced = 0, inStock = false, ...rest}) => {
+const Patch = ({image, date, name, description, tags = [], price, inStock = false, ...rest}) => {
 
     const [hovered, setHovered] = useState(false)
     let displayPrice

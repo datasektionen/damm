@@ -28,7 +28,7 @@ class AdminOrder extends React.Component {
 
     // Fetch all patches
     componentDidMount() {
-        fetch(ROUTES.API_GET_MÄRKEN)
+        fetch(`${ROUTES.API_GET_MÄRKEN}?token=${localStorage.getItem("token")}`)
         .then(res => res.json())
         .then(json => {
             if (json.error) {

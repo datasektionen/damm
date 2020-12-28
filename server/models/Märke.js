@@ -2,6 +2,11 @@
     This file contains the database model for patches.
 
     It also contains the create patch database function, and some usefull getters.
+
+    IMPORTANT!!!!!!!!!!!!!!!:
+    Only fetch patches by using the getAll, getAllAdmin, getById, getByIdAdmin functions.
+    They sanitize some admin info (some is not populated, but some is) and sets the "produced" field
+    by adding all orders together.
 */
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
@@ -28,7 +33,6 @@ var markeSchema = new Schema({
         },
         amount: {
             type: Number,
-            trim: true,
             required: true
         },
         order: {
@@ -56,7 +60,6 @@ var markeSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'FileLink'
     }],
-    produced: Number,
     inStock: Boolean,
     comment: {
         type: String,
@@ -85,7 +88,6 @@ markeSchema.statics.create = function(x) {
             creators: x.creators ? x.creators : [],
             orders: x.orders ? x.orders : [],
             files: x.files ? x.files : [],
-            produced: x.produced ? x.produced : 0,
             inStock: x.inStock ? x.inStock : false,
             comment: x.comment ? x.comment : ""
         })
@@ -104,6 +106,9 @@ markeSchema.statics.getAll = function() {
             Märke.find()
             .populate('tags')
             .lean()
+
+            // Set produced field
+            patches.forEach(patch => patch["produced"] = patch.orders.map(x => x.amount).reduce((acc, curr) => acc + curr, 0))
 
             //Remove the files (They are not populated, so it will just be a list of strings, removing them looks nicer)
             patches.forEach(patch => delete patch.files)
@@ -126,6 +131,9 @@ markeSchema.statics.getAllAdmin = function() {
             .populate('files')
             .lean()
 
+            // Set produced fields
+            patches.forEach(patch => patch["produced"] = patch.orders.map(x => x.amount).reduce((acc, curr) => acc + curr, 0))
+
             resolve(patches)
         } catch (err) {
             reject(err)
@@ -146,6 +154,11 @@ markeSchema.statics.getById = function(id) {
             .lean()
 
             if (!patch) return resolve(null)
+            
+            // Calculate how many produced patches there are
+            // .save() doesn't work when calling update(), I'm too lazy to rewrite it so that
+            // it updates a produced field in the model on both save and update.
+            patch["produced"] = patch.orders.map(x => x.amount).reduce((acc, curr) => acc + curr, 0)
 
             //Remove the files (list of strings since not populated)
             delete patch.files
@@ -173,6 +186,8 @@ markeSchema.statics.getByIdAdmin = function(id) {
             .lean()
             if (!patch) return resolve(null)
 
+            patch["produced"] = patch.orders.map(x => x.amount).reduce((acc, curr) => acc + curr, 0)
+
             resolve(patch)
         } catch (err) {
             reject(err)
@@ -180,7 +195,7 @@ markeSchema.statics.getByIdAdmin = function(id) {
     })
 }
 
-// Function called prior to save to database
+// Function called prior to save to database (only when calling .save())
 markeSchema.pre('save', function() {
     const type = this.price.type
     // If type isn't present in PRICE_TYPES

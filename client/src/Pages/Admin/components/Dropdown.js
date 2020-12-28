@@ -34,7 +34,7 @@ const Dropdown = ({items, search = "", onChange, clearSearch, searchPlaceholder 
     const filterPatches = patches => {
         return patches.filter(p => matchesSearch(p))
     }
-
+    console.log(items)
     return (
         <div className="Dropdown" >
             <div className="sök">

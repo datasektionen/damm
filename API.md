@@ -78,7 +78,6 @@ För att inte icke-admins ska få tillgång till "känslig" information (`files`
     },
     tags: [Tag.ObjectID],
     files: [FileLink.ObjectID],
-    produced: Number,
     inStock: Boolean,
     comment: String,
     creators: [{

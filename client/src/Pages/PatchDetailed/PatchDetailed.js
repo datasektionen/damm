@@ -83,8 +83,8 @@ class PatchDetailed extends React.Component {
                                     <i className="fas fa-box-open"></i> {data.inStock === true ? "I lager" : "Ej i lager"}
                                 </span>
                                 <i className="fas fa-circle"></i>
-                                <span title="Antal producerade">
-                                    <i className="fas fa-hashtag"></i> {data.produced ? data.produced : 0} st
+                                <span title="Antal producerade (stämmer ej för märken äldre än Damm)">
+                                    <i className="fas fa-hashtag"></i> {data.produced} st
                                 </span>
                             </div>
                             {data.creators.length !== 0 && 

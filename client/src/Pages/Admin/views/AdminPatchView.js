@@ -124,7 +124,7 @@ const AdminPatchView = ({
                         </div>
                         <div className="centerrow">
                             <input autoComplete="off" name="creatorField" id="creatorField" type="text" placeholder="Namn eller nämnd" value={creatorField} onChange={handleChange} />
-                            <button onClick={addCreator}>Lägg till</button>
+                            <button onClick={addCreator} disabled={creatorField.length === 0}>Lägg till</button>
                         </div>
                     </div>
                     

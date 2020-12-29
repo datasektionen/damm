@@ -2,8 +2,8 @@ import React from 'react'
 import * as ROUTES from '../../routes'
 import TagClickable from '../../components/TagClickable'
 import EditTag from './EditTag'
-import Unauthorized from '../../components/Unauthorized'
 import Spinner from '../../components/Spinner/Spinner'
+import Input from '../../components/Input/Input'
 
 const INIT_TAG = {
     text: "",
@@ -113,9 +113,16 @@ class AdminTags extends React.Component {
                     :
                     <div className="Tags">
                         <div className="bar">
-                            <div className="sök">
-                                <input name="search" autoComplete="off" type="text" placeholder="Sök" onChange={e => handleChange(e)} value={this.state.search} />
-                                {/* <img className="clearImg" src={Add} onClick={() => {this.setState({search: ""})}}/> */}
+                            <div style={{width: "100%", marginBottom: "5px"}}>
+                                <Input
+                                    style={{width: "95%"}}
+                                    name="search"
+                                    autoComplete="off"
+                                    placeholder="Sök"
+                                    onChange={handleChange}
+                                    value={this.state.search}
+                                    clear={_ => this.setState({search: ""})}
+                                />
                             </div>
                             <button id="sort" onClick={() => this.setState({sortState: this.state.sortState === 0 ? 1 : 0})}>{sortStates[this.state.sortState]}</button>
                             <button id="nytagg" onClick={e => newTag(e)}>Skapa ny tagg</button>

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import moment from 'moment'
 import './Dropdown.css'
-import Add from '../../../components/add.png'
+import Input from '../../../components/Input/Input'
 import Placeholder from './300x300.png'
 
 /**
@@ -34,20 +33,16 @@ const Dropdown = ({items, search = "", onChange, clearSearch, searchPlaceholder 
     const filterPatches = patches => {
         return patches.filter(p => matchesSearch(p))
     }
-    console.log(items)
+
+    // If we don't make it invisible before, there is a moment where you see all patches
+    const clear = _ => {
+        setVisible(false)
+        clearSearch()
+    }
+
     return (
         <div className="Dropdown" >
-            <div className="sök">
-                <input id="search" type="text" value={search} onChange={onChange} autoComplete="off" placeholder={searchPlaceholder} />
-                <img
-                        id="search"
-                        alt="Kryss"
-                        className="clearImg"
-                        src={Add}
-                        onClick={clearSearch}
-                        draggable="false"
-                />
-            </div>
+            <Input id="search" value={search} onChange={onChange} autoComplete="off" placeholder={searchPlaceholder} clear={clear} />
             <div className="results" style={!visible ? {display: "none"} : {}}>
                 {filterPatches(items).map(i =>
                     <Item

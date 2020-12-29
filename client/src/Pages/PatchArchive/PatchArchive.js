@@ -252,8 +252,9 @@ class PatchArchive extends React.Component {
                 sortResults={sortResults}
                 patchTagsMatchesSelected={patchTagsMatchesSelected}
                 matchesSearch={matchesSearch}
-                handleSearch={e => this.setState({[e.target.id]: e.target.value})}
-                clearSearch={e => {this.setState({[e.target.id]: ""})}}
+                handleChange={e => {console.log(e.target.id);this.setState({[e.target.id]: e.target.value})}}
+                clearSearch={e => this.setState({search: ""})}
+                clearTagSearch={e => this.setState({filterTagsQuery: ""})}
                 handleSort={e => this.setState({sortRule: e.target.value})}
                 clearAll={clearAll}
                 clearSelectedTags={_ => this.setState({selectedTags: []})}

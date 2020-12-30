@@ -70,17 +70,20 @@
 .märke .head .date {
     background: #e83d84;
     color: #fff;
-    min-width: 40%;
+    /* min-width: 40%; */
+    width: 100%;
 }
 
 .märke .head .stock {
     background: #E5C100;
-    min-width: 30%;
+    /* min-width: 30%; */
+    width: 100%;
 }
 
 .märke .head .price {
     background: #8BC34A;
-    min-width: 30%;
+    /* min-width: 30%; */
+    width: 100%;
 }
 
 .märke .title {

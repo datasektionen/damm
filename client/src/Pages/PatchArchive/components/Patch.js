@@ -56,14 +56,21 @@ const Patch = ({image, date, name, description, tags = [], price, inStock = fals
                     <div><i className="far fa-clock"></i> {date ? moment(date).format("D MMM YYYY") : "Okänt"}</div>
                 </div>
                 <div className="item stock">
-                    <div><i className="fas fa-box-open"></i> {inStock ? "I lager" : "Ej i lager"}</div>
+                    {inStock ?
+                        <div><i className="fas fa-check"></i> Till salu</div>
+                        :
+                        <div><i className="fas fa-times"></i> Säljs ej</div>
+                    }
+                    {/* <div><i className="fas fa-box-open"></i> {inStock ? "Till salu" : "Säljs ej"}</div> */}
                 </div>
-                <div
-                    className="item price"
-                    title="Pris"
-                >
-                    <div><i className="fas fa-dollar-sign"></i> {displayPrice}</div>
-                </div>
+                {/* {inStock &&
+                    <div
+                        className="item price"
+                        title="Pris"
+                    >
+                        <div><i className="fas fa-dollar-sign"></i> {displayPrice}</div>
+                    </div>
+                } */}
             </div>
             <div className="title"><h2>{name}</h2></div>
         </div>

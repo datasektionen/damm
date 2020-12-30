@@ -70,7 +70,7 @@ const Item = ({data, onClick}) => {
             </div>
             <div className="col content">
                 <div>
-                    <h3>{data.title}</h3>
+                    <h3>{data.name}</h3>
                 </div>
                 <PatchMeta data={data}/>
             </div>

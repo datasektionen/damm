@@ -25,8 +25,8 @@ const PatchMeta = ({data}) => {
                     <i className="fas fa-dollar-sign"></i> {priceDisplay()}
                 </span>
                 <i className="fas fa-circle"></i>
-                <span title="Lagerstatus (till salu)">
-                    <i className="fas fa-box-open"></i> {data.inStock === true ? "I lager" : "Ej i lager"}
+                <span title={data.inStock ? "Till salu" : "Säljs ej"}>
+                    <i className={data.inStock ? "fas fa-check" : "fas fa-times"}></i> {data.inStock === true ? "Säljs ej" : "Ej till salu"}
                 </span>
                 <i className="fas fa-circle"></i>
                 <span title="Antal producerade (stämmer ej för märken äldre än Damm)">

@@ -453,10 +453,21 @@ Required fields:
 **REQUIRED**: `token`
 
 #### **Body**
-Format: form-data
+**Format:** `JSON`
 
 Required fields:
-- orders : `[{amount: "String", date: "String", order: "String", company: "String"}]`
+- orders
+```js
+[{
+    id: Patch.ObjectID,
+    order: [{
+        amount: "String",
+        date: "String",
+        order: "String",
+        company: "String"
+    }] 
+}]
+```
 
 ### Response
 **Format:** `JSON`

@@ -78,12 +78,12 @@ const AdminPatchView = ({
                             {price.type === PRICE_TYPES.SET_PRICE && <input name="price" type="text" placeholder="Pris" value={price.value} onChange={handleChange}/>}
                         </div>
                         <div className="stock">
-                            <h3>Finns i lager</h3>
-                            <h4>Huruvida märket finns i lager, med andra ord om märket är till salu</h4>
+                            <h3>Till salu</h3>
+                            <h4>Huruvida märket säljs eller ej.</h4>
                             <div className="chkboxprnt">
                                 <div className="checkbox">
                                     <input type="checkbox" name="inStock" id="inStock" checked={inStock} onChange={handleCheckbox} />
-                                    <label htmlFor="inStock">I lager</label>
+                                    <label htmlFor="inStock">Säljs</label>
                                 </div>
                             </div>
                         </div>

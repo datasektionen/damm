@@ -33,6 +33,18 @@ const TagSelector = ({tags = [], selectedTags = [], query = "", updateState, fet
         }
     }
 
+    const subtags = tags
+                    .filter(x => {
+                        for (const tag of selectedTags) {
+                            if (tag._id === x._id) return true
+                        }
+                        return false
+                    }).map(x =>
+                            x.children
+                            .filter(x => x.text.toLowerCase().match(query.toLowerCase()))
+                            .map((y,i) => y)
+                    ).filter(x => x.length !== 0)
+    
     return (
         fetching ?
         <Spinner />
@@ -48,24 +60,17 @@ const TagSelector = ({tags = [], selectedTags = [], query = "", updateState, fet
                     />
                 )}
             </div>
+            {subtags.length > 0 && <p><b>Subtaggar</b></p>}
             <div className="subtags">
-                {tags
-                .filter(x => {
-                    for (const tag of selectedTags) {
-                        if (tag._id === x._id) return true
-                    }
-                    return false
-                }).map(x =>
-                    x.children
-                    .filter(x => x.text.toLowerCase().match(query.toLowerCase()))
-                    .map((y,i) =>
+                {subtags.map((x,i) =>
+                    x.map(y =>
                     <TagClickable
-                        key={"tag-child-"+i}
+                        key={"tag-child-"+y._id}
                         onClick={_ => toggleTag(y)}
                         {...y}
                         selectedTags={selectedTags}
-                    />    
-                ))}
+                    />)
+                )}
             </div>
         </div>
     )

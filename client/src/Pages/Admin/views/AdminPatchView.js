@@ -77,7 +77,7 @@ const AdminPatchView = ({
                                     </div>    
                                 )}
                             </div>
-                            {price.type === PRICE_TYPES.SET_PRICE && <input name="price" type="text" placeholder="Pris" value={price.value} onChange={handleChange}/>}
+                            {price.type === PRICE_TYPES.SET_PRICE && <input name="price" type="text" placeholder="Pris" value={price.value} onChange={handleChange} autoComplete="off"/>}
                         </div>
                         <div className="stock">
                             <h3>Till salu</h3>

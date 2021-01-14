@@ -6,13 +6,16 @@ import TagClickable from '../../components/TagClickable'
 import * as ROUTES from '../../routes'
 import './AdminTags.css'
 
-const INIT_TAG = {
-    _id: "",
-    text: "",
-    color: "",
-    backgroundColor: "",
-    hoverText: "",
-    children: [],
+const INIT_TAG = _ => {
+    let bg = randomizeBackgroundColor()
+    return {
+        _id: "",
+        text: "",
+        color: bg.color,
+        backgroundColor: bg.backgroundColor,
+        hoverText: "",
+        children: [],
+    }
 }
 
 const INIT_SELECTED = {
@@ -78,10 +81,10 @@ class AdminTags extends React.Component {
 
         const injectTag = _ => {
             if (this.state.selectedTags.length === 1 && this.state.edit === true) return this.state.head
-            if (this.state.selectedTags.length === 1 && this.state.edit === false) return INIT_TAG
+            if (this.state.selectedTags.length === 1 && this.state.edit === false) return INIT_TAG()
             if (this.state.selectedTags.length === 2 && this.state.edit === true) return this.state.selectedTags[1]
-            if (this.state.selectedTags.length === 2 && this.state.edit === false) return INIT_TAG
-            else return INIT_TAG
+            if (this.state.selectedTags.length === 2 && this.state.edit === false) return INIT_TAG()
+            else return INIT_TAG()
         }
 
         return (
@@ -101,7 +104,7 @@ class AdminTags extends React.Component {
                                         {this.state.tags.map(tag =>
                                             <TagClickable {...tag} key={"head-"+tag._id} onClick={_ => this.clickTag(tag)} selectedTags={this.state.selectedTags} />
                                         )}
-                                        <div><button className="green" onClick={_ => this.setState({ head: INIT_TAG, selectedTags: []}, _ => this.clickTag({}, true))}>Skapa ny</button></div>
+                                        <div><button className="green" onClick={_ => this.setState({ head: INIT_TAG(), selectedTags: []}, _ => this.clickTag({}, true))}>Skapa ny</button></div>
                                     </div>
                                 </div>
                                 <div className="sub">
@@ -135,6 +138,25 @@ class AdminTags extends React.Component {
             </div>
         )
     }
+}
+
+const randomizeColor = _ => {
+    let alphabet = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += alphabet[Math.floor(Math.random() * 16)];
+    }
+    return color
+}
+
+const randomizeBackgroundColor = _ => {
+    let bgColor = randomizeColor()
+    // http://www.w3.org/TR/AERT#color-contrast
+    const brightness = Math.round(((parseInt(bgColor.substring(1,3), 16) * 299) +
+                        (parseInt(bgColor.substring(3,5), 16) * 587) +
+                        (parseInt(bgColor.substring(5,7), 16) * 114)) / 1000)
+    let txtColor = brightness > 125 ? "#000000" : "#ffffff"
+    return {color: txtColor, backgroundColor: bgColor}
 }
 
 class TagForm extends React.Component {
@@ -274,10 +296,12 @@ class TagForm extends React.Component {
                     <div className="color">
                         <span>Textfärg</span>
                         <input name="color" type="color" value={this.state.color} onChange={e => handleChange(e)} />
+                        <i title="Slumpa färg" className="fas fa-random" onClick={_ => this.setState({color: randomizeColor()})}></i>
                     </div>
                     <div className="bgcolor">
                         <span>Bakgrundsfärg</span>
                         <input name="backgroundColor" type="color" value={this.state.backgroundColor} onChange={e => handleChange(e)} />
+                        <i title="Slumpa färg (justerar textfärg om kontrasten för låg)" className="fas fa-random" onClick={_ => this.setState({...randomizeBackgroundColor()})}></i>
                     </div>
                     <div className="preview">
                         <span>Förhandsgranskning</span>

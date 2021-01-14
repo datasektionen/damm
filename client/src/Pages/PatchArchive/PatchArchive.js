@@ -144,7 +144,7 @@ class PatchArchive extends React.Component {
 
         //Clears both selected tags and search query
         const clearAll = () => {
-            this.setState({search: "", filterTagsQuery: "", selectedTags: [], sortRule: this.state.sortOptions[0].value})
+            this.setState({search: "", filterTagsQuery: "", selectedTags: [], sortRule: this.state.sortOptions[0].value, stockFilter: this.state.stockFilterOptions[0].value})
         }
         
         //Shows/hides tags and saves the state to localstorage

@@ -20,8 +20,8 @@ const PatchArchiveView = ({numPatches = 0, tags, selectedTags, toggleShowTags, t
             <div className="settings">
                 <h3>Sök bland {numPatches} märken</h3>
                 <div className="buttons">
-                    <button className="yellow" onClick={clearSelectedTags} disabled={selectedTags.length === 0}>Rensa taggar</button>
-                    <button className="yellow" onClick={clearAll} disabled={selectedTags.length === 0 && searchQuery.length === 0 && sortRule === sortOptions[0].value}>Rensa allt</button>
+                    <button className="yellow" onClick={clearSelectedTags} disabled={selectedTags.length === 0}>Avmarkera taggar</button>
+                    <button className="yellow" onClick={clearAll} disabled={selectedTags.length === 0 && searchQuery.length === 0 && sortRule === sortOptions[0].value}>Rensa filter</button>
                     <button className="yellow" onClick={toggleShowTags}>{showTags ? "Göm taggar" : "Visa taggar"}</button>
                 </div>
                 <div className="sök">

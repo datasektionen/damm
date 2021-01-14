@@ -20,6 +20,11 @@ var tagSchema = new Schema({
         type: String,
         trim: true,
     },
+    children: [this],
+    main: {
+        type: Boolean,
+        default: true,
+    },
     __v: false,
 }, {timestamps: true})
 
@@ -30,6 +35,8 @@ tagSchema.statics.create = function(x, callback) {
             color: x.color,
             backgroundColor: x.backgroundColor,
             hoverText: x.hoverText,
+            children: x.children ? x.children : [],
+            main: x.main
         })
 
         tag.save()
@@ -39,10 +46,10 @@ tagSchema.statics.create = function(x, callback) {
 }
 
 // Don't ask why I created this function, it was a long time ago...
-tagSchema.statics.updateTag = function(_id, text, hoverText, color, backgroundColor) {
+tagSchema.statics.updateTag = function(_id, text, hoverText, color, backgroundColor, children) {
     return new Promise( async (resolve, reject) => {
         try {
-            await Tag.updateOne({_id}, {$set: {text, hoverText, color, backgroundColor}})
+            await Tag.updateOne({_id}, {$set: {text, hoverText, color, backgroundColor}, $push: {children}})
         } catch (err) {
             return reject(err)
         }

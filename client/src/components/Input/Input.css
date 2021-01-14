@@ -20,3 +20,9 @@
     user-select: none;
     cursor: pointer;
 }
+
+@media screen and (max-width: 600px) {
+    .InputComponent {
+        width: 100%;
+    }
+}

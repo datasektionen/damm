@@ -35,11 +35,21 @@ router.get('/artefakter', (req, res) => {
     res.send([])
 })
 
-router.get('/tags', (req, res) => {
-    Tag.find((err, data) => {
-        if (err) return error500(res, err)
-        else res.send(data)
-    })
+router.get('/tags', async (req, res) => {
+    try {
+        const tags = await Tag.find()
+        .populate("children")
+        .lean()
+
+        return res.status(200).json(tags.filter(x => x.main === true))
+    } catch (err) {
+        return error500(res, err)
+    }
+
+    // Tag.find((err, data) => {
+    //     if (err) return error500(res, err)
+    //     else res.send(data)
+    // })
 })
   
 router.get('/marken', async (req, res) => {

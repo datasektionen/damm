@@ -5,6 +5,7 @@ import Patch from './components/Patch'
 import logo from '../../skold.png'
 import spinner from '../../res/spinner.svg'
 import Input from '../../components/Input/Input'
+import TagSelector from '../../components/TagSelector/TagSelector'
 
 const PatchArchiveView = ({numPatches = 0, tags, selectedTags, toggleShowTags, toggleTag, sortResults, patchTagsMatchesSelected, matchesSearch, clearSelectedTags, clearAll, searchQuery, sortRule, sortOptions, showTags, filterTagsQuery, handleChange, clearSearch, clearTagSearch, handleSort, history, stockFilter = false, stockFilterOptions, matchesStockFilter, handleStockFilter, ...rest}) => {
     return (
@@ -19,9 +20,9 @@ const PatchArchiveView = ({numPatches = 0, tags, selectedTags, toggleShowTags, t
             <div className="settings">
                 <h3>Sök bland {numPatches} märken</h3>
                 <div className="buttons">
-                    <button onClick={clearSelectedTags} disabled={selectedTags.length === 0}>Rensa taggar</button>
-                    <button onClick={clearAll} disabled={selectedTags.length === 0 && searchQuery.length === 0 && sortRule === sortOptions[0].value}>Rensa allt</button>
-                    <button onClick={toggleShowTags}>{showTags ? "Göm taggar" : "Visa taggar"}</button>
+                    <button className="yellow" onClick={clearSelectedTags} disabled={selectedTags.length === 0}>Rensa taggar</button>
+                    <button className="yellow" onClick={clearAll} disabled={selectedTags.length === 0 && searchQuery.length === 0 && sortRule === sortOptions[0].value}>Rensa allt</button>
+                    <button className="yellow" onClick={toggleShowTags}>{showTags ? "Göm taggar" : "Visa taggar"}</button>
                 </div>
                 <div className="sök">
                     <Input
@@ -51,21 +52,12 @@ const PatchArchiveView = ({numPatches = 0, tags, selectedTags, toggleShowTags, t
                                 clear={clearTagSearch}
                             />
                         </div>
-                        <div className="tagQueryResult">
-                            {tags.map((x,i) => x.text.toLowerCase().match(new RegExp(filterTagsQuery.toLowerCase(), "g")) &&
-                                <TagClickable
-                                    key={"tag-"+i}
-                                    onClick={() => {toggleTag(x)}}
-                                    {...x}
-                                    selectedTags={selectedTags}
-                                />
-                            )}
-                        </div>
+                        <TagSelector fetching={rest.fetchingTags} updateState={rest.updateState} tags={tags} selectedTags={selectedTags} query={filterTagsQuery}  />
                     </div>
                 }
             </div>
             <div className="märken">
-                {rest.fetching ? 
+                {rest.fetchingPatches ? 
                     <img src={spinner} className="spinner"/>
                     :
                     sortResults().map((x,i) => (patchTagsMatchesSelected(x) && matchesSearch(x) && matchesStockFilter(x)) ? <Patch key={"patch-"+i} {...x} history={history}/> : undefined)

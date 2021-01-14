@@ -91,7 +91,7 @@ class App extends Component {
             <AdminPatchEdit />
           </ProtectedContent>} />
           <Route exact path={ROUTES.ORDER} render={match => <AdminPrylisProtected component={AdminOrder} {...this.props} {...this.state} />} />
-          <Route exact path={ROUTES.MÄRKESTAGGAR} render={match => <AdminPrylisProtected component={AdminTags} {...this.props} {...this.state} />} />
+          <Route exact path={ROUTES.MÄRKESTAGGAR} render={match => <AdminPrylisProtected component={AdminTags} {...this.props} {...this.state} mode="edit"/>} />
           <Route exact path={ROUTES.SKAPA_HÄNDELSE} render={match => <CreateEvent {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.HANTERA_HÄNDELSER} render={match => <AdminProtected component={AdminEvents} {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.EVENT} render={match =>

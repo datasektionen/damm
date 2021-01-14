@@ -3,6 +3,7 @@ import TagClickable from '../../../components/TagClickable'
 import { PRICE_TYPES } from '../../../config/constants'
 import FileUploader from '../../../components/FileUploader'
 import SubmitButton from '../../../components/SubmitButton/SubmitButton'
+import TagSelector from '../../../components/TagSelector/TagSelector'
 
 const AdminPatchView = ({
         header = "Header",
@@ -19,7 +20,8 @@ const AdminPatchView = ({
         handleRadioChange,
         selectedTags,
         submitting,
-        toggleTag,
+        // toggleTag,
+        updateState,
         setImageCallback,
         setFileCallback,
         inStock = false,
@@ -96,16 +98,14 @@ const AdminPatchView = ({
                                 <span className="notags">Inga taggar finns</span>
                             </div>
                         :
-                        <div className="tags">
-                            {tags.map((tag,i) => 
-                                <TagClickable
-                                    key={"tag-"+i}
-                                    onClick={_ => toggleTag(tag)}
-                                    {...tag}
-                                    selectedTags={selectedTags}
-                                />
-                            )}
-                        </div>}
+                        <TagSelector
+                            tags={tags}
+                            selectedTags={selectedTags}
+                            query=""
+                            updateState={updateState}
+                            // toggleTag={toggleTag}
+                        />
+                        }
                     </div>
                     <div style={{margin: "20px", width: "100%"}} className="center">
                         <h3>Filer</h3>

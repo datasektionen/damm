@@ -14,6 +14,7 @@ const { PRICE_TYPES } = require('../../../client/src/config/constants')
 const constants = require('../../util/constants')
 
 const upload = require('../../upload')
+const { Tag } = require('../../models/Tag')
 let conn = mongoose.connection
 var gfs
 conn.once('open', () => {
@@ -48,6 +49,7 @@ const nameValidatorEdit = (req, res, next) => {
 
 // Middleware that validates price (price type and values)
 const priceValidator = (req, res, next) => {
+    if (!req.body.price) return error(res, 403, "Inget pris medskickat.")
     const price = JSON.parse(req.body.price)
     // Om vi angett att vi ska specificera priset på märket, validera angett pris
     if (price.type === PRICE_TYPES.SET_PRICE) {

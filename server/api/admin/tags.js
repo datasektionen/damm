@@ -6,6 +6,7 @@ var router = express.Router()
 const mongoose = require('mongoose')
 const dauth = require('../../dauth')
 const {Tag} = require('../../models/Tag')
+const Märke = require('../../models/Märke')
 const {error, error500} = require('../../util/error')
 
 //Middleware for patch access rights, admin and prylis
@@ -38,20 +39,21 @@ const validColors = (req, res, next) => {
 const doesExist = async (req, res, next) => {
     const { text, _id } = req.body
     const exists = await Tag.findOne({text})
-    // If "exists" exists and if "exists" is not the one we are editing.
-    if (_id) {
-        if (exists && exists._id.toString() !== _id.toString()) return error(res, 403, "En tagg med samma namn finns redan.")
-    } else {
-        if (exists) return error(res, 403, "En tagg med samma namn finns redan")
+    if (exists) {
+        if (_id) {
+            if (exists._id.toString() !== _id.toString()) return error(res, 403, "En tagg med samma namn finns redan.")
+        } else {
+            return error(res, 403, "En tagg med samma namn finns redan.")
+        }
     }
     next()
 }
 
 router.post('/update', idMiddleware, checkName, doesExist, validColors, async (req, res) => {
-    const {text, hoverText, color, backgroundColor, _id} = req.body
+    const {text, hoverText, color, backgroundColor, children, _id} = req.body
 
     try {
-        await Tag.updateTag(_id, text, hoverText, color, backgroundColor)
+        await Tag.updateTag(_id, text, hoverText, color, backgroundColor, children)
     } catch (err) {
         return error500(res, err)
     }
@@ -59,11 +61,17 @@ router.post('/update', idMiddleware, checkName, doesExist, validColors, async (r
 })
   
 router.post('/create', checkName, doesExist, validColors, async (req, res) => {
-    const {text, hoverText, color, backgroundColor} = req.body
+    const {text, hoverText, color, backgroundColor, parent} = req.body
 
     console.log(req.body)
     try {
-        await Tag.create({text, hoverText, color, backgroundColor})
+        const created = await Tag.create({text, hoverText, color, backgroundColor, children: [], main: (parent ? false : true)})
+        if (parent) {
+            const found = await Tag.find({_id: parent})
+            if (found) {
+                await Tag.updateOne({_id: parent}, {$push: {children: created._id}})
+            }
+        }
     } catch (err) {
         return error500(res, err)
     }
@@ -74,7 +82,10 @@ router.post('/delete', idMiddleware, async (req, res) => {
     const {_id} = req.body
 
     try {
-        await Tag.deleteOne({_id})
+        const tag = await Tag.findByIdAndDelete(_id)
+        await Tag.deleteMany({_id: tag.children})
+        
+        await Märke.updateMany({tags: _id}, {$pull: {tags: _id}})
     } catch (err) {
         return error500(res, err)
     }

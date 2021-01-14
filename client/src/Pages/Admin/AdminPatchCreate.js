@@ -39,6 +39,7 @@ class AdminPatchCreate extends React.Component {
         this.submit = this.submit.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.handleRadioChange = this.handleRadioChange.bind(this)
+        this.updateState = this.updateState.bind(this)
     }
 
     componentDidMount() {
@@ -55,6 +56,10 @@ class AdminPatchCreate extends React.Component {
         }
 
         fetchTags()
+    }
+
+    updateState(next) {
+        this.setState({...next})
     }
 
     submit(e) {
@@ -197,12 +202,7 @@ class AdminPatchCreate extends React.Component {
                 removeCreator={index => {
                     this.setState({creators: this.state.creators.filter((x,i) => i !== index)})
                 }}
-                toggleTag={tag => {
-                    // If tag is not in selectedTags array, add the tag
-                    // Else remove it
-                    if (this.state.selectedTags.filter(t => t._id === tag._id).length === 0) this.setState({selectedTags: this.state.selectedTags.concat(tag)})
-                    else this.setState({selectedTags: this.state.selectedTags.filter(t => t._id !== tag._id)})
-                }}
+                updateState={this.updateState}
                 setImageCallback={(image, resetImage) => this.setState({image, resetImage})}
                 setFileCallback={(file, resetFile) => this.setState({files: this.state.files.concat(file), resetFile})}
             >

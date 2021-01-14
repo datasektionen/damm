@@ -156,12 +156,17 @@
 
 .settings .tagQueryResult {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    padding: 30px 100px 30px 100px;
+}
+
+.settings .tagQueryResult > div{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     align-items: center;
     justify-content: center;
     width: 100%;
-    flex-wrap: wrap;
-    padding: 30px 100px 30px 100px;
 }
 
 .settings .tagQueryResult .tagClickable {
@@ -204,7 +209,6 @@
 }
 
 .settings button {
-    background-color: #E5C100;
     margin: 10px;
 }
 

@@ -35,8 +35,16 @@ class AdminPatchEdit extends React.Component {
 
         this.submit = this.submit.bind(this)
         this.updateState = this.updateState.bind(this)
+        this.deepUpdateState = this.deepUpdateState.bind(this)
     }
 
+    // Used in TagSelector
+    deepUpdateState(next) {
+        this.setState({...next})
+    }
+
+
+    // Called when receiving new props
     updateState() {
         this.setState({
             original: {...this.props.data[0]},
@@ -208,12 +216,7 @@ class AdminPatchEdit extends React.Component {
                 }}
                 addOrder={addOrder}
                 removeOrder={removeOrder}
-                toggleTag={tag => {
-                    // If tag is not in selectedTags array, add the tag
-                    // Else remove it
-                    if (this.state.selectedTags.filter(t => t._id === tag._id).length === 0) this.setState({selectedTags: this.state.selectedTags.concat(tag)})
-                    else this.setState({selectedTags: this.state.selectedTags.filter(t => t._id !== tag._id)})
-                }}
+                updateState={this.deepUpdateState}
                 setImageCallback={(image, resetImage) => this.setState({imageFile: image, resetImage})}
                 setFileCallback={(file, resetFile) => this.setState({files: this.state.files.concat(file), resetFile})}
                 >

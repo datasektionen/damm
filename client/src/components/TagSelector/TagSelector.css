@@ -1,0 +1,26 @@
+.TagSelector {
+    display: flex;
+    flex-direction: column;
+    padding: 30px 100px 30px 100px;
+    width: 100%;
+}
+
+.TagSelector > div{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.TagSelector .tagClickable {
+    margin: 5px;
+    user-select: none;
+}
+
+@media screen and (max-width: 600px) {
+    .TagSelector {
+        padding: 10px;
+    }
+}

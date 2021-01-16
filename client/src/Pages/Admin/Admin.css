@@ -27,7 +27,8 @@
 }
 
 .Admin .Card {
-    margin: 10px;
+    padding: 10px;
+    margin: 5px;
     background-color: white;
     height: auto;
     display: flex;

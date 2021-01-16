@@ -1,10 +1,9 @@
 import React from 'react'
-import { Redirect } from 'react-router-dom'
 import Alert from '../../components/Alert'
-import Unauthorized from '../../components/Unauthorized'
 import * as ROUTES from '../../routes'
 import './Admin.css'
-import AdminCard from './components/AdminCard'
+import { Link } from 'react-router-dom'
+import ExpandableItem from '../../components/ExpandableItem'
 
 class Admin extends React.Component {
     constructor(props) {
@@ -17,56 +16,53 @@ class Admin extends React.Component {
     }
 
     render() {
-        console.log(this.props)
 
-        const prylisCards = [
+        const patches = [
             {
                 title: "Lägg till märke",
-                description: "Lägg till ett nytt (eller gammalt) märke till arkivet för dOsq att beskåda.",
+                desc: "Lägg till ett nytt (eller gammalt) märke till arkivet för dOsq att beskåda.",
                 link: ROUTES.SKAPA_MÄRKE,
-                buttonText: "Lägg till märke"
+                linkText: "Lägg till märke"
             },
             {
-                title: "Redigera märke",
-                description: "Redigera ett märke genom att gå till dess detaljsida genom att klicka på den.",
+                title: "Redigera märken",
+                desc: "Redigera märken genom att klicka på märket i märkesarkivet.",
                 link: ROUTES.MÄRKESARKIV,
-                buttonText: "Märkesarkiv"
+                linkText: "Till märkesarkivet"
             },
             {
                 title: "Registrera beställningar",
-                description: "Registrera att du beställt märken. Denna sida är till för att det ska gå snabbare än att behöva gå in på varje enskilt märke.",
+                desc: "Registrera att du beställt märken. Denna sida är till för att det ska gå snabbare än att behöva gå in på varje enskilt märke.",
                 link: ROUTES.ORDER,
-                buttonText: "Registrera beställningar"
+                linkText: "Registrera beställningar"
             },
             {
                 title: "Hantera märkestaggar",
-                description: "Lägg till, redigera eller ta bort märkestaggar.",
+                desc: "Lägg till, redigera eller ta bort märkestaggar.",
                 link: ROUTES.MÄRKESTAGGAR,
-                buttonText: "Hantera märkestaggar"
+                linkText: "Hantera märkestaggar"
             },
         ]
 
-        const adminCards = [...prylisCards].concat([
+        const timeline = [
             {
                 title: "Lägg till händelse",
-                description: "Registrera generell historia du tycker är värdig att förevigas.",
+                desc: "Registrera generell historia du tycker är värdig att förevigas.",
                 link: ROUTES.SKAPA_HÄNDELSE,
-                buttonText: "Lägg till händelse"
+                linkText: "Lägg till händelse"
             },
             {
                 title: "Hantera händelser",
-                description: "Hantera generell historia",
+                desc: "Hantera generell historia",
                 link: ROUTES.HANTERA_HÄNDELSER,
-                buttonText: "Hantera händelser"
+                linkText: "Hantera händelser"
             },
             {
                 title: "Ladda om data",
-                description: "Laddar om data till tidslinjen (protokoll, val och mandat). Kan vara bra vid en eventuell mörkläggning :)",
-                // link: ROUTES.ADMIN,
-                nolink: true,
-                buttonText: "Ladda om",
+                desc: "Laddar om data till tidslinjen (protokoll, val och mandat). Kan vara bra vid en eventuell mörkläggning :)",
+                link: ROUTES.ADMIN,
+                linkText: "Ladda om",
                 onClick: () => {
-                    console.log("LADDAR OM, INTE IMPLEMENTERAT ÄN")
                     fetch(`/api/admin/refresh?token=${localStorage.getItem('token')}`)
                     .then(res => res.json())
                     .then(json => {
@@ -82,25 +78,28 @@ class Admin extends React.Component {
                     })
                 }
             },
-        ])
-
-        let content
-        if (this.props.pls.includes("admin")) {
-            content = adminCards.map((x,i) => <AdminCard key={"card-"+i} {...x} />)
-        } else if (this.props.pls.includes("prylis")) {
-            content = prylisCards.map((x,i) => <AdminCard key={"card-"+i} {...x} />)
-        }
-        console.log(this.props)
+        ]
 
         return(
             <div className="Admin">
                 <div className="Header">
-                    <h2>Administrera, TODO: Skriv om denna sida</h2>
+                    <h2>Administrera</h2>
                 </div>
                 {this.state.success && <Alert>{this.state.success}</Alert>}
                 {this.state.error && <Alert type="error">{this.state.error}</Alert>}
                 <div className="Content">
-                    {content}
+                    {this.props.pls.includes("admin") &&
+                        <Section
+                            title="Tidslinjen"
+                            cards={timeline}
+                        />
+                    }
+                    {(this.props.pls.includes("admin") || this.props.pls.includes("prylis")) &&
+                        <Section
+                            title="Märken"
+                            cards={patches}
+                        />
+                    }
                 </div>
             </div>
         )
@@ -108,3 +107,29 @@ class Admin extends React.Component {
 }
 
 export default Admin
+
+
+const Section = ({title = "Titel", cards = []}) => {
+    return (
+        <ExpandableItem cols={[<b>{title}</b>]} startOpen={true} >
+            {cards.map((x,i) => 
+                <Card
+                    {...x}
+                    key={"card-"+x.title}
+                />
+            )}
+        </ExpandableItem>
+    )
+}
+
+const Card = ({title = "Titel", desc = "Lorem ipsum dolor sit amet.", link = "", linkText = "Kör", onClick}) => {
+    return (
+        <div className="Card">
+            <h2>{title}</h2>
+            <p>{desc}</p>
+            <div className="Button">
+                <Link to={link} onClick={onClick}>{linkText}</Link>
+            </div>
+        </div>
+    )
+}

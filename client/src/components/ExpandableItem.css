@@ -1,6 +1,8 @@
 .ExpandableItem {
     margin: 5px;
     user-select: none;
+    width: 100%;
+    background-color: white;
 }
 
 .ExpandableItem .row {
@@ -21,6 +23,7 @@
 .ExpandableItem .row .col.arrow {
     margin-right: 15px;
     margin-left: 0;
+    width: auto;
 }
 
 .ExpandableItem .row .col.title {
@@ -73,7 +76,11 @@
 }
 
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 700px) {
+
+    .ExpandableItem .row {
+        flex-direction: row;
+    }
 
     .ExpandableItem .row .col.title {
         width: auto;

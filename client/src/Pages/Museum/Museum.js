@@ -32,11 +32,14 @@ class Museum extends React.Component {
                         <h4>(Eller andra coola föremål)</h4>
                     </div>
                 </div>
-                <div className="Timeline">
+                <div style={{textAlign: "center", margin: "30px"}}>
+                    <h3>Arbete pågår...</h3>
+                </div>
+                {/* <div className="Timeline">
                 <div className="cards">
                     {this.state.artefakter.map((x,i) => <General data={{date: moment(x.date), title: x.name, content: x.description}} />)}
                 </div>
-                </div>
+                </div> */}
             </div>
         )
     }

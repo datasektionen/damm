@@ -1,46 +1,48 @@
+<a id="start"></a>
 # API-dokumentation
 Här finns API-dokumentationen för damm.
 
 Senast uppdaterad 2020-12-28.
 
+<a id="content"></a>
 # Innehållsförteckning
-- [API-dokumentation](#api-dokumentation)
-- [Innehållsförteckning](#inneh-llsf-rteckning)
+- [API-dokumentation](#start)
+- [Innehållsförteckning](#content)
 - [Modeller](#modeller)
-  * [Märke (Patch)](#m-rke--patch-)
-  * [FileLink](#filelink)
-  * [Tag (Taggar)](#tag--taggar-)
-  * [User](#user)
-  * [Events](#events)
+  * [Märke (Patch)](#modeller-patch)
+  * [FileLink](#modeller-filelink)
+  * [Tag (Taggar)](#modeller-tag)
+  * [User](#modeller-user)
+  * [Events](#modeller-events)
 - [Error-meddelanden](#error-meddelanden)
-    + [Exempel](#exempel)
+    + [Exempel](#error-exempel)
 - [Tokens](#tokens)
 - [Admin endpoints](#admin-endpoints)
 - [General endpoints](#general-endpoints)
-  * [GET /api](#get--api)
-  * [GET /damm](#get--damm)
-  * [GET /fuzzyfile](#get--fuzzyfile)
-  * [GET api/isAdmin](#get-api-isadmin)
-  * [GET api/file/:filename](#get-api-file--filename)
-  * [GET api/\*invalid path\*](#get-api---invalid-path--)
-- [General - Admin](#general---admin)
-  * [GET /api/admin/refresh](#get--api-admin-refresh)
-- [Märkesrelaterat](#m-rkesrelaterat)
-  * [GET api/marken](#get-api-marken)
-  * [GET api/marke/id/:id](#get-api-marke-id--id)
-  * [GET api/tags](#get-api-tags)
-- [Märkesrelaterat - Admin](#m-rkesrelaterat---admin)
-  * [POST /api/admin/marke/create](#post--api-admin-marke-create)
-  * [POST /api/admin/marke/edit/id/:id](#post--api-admin-marke-edit-id--id)
-  * [POST /api/admin/marke/replace-image/id/:id](#post--api-admin-marke-replace-image-id--id)
-  * [GET /api/admin/marke/remove/id/:id](#get--api-admin-marke-remove-id--id)
-  * [POST /api/admin/marke/register-orders](#post--api-admin-marke-register-orders)
-  * [GET /remove/file/:filename](#get--remove-file--filename)
-
-<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+  * [GET /api](#get-api)
+  * [GET /damm](#get-damm)
+  * [GET /fuzzyfile](#get-fuzzyfile)
+  * [GET api/isAdmin](#get-isAdmin)
+  * [GET api/file/:filename](#get-file-filename)
+  * [GET api/\*invalid path\*](#get-invalid)
+- [General - Admin](#general-admin)
+  * [GET /api/admin/refresh](#get-admin-refresh)
+- [Märkesrelaterat](#märkesrelaterat)
+  * [GET api/marken](#get-marken)
+  * [GET api/marke/id/:id](#get-marke-id)
+  * [GET api/tags](#get-tags)
+- [Märkesrelaterat - Admin](#markesrelaterat-admin)
+  * [POST /api/admin/marke/create](#post-admin-marke-create)
+  * [POST /api/admin/marke/edit/id/:id](#post-admin-marke-edit-id)
+  * [POST /api/admin/marke/replace-image/id/:id](#post-admin-marke-replace-image-id)
+  * [GET /api/admin/marke/remove/id/:id](#get-admin-marke-remove-id)
+  * [POST /api/admin/marke/register-orders](#post-admin-marke-register-orders)
+  * [GET /remove/file/:filename](#removefile)
 
 ---
+<a id="modeller"></a>
 # Modeller
+<a id="modeller-patch"></a>
 ## Märke (Patch)
 Modell för ett märke. Hänvisas till som `Patch` i detta API.
 
@@ -88,6 +90,7 @@ För att inte icke-admins ska få tillgång till "känslig" information (`files`
 
 Se även [Märke.js](server/models/Märke.js)
 
+<a id="modeller-filelink"></a>
 ## FileLink
 Modell som håller koll på filers URL:er och originalnamn (vi skriver över filens namn med en `uuid4`-sträng). Ett `FileLink`-objekt måste tas bort när filen den länkar till tas bort, detta görs i bland annat i [GET api/admin/marke/remove/file/:filename](#removefile).
 
@@ -102,6 +105,7 @@ Hänvisas till som `FileLink` i detta API.
 ```
 Se även [FileLink.js](server/models/FileLink.js)
 
+<a id="modeller-tag"></a>
 ## Tag (Taggar)
 Modell för märkestaggar. Hänvisas till som `Tag` i detta API.
 
@@ -110,6 +114,8 @@ Modell för märkestaggar. Hänvisas till som `Tag` i detta API.
 - `color` och `backgroundColor` måste vara RGB-färger på formatet `#RRGGBB`.
 - Lämnas `color` tom gör frontenden den vit, lämnas `backgroundColor` tom gör frotenden den cerise.
 - `hoverText` är en textruta som visas när du hoovrar med musen över taggen.
+- `main` är en boolean som säger om taggen är en huvudtagg eller ej.
+- `children` är taggens undertaggar. Endast taggar som har `main=true` kan ha barn.
 
 ### Modellen
 ```js
@@ -117,16 +123,21 @@ Modell för märkestaggar. Hänvisas till som `Tag` i detta API.
     text: String,
     color: String,
     backgroundColor: String,
-    hoverText: String
+    hoverText: String,
+    main: Boolean,
+    children: [Tag.ObjectID]
 }
 ```
 Se även [Tag.js](server/models/Tag.js)
 
+<a id="modeller-user"></a>
 ## User
 
+<a id="modeller-events"></a>
 ## Events
 
 ---
+<a id="error-meddelanden"></a>
 # Error-meddelanden
 Error-meddelanden följer samma konvention för alla endpoints. Alla errormeddelanden kommer i JSON-format och ser ut såhär:
 
@@ -145,6 +156,7 @@ Error-meddelanden följer samma konvention för alla endpoints. Alla errormeddel
 - errorMessage
     - Skickas bara under utveckling (när `NODE_ENV` är satt till `development`). Innehåller stack-trace.
 
+<a id="error-exempel"></a>
 ### Exempel
 ```json
 {
@@ -153,10 +165,12 @@ Error-meddelanden följer samma konvention för alla endpoints. Alla errormeddel
 }
 ```
 ---
+<a id="tokens"></a>
 # Tokens
 För vissa endpoints krävs en token. En token läggs till med `?token=banankaka` på slutet av URL:en, exempelvis: `https://damm.datasektionen.se/api/admin/refresh?token=banankaka`
 
 ---
+<a id="admin-endpoints"></a>
 # Admin endpoints
 Adminendpoints förväntar sig att du har en token.
 
@@ -165,8 +179,10 @@ För dessa adminendpoints gäller:
 - Har du ingen access svarar servern med `401`.
 - Gick något fel svarar servern med `500`.
 ---
+<a id="general-endpoints"></a>
 # General endpoints
 
+<a id="get-api"></a>
 ## GET /api
 **Beskrivning:** Hämtar all data som visas på tidslinjen.
 
@@ -174,6 +190,7 @@ För dessa adminendpoints gäller:
 **Format:** `JSON`
 - `200` om allt gick rätt till.
 
+<a id="get-damm"></a>
 ## GET /damm
 **Beskrivning:** Skickar en dammig bild.
 
@@ -181,6 +198,7 @@ För dessa adminendpoints gäller:
 **Format:** `HTML`
 - `200` om allt gick rätt till.
 
+<a id="get-fuzzyfile"></a>
 ## GET /fuzzyfile
 **Beskrivning:** Hämtar fuzzy-filen.
 
@@ -188,6 +206,7 @@ För dessa adminendpoints gäller:
 **Format:** `JSON`
 - `200` om allt gick rätt till.
 
+<a id="get-isAdmin"></a>
 ## GET api/isAdmin
 **Beskrivning:** Skickar tillbaka pls-rättigheter som finns för medskickad token.
 
@@ -207,6 +226,7 @@ För dessa adminendpoints gäller:
 - `403` om ingen token medskickad.
 - `404` om något gick fel, exempelvis om token är fel format.
 
+<a id="get-file-filename"></a>
 ## GET api/file/:filename
 **Beskrivning:** Hämtar en fil med specificerat filnamn
 
@@ -216,6 +236,7 @@ För dessa adminendpoints gäller:
 - `403` om ingen token medskickad.
 - `404` om något gick fel, exempelvis om token är fel format.
 
+<a id="get-invalid"></a>
 ## GET api/\*invalid path\*
 **Beskrivning:** Alla ogiltiga paths.
 
@@ -228,7 +249,9 @@ För dessa adminendpoints gäller:
 }
 ```
 ---
+<a id="general-admin"></a>
 # General - Admin
+<a id="get-admin-refresh"></a>
 ## GET /api/admin/refresh
 **Beskrivning:** Refreshar tidslinjen, hämtar all data från olika källor och cachar den. Kan bara köras max en gång per minut.
 
@@ -242,6 +265,7 @@ Notera att servern kör refresh automatiskt varje dygn (görs med en `setInterva
 - Om mindre än en minut gått sen senaste refresh svarar servern med `403`.
 - Annars svarar servern med `200`.
 
+<a id="get-admin-files-all"></a>
 ## GET /api/admin/files/all
 **Beskrivning:** Hämtar alla fil-objekt från databasen (Inte `FileLink`-objekt).
 
@@ -252,6 +276,7 @@ Notera att servern kör refresh automatiskt varje dygn (görs med en `setInterva
 **Format:** `JSON`
 - `200`
 
+<a id="get-admin-files-size"></a>
 ## GET /api/admin/files/size
 **Beskrivning:** Hämtar hur mycket plats alla filer tar upp i databasen. Visar i bytes, kilobytes, megabytes och gigabytes.
 
@@ -263,9 +288,11 @@ Notera att servern kör refresh automatiskt varje dygn (görs med en `setInterva
 - `200`
 
 ---
+<a id="märkesrelaterat"></a>
 # Märkesrelaterat
 Märkesrelaterade endpoints.
 
+<a id="get-marken"></a>
 ## GET api/marken
 **Beskrivning:** Hämtar alla märken från databasen. Med en giltig admin-`token` inkluderas adminfält tillhörande alla märken, dessa fält är: filer, information och ordrar.
 
@@ -282,6 +309,7 @@ Märkesrelaterade endpoints.
     ```
 - `500` om något gick fel.
 
+<a id="get-marke-id"></a>
 ## GET api/marke/id/:id
 **Beskrivning:** Hämtar märket med angivet id från databasen. Med en giltig admin-`token` inkluderas adminfält tillhörande märket, dessa fält är: filer, information och ordrar.
 
@@ -298,6 +326,7 @@ Märkesrelaterade endpoints.
     ```
 - `500` om något gick fel.
 
+<a id="get-tags"></a>
 ## GET api/tags
 **Beskrivning:** Hämtar alla taggar från databasen.
 
@@ -312,8 +341,10 @@ Märkesrelaterade endpoints.
 - `500` om något gick fel.
 
 ---
+<a id="markesrelaterat-admin"></a>
 # Märkesrelaterat - Admin
 
+<a id="post-admin-marke-create"></a>
 ## POST /api/admin/marke/create
 **Beskrivning:** Skapar ett nytt märke.
 
@@ -359,6 +390,7 @@ Se [pristyper](#pricetypes).
 - `500` om något gick fel.
 
 ---
+<a id="post-admin-marke-edit-id"></a>
 ## POST /api/admin/marke/edit/id/:id
 **Beskrivning:** Redigerar märket. Ändrar de fält du skickar.
 
@@ -405,6 +437,7 @@ Optional fields:
 - `404` om märket ej finns.
 - `500` om något gick fel.
 ---
+<a id="post-admin-marke-replace-image-id"></a>
 ## POST /api/admin/marke/replace-image/id/:id
 **Beskrivning:** Byter bild för märket.
 
@@ -429,6 +462,7 @@ Required fields:
 - `404` om märket ej finns.
 - `500` om något gick fel.
 ---
+<a id="get-admin-marke-remove-id"></a>
 ## GET /api/admin/marke/remove/id/:id
 **Beskrivning:** Tar bort märket.
 
@@ -446,6 +480,7 @@ Required fields:
 - `404` om märket ej finns.
 - `500` om något gick fel.
 ---
+<a id="post-admin-marke-register-orders"></a>
 ## POST /api/admin/marke/register-orders
 **Beskrivning:** Registrerar flera ordrar för ett märke
 

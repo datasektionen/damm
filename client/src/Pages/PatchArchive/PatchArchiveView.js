@@ -8,6 +8,13 @@ import Input from '../../components/Input/Input'
 import TagSelector from '../../components/TagSelector/TagSelector'
 
 const PatchArchiveView = ({numPatches = 0, tags, selectedTags, toggleShowTags, toggleTag, sortResults, patchTagsMatchesSelected, matchesSearch, clearSelectedTags, clearAll, searchQuery, sortRule, sortOptions, showTags, filterTagsQuery, handleChange, clearSearch, clearTagSearch, handleSort, history, stockFilter = false, stockFilterOptions, matchesStockFilter, handleStockFilter, ...rest}) => {
+    
+    const patches =
+        sortResults()
+        .filter(x => patchTagsMatchesSelected(x) && matchesSearch(x) && matchesStockFilter(x))
+        .map((x,i) => <Patch key={"patch-"+i} {...x} history={history}/>)
+    
+
     return (
         <div className="MärkesArkiv">
             <div className="Header">
@@ -60,7 +67,14 @@ const PatchArchiveView = ({numPatches = 0, tags, selectedTags, toggleShowTags, t
                 {rest.fetchingPatches ? 
                     <img src={spinner} className="spinner"/>
                     :
-                    sortResults().map((x,i) => (patchTagsMatchesSelected(x) && matchesSearch(x) && matchesStockFilter(x)) ? <Patch key={"patch-"+i} {...x} history={history}/> : undefined)
+                    (
+                        patches.length === 0 ?
+                        <div style={{padding: "50px"}}>
+                            Hittade inga märken
+                        </div>
+                        :
+                        patches.map(x => x)
+                    )
                 }
             </div>
         </div>

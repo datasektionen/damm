@@ -47,7 +47,7 @@ const Patch = ({image, date, name, description, tags = [], price, inStock = fals
                     </div>
                 </div>
             }
-            <div className="image" style={{backgroundImage: `url(${image})`}}></div>
+            <div className="image" style={{backgroundImage: `url(${image})`, backgroundColor:"#ddd"}}></div>
             <div className="head">
                 <div
                     className="item date"

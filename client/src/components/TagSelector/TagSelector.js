@@ -34,31 +34,41 @@ const TagSelector = ({tags = [], selectedTags = [], query = "", updateState, fet
     }
 
     const subtags = tags
-                    .filter(x => {
-                        for (const tag of selectedTags) {
-                            if (tag._id === x._id) return true
-                        }
-                        return false
-                    }).map(x =>
-                            x.children
-                            .filter(x => x.text.toLowerCase().match(query.toLowerCase()))
-                            .map((y,i) => y)
-                    ).filter(x => x.length !== 0)
+        .filter(x => {
+            for (const tag of selectedTags) {
+                if (tag._id === x._id) return true
+            }
+            return false
+        })
+        .map(x =>
+            x.children
+            .filter(x => x.text.toLowerCase().match(query.toLowerCase()))
+            .map((y,i) => y)
+        )
+        .filter(x => x.length !== 0)
     
+    const headtags = tags
+        .filter(x => x.text.toLowerCase().match(new RegExp(query.toLowerCase(), "g")) || selectedTags.filter(y => y._id === x._id).length > 0)
+        .map((x,i) =>
+            <TagClickable
+                key={"tag-"+i}
+                onClick={() => {toggleTag(x)}}
+                {...x}
+                selectedTags={selectedTags}
+            />
+        )
+
     return (
         fetching ?
         <Spinner />
         :
         <div className="TagSelector">
             <div className="headtags">
-                {tags.map((x,i) => (x.text.toLowerCase().match(new RegExp(query.toLowerCase(), "g")) || selectedTags.filter(y => y._id === x._id).length > 0) &&
-                    <TagClickable
-                        key={"tag-"+i}
-                        onClick={() => {toggleTag(x)}}
-                        {...x}
-                        selectedTags={selectedTags}
-                    />
-                )}
+                {headtags.length === 0 ?
+                    "Hittade inga taggar"
+                    :
+                    headtags.map(x => x)
+                }
             </div>
             {subtags.length > 0 && <p><b>Subtaggar</b></p>}
             <div className="subtags">

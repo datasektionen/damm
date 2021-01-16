@@ -209,6 +209,7 @@ markeSchema.pre('save', function() {
         this.price.value = ""
     }
 
+    if (!this.date) this.date = ""
     // If date doesn't match format, set it to empy (Okänt)
     if (!this.date.match(/^(19|20)\d{2}\-\d{2}\-\d{2}$/)) {
         this.date = ""

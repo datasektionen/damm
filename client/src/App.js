@@ -29,7 +29,7 @@ class App extends Component {
     const links = [
       {to: ROUTES.HOME, text: "Hem"},
       {to: ROUTES.TIDSLINJE, text: "Tidslinje"},
-      {to: ROUTES.MUSEUM, text: "Historiska artefakter"},
+      {to: ROUTES.MUSEUM, text: "Museum"},
       {to: ROUTES.MÄRKESARKIV, text: "Märkesarkiv"},
       {to: ROUTES.SKAPA_HÄNDELSE, text: "Skapa händelse"},
     ]
@@ -91,7 +91,7 @@ class App extends Component {
             <AdminPatchEdit />
           </ProtectedContent>} />
           <Route exact path={ROUTES.ORDER} render={match => <AdminPrylisProtected component={AdminOrder} {...this.props} {...this.state} />} />
-          <Route exact path={ROUTES.MÄRKESTAGGAR} render={match => <AdminPrylisProtected component={AdminTags} {...this.props} {...this.state} />} />
+          <Route exact path={ROUTES.MÄRKESTAGGAR} render={match => <AdminPrylisProtected component={AdminTags} {...this.props} {...this.state} mode="edit"/>} />
           <Route exact path={ROUTES.SKAPA_HÄNDELSE} render={match => <CreateEvent {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.HANTERA_HÄNDELSER} render={match => <AdminProtected component={AdminEvents} {...this.props} {...this.state} /> } />
           <Route exact path={ROUTES.EVENT} render={match =>

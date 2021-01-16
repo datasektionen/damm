@@ -1,3 +1,10 @@
+/*
+	Adapter which gathers events from the database.
+
+	Only gathers events that are accepted.
+
+	Written by Jonas Dahl and modified by Axel Elmarsson.
+*/
 const moment = require('moment')
 const Event = require('../models/Event')
 

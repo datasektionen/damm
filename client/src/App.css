@@ -683,3 +683,15 @@ i.fa-trash:hover {
   color: rgb(0,0,0,0.8);
   transform: scale(1.1);
 }
+
+i.fas.fa-random {
+  margin: 10px;
+  font-size: 1.5em;
+  color: rgb(0, 0, 0, 0.6);
+  cursor: pointer;
+}
+
+i.fas.fa-random:hover {
+  color: rgb(0,0,0,1);
+  transform: scale(1.1);
+}

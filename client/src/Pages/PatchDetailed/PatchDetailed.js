@@ -6,6 +6,7 @@ import Tag from '../../components/Tag'
 import PatchDetailedAdminView from './components/PatchDetailedAdminView'
 import { PRICE_TYPES } from '../../config/constants'
 import Alert from '../../components/Alert'
+import PatchMeta from './components/PatchMeta'
 
 class PatchDetailed extends React.Component {
 
@@ -68,29 +69,7 @@ class PatchDetailed extends React.Component {
                             <div className="name">
                                 <h1>{data.name}</h1>
                             </div>
-                            <div className="meta">
-                                <span title="Första försäljningsdatum">
-                                    <i className="far fa-clock"></i> {data.date ? moment(data.date).format("DD MMM YYYY") : "Okänt"}
-                                </span>
-                                <i className="fas fa-circle"></i>
-                                <span title="Pris">
-                                    <i className="fas fa-dollar-sign"></i> {priceDisplay()}
-                                </span>
-                                <i className="fas fa-circle"></i>
-                                <span title="Lagerstatus">
-                                    <i className="fas fa-box-open"></i> {data.inStock === true ? "I lager" : "Ej i lager"}
-                                </span>
-                                <i className="fas fa-circle"></i>
-                                <span title="Antal producerade">
-                                    <i className="fas fa-hashtag"></i> {data.produced ? data.produced : 0} st
-                                </span>
-                            </div>
-                            {data.creators.length !== 0 && 
-                                <div className="meta">
-                                        Skapare:
-                                        {data.creators.map(c => <span id="cName">{c.name}</span>)}
-                                </div>
-                            }
+                            <PatchMeta data={data} />
                             <div className="description">
                                 {data.description ? data.description : "Ingen beskrivning"}
                             </div>

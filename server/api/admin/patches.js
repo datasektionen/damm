@@ -1,3 +1,7 @@
+/*
+    This file contains admin endpoints for patches. Creating, editing patches, replacing files,
+    registering orders etc.
+*/
 var express = require('express')
 var router = express.Router()
 const dauth = require('../../dauth')
@@ -10,6 +14,7 @@ const { PRICE_TYPES } = require('../../../client/src/config/constants')
 const constants = require('../../util/constants')
 
 const upload = require('../../upload')
+const { Tag } = require('../../models/Tag')
 let conn = mongoose.connection
 var gfs
 conn.once('open', () => {
@@ -29,14 +34,22 @@ const hasImage = (req, res, next) => {
 
 // Middleware that validates a patch name
 const nameValidator = (req, res, next) => {
-    const name = JSON.parse(req.body.name)
+    const name = req.body.name
     if (!name) return error(res, 403, "Ingen namn angett.")
     if (name.trim().length < 1) return error(res, 403, "Namnet är för kort.")
     next()
 }
 
+// Middleware for the edit endpoint
+const nameValidatorEdit = (req, res, next) => {
+    const name = req.body.name
+    if (name) nameValidator(req, res, next)
+    else next()
+}
+
 // Middleware that validates price (price type and values)
 const priceValidator = (req, res, next) => {
+    if (!req.body.price) return error(res, 403, "Inget pris medskickat.")
     const price = JSON.parse(req.body.price)
     // Om vi angett att vi ska specificera priset på märket, validera angett pris
     if (price.type === PRICE_TYPES.SET_PRICE) {
@@ -52,13 +65,90 @@ const priceValidator = (req, res, next) => {
     next()
 }
 
+// Middleware for the edit endpoint
+const priceValidatorEdit = (req, res, next) => {
+    if (req.body.price) {
+        priceValidator(req, res, next)
+    } else next()
+}
+
+// Helper for order validation
+const bulkOrderValidatorHelper = async ({id, order}) => {
+    if (!id) {
+        return error(res, 403, "Inget id för märkesorder angiven.")
+    }
+    
+    if (!mongoose.isValidObjectId(id)) {
+        return error(res, 403, "Ogiltigt id.")
+    }
+
+    const patch = await Märke.findById(id).lean()
+    if (!patch) return "Märket finns ej."
+
+    if (!order) return `Order för ${patch.name} saknas.`
+
+    // We want to allow amount to be 0, therefore the !== 0 check
+    if (!order.amount && order.amount !== 0) return `Inget antal angett för "${patch.name}".`
+    if (isNaN(parseInt(order.amount))) return `Angivet antal för "${patch.name}" är inte ett heltal`
+    if (parseInt(order.amount) < 0) return `Angivet antal för "${patch.name}" är inte vara negativt.`
+    if (!order.date) return `Inget datum angett för "${patch.name}".`
+    if (!order.order) return `Inget referensmummer angett för "${patch.name}".`
+    if (!order.company) return `Inget företag angett  för "${patch.name}".`
+
+    return null
+}
+
+const orderValidator = async (req, res, next) => {
+    const orders = req.body.orders
+    console.log(req.body.orders)
+    try {
+        if (orders) {
+
+            for (let x of JSON.parse(orders)) {
+                // We want to allow amount to be 0, therefore the !== 0 check
+                if (!x.amount && x.amount !== 0) return error(res, 403, `Inget antal angett för ordern".`)
+                if (isNaN(parseInt(x.amount))) return error(res, 403, `Angivet antal är inte ett heltal`)
+                if (parseInt(x.amount) < 0) return error(res, 403, `Angivet antal är inte vara negativt.`)
+                if (!x.date) return error(res, 403, `Inget datum angett.`)
+                if (!x.order) return error(res, 403, `Inget referensmummer angett.`)
+                if (!x.company) return error(res, 403, `Inget företag angett.`)
+            }
+        }
+    } catch (err) {
+        console.log(err)
+        return error500(res, err)
+    }
+
+    next()
+}
+
+// Middleware for bulk registering orders
+const bulkOrderValidator = async (req, res, next) => {
+    const orders = req.body.orders
+    try {
+        for (let x of orders) {
+            let message = await bulkOrderValidatorHelper(x)
+            if (message !== null) return error(res, 403, message)
+        }
+
+        next()
+    } catch(err) {
+        return error500(res, err)
+    }
+}
+
+// Parses form data
 const patchFiles = upload.fields([{ name: "image", maxCount: 1 }, { name: "files", maxCount: 10 },])
 
 // Route for creating a patch. Takes data as formdata.
-router.post('/create', patchFiles, hasImage, nameValidator, priceValidator, async (req, res) => {
+router.post('/create', patchFiles, hasImage, nameValidator, priceValidator, orderValidator, async (req, res) => {
     const body = {}
     Object.keys(req.body).forEach(key => {
-        body[key] = JSON.parse(req.body[key])
+        try {
+            body[key] = JSON.parse(req.body[key])
+        } catch (err) {
+            body[key] = req.body[key]
+        }
     })
 
     const { name, description, date, price, orders, tags, inStock, comment, creators } = body
@@ -79,7 +169,7 @@ router.post('/create', patchFiles, hasImage, nameValidator, priceValidator, asyn
             comment,
             creators
         })
-        return res.status(200).json({"success":"true", patch})
+        return res.status(200).json({"status":"Märket skapat.", patch})
     } catch(err) {
         if (process.env.NODE_ENV !== "test")
         console.log(err)
@@ -88,19 +178,21 @@ router.post('/create', patchFiles, hasImage, nameValidator, priceValidator, asyn
 })
 
 // Route to edit a patch
-router.post('/edit/id/:id', patchFiles, nameValidator, priceValidator, async (req, res) => {
-    const body = {}
+router.post('/edit/id/:id', patchFiles, nameValidatorEdit, priceValidatorEdit, orderValidator, async (req, res) => {
     console.log(req.body)
-    Object.keys(req.body).forEach(key => {
-        body[key] = JSON.parse(req.body[key])
-    })
-
-    console.log(req.files)
-
     const { id } = req.params
     if (!mongoose.isValidObjectId(id)) return error(res, 404, "Märket finns ej.")
     if ((await Märke.findById(id)) === null) return error(res, 404, "Märket finns ej.")
-
+    
+    const body = {}
+    Object.keys(req.body).forEach(key => {
+        try {
+            body[key] = JSON.parse(req.body[key])
+        } catch (err) {
+            body[key] = req.body[key]
+        }
+    })
+    
     try {
         const patch = await Märke.findByIdAndUpdate(id, {$set: {...body}})
         if (req.files.image) await replaceImageAndUpdatePatch(patch, req.files.image[0].filename)
@@ -114,15 +206,16 @@ router.post('/edit/id/:id', patchFiles, nameValidator, priceValidator, async (re
     }
 
     return res.status(200).json({"status":"Märket uppdaterat"})
+
 })
 
 // Replaces the image file of a patch and removes the old one.
 router.post('/replace-image/id/:id', upload.single('image'), hasImage, async (req, res) => {
     const { id } = req.params
-    if (!id) return error(res, 400, "Inget id medskickat")
 
     const patch = await Märke.findById(id)
     if (!patch) return error(res, 404, "Märket hittades ej")
+    if (req.body.image) return error(res, 403, "Ingen bild medskickad.")
     console.log(patch)
     try {
         await replaceImageAndUpdatePatch(patch, req.file.filename)
@@ -149,6 +242,7 @@ const replaceImageAndUpdatePatch = async (patch, filename) => {
     })
 }
 
+// Creates FileLinks for files
 const createFileLinks = async (files = []) => {
     return await Promise.all(
         files === undefined ? []
@@ -188,7 +282,6 @@ const deleteFileAndChunks = async (filename) => {
 // Removes a patch, its image and its files by patch id
 router.get('/remove/id/:id', async (req, res) => {
     const { id } = req.params
-    if (!id) return error(res, 400, "Inget id medskickat")
     const patch = await Märke.findById(id)
     if (!patch) return error(res, 404, "Märket finns ej")
 
@@ -227,33 +320,12 @@ router.get('/remove/file/:filename', async (req, res) => {
     }
 })
 
-router.post('/register-orders', async (req, res) => {
+// Registers multiple orders for multiple different patches.
+router.post('/register-orders', bulkOrderValidator, async (req, res) => {
     const { orders } = req.body
     if (!orders || orders.length === 0) return error(res, 403, "Inga beställningar medskickade.")
 
     try {
-        // With this kind of for loop we can break, you cannot break with orders.forEach
-        // Go through all orders and check them
-        for (let x of orders) {
-            if (!mongoose.isValidObjectId(x.id)) {
-                return error(res, 403, "Ogiltigt id.")
-            }
-
-            if (!x.id) {
-                return error(res, 403, "Inget id angett.")
-            }
-
-            const patch = await Märke.findById(x.id).lean()
-
-            // if (!0) will be run without the if not zero check
-            if (!x.order.amount && x.order.amount !== 0) return error(res, 403, `Inget antal angett för "${patch.name}".`)
-            if (isNaN(parseInt(x.order.amount))) return error(res, 403, `Angivet antal för "${patch.name}" är inte ett heltal`)
-            if (parseInt(x.order.amount) < 0) return error(res, 403, `Angivet antal för "${patch.name}" är inte vara negativt.`)
-            if (!x.order.date) return error(res, 403, `Inget datum angett för "${patch.name}".`)
-            if (!x.order.company) return error(res, 403, `Inget företag angett  för "${patch.name}".`)
-            if (!x.order.order) return error(res, 403, `Inget referensmummer angett för "${patch.name}".`)
-        }
-
         orders.forEach(async x => {
             await Märke.findByIdAndUpdate(x.id, {$push: {orders: x.order}})
         })

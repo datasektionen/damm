@@ -1,3 +1,11 @@
+/*
+    Dauth - authorization middlewares
+
+    This file includes some authorization middlewares that are used on endpoints where admin
+    rights are needed to perform an action. It also includes functions that gets pls rights
+    of a user and a function that gets a user from a token.
+*/
+
 const fetch = require('node-fetch')
 const {error, error500} = require('./util/error')
 

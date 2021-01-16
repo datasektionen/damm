@@ -1,3 +1,8 @@
+/*
+    Contains some general api endpoints. also redirects /event/... endpoints to a separate file.
+
+    
+*/
 var express = require('express')
 var router = express.Router()
 const dAuth = require('../dauth')
@@ -30,11 +35,21 @@ router.get('/artefakter', (req, res) => {
     res.send([])
 })
 
-router.get('/tags', (req, res) => {
-    Tag.find((err, data) => {
-        if (err) return error500(res, err)
-        else res.send(data)
-    })
+router.get('/tags', async (req, res) => {
+    try {
+        const tags = await Tag.find()
+        .populate("children")
+        .lean()
+
+        return res.status(200).json(tags.filter(x => x.main === true))
+    } catch (err) {
+        return error500(res, err)
+    }
+
+    // Tag.find((err, data) => {
+    //     if (err) return error500(res, err)
+    //     else res.send(data)
+    // })
 })
   
 router.get('/marken', async (req, res) => {
@@ -80,26 +95,6 @@ router.get('/marke/id/:id', async (req, res) => {
     } catch (err) {
         return error500(res, err)
     }
-})
-
-// TODO: populate files for admin
-// Gets patches who has tag with specific id
-router.get('/marken/tag/id/:id', (req, res) => {
-    const id = req.params.id
-    console.log(id)
-    Märke.find()
-    .populate('tags')
-    .lean()
-    .exec((err, data) => {
-        if (!data) {
-            return error(res, 404, "Hittade inga märken", err)
-        }
-        if (err) {
-            return error500(res, err)
-        } else {
-            return res.status(200).json(data.filter(patch => patch.tags.filter(tag => tag._id.toString() === id).length !== 0))
-        }
-    })
 })
 
 router.use('/event', eventsNoAdmin)

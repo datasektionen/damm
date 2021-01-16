@@ -1,3 +1,7 @@
+/*
+    This file contains the error function used in almost all endpoints to throw error messages.
+*/
+
 const error = (res, code = 500, message = "", err = "") => {
     let errorMessage
     if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") errorMessage = err.toString()

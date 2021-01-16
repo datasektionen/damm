@@ -5,7 +5,7 @@ import { PRICE_TYPES } from '../../../config/constants'
 import * as ROUTES from '../../../routes'
 
 // Component that displays a patch.
-const Patch = ({image, date, name, description, numProduced = "?", tags = [], price, produced = 0, inStock = false, ...rest}) => {
+const Patch = ({image, date, name, description, tags = [], price, inStock = false, ...rest}) => {
 
     const [hovered, setHovered] = useState(false)
     let displayPrice
@@ -47,7 +47,7 @@ const Patch = ({image, date, name, description, numProduced = "?", tags = [], pr
                     </div>
                 </div>
             }
-            <div className="image" style={{backgroundImage: `url(${image})`}}></div>
+            <div className="image" style={{backgroundImage: `url(${image})`, backgroundColor:"#ddd"}}></div>
             <div className="head">
                 <div
                     className="item date"
@@ -56,14 +56,21 @@ const Patch = ({image, date, name, description, numProduced = "?", tags = [], pr
                     <div><i className="far fa-clock"></i> {date ? moment(date).format("D MMM YYYY") : "Okänt"}</div>
                 </div>
                 <div className="item stock">
-                    <div><i className="fas fa-box-open"></i> {inStock ? "I lager" : "Ej i lager"}</div>
+                    {inStock ?
+                        <div><i className="fas fa-check"></i> Till salu</div>
+                        :
+                        <div><i className="fas fa-times"></i> Säljs ej</div>
+                    }
+                    {/* <div><i className="fas fa-box-open"></i> {inStock ? "Till salu" : "Säljs ej"}</div> */}
                 </div>
-                <div
-                    className="item price"
-                    title="Pris"
-                >
-                    <div><i className="fas fa-dollar-sign"></i> {displayPrice}</div>
-                </div>
+                {/* {inStock &&
+                    <div
+                        className="item price"
+                        title="Pris"
+                    >
+                        <div><i className="fas fa-dollar-sign"></i> {displayPrice}</div>
+                    </div>
+                } */}
             </div>
             <div className="title"><h2>{name}</h2></div>
         </div>

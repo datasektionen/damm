@@ -3,6 +3,7 @@ import TagClickable from '../../../components/TagClickable'
 import { PRICE_TYPES } from '../../../config/constants'
 import FileUploader from '../../../components/FileUploader'
 import SubmitButton from '../../../components/SubmitButton/SubmitButton'
+import TagSelector from '../../../components/TagSelector/TagSelector'
 
 const AdminPatchView = ({
         header = "Header",
@@ -19,7 +20,8 @@ const AdminPatchView = ({
         handleRadioChange,
         selectedTags,
         submitting,
-        toggleTag,
+        // toggleTag,
+        updateState,
         setImageCallback,
         setFileCallback,
         inStock = false,
@@ -75,15 +77,15 @@ const AdminPatchView = ({
                                     </div>    
                                 )}
                             </div>
-                            {price.type === PRICE_TYPES.SET_PRICE && <input name="price" type="text" placeholder="Pris" value={price.value} onChange={handleChange}/>}
+                            {price.type === PRICE_TYPES.SET_PRICE && <input name="price" type="text" placeholder="Pris" value={price.value} onChange={handleChange} autoComplete="off"/>}
                         </div>
                         <div className="stock">
-                            <h3>Finns i lager</h3>
-                            <h4>Huruvida märket finns i lager, med andra ord om märket är till salu</h4>
+                            <h3>Till salu</h3>
+                            <h4>Huruvida märket säljs eller ej.</h4>
                             <div className="chkboxprnt">
                                 <div className="checkbox">
                                     <input type="checkbox" name="inStock" id="inStock" checked={inStock} onChange={handleCheckbox} />
-                                    <label htmlFor="inStock">I lager</label>
+                                    <label htmlFor="inStock">Säljs</label>
                                 </div>
                             </div>
                         </div>
@@ -96,16 +98,14 @@ const AdminPatchView = ({
                                 <span className="notags">Inga taggar finns</span>
                             </div>
                         :
-                        <div className="tags">
-                            {tags.map((tag,i) => 
-                                <TagClickable
-                                    key={"tag-"+i}
-                                    onClick={_ => toggleTag(tag)}
-                                    {...tag}
-                                    selectedTags={selectedTags}
-                                />
-                            )}
-                        </div>}
+                        <TagSelector
+                            tags={tags}
+                            selectedTags={selectedTags}
+                            query=""
+                            updateState={updateState}
+                            // toggleTag={toggleTag}
+                        />
+                        }
                     </div>
                     <div style={{margin: "20px", width: "100%"}} className="center">
                         <h3>Filer</h3>
@@ -124,7 +124,7 @@ const AdminPatchView = ({
                         </div>
                         <div className="centerrow">
                             <input autoComplete="off" name="creatorField" id="creatorField" type="text" placeholder="Namn eller nämnd" value={creatorField} onChange={handleChange} />
-                            <button onClick={addCreator}>Lägg till</button>
+                            <button onClick={addCreator} disabled={creatorField.length === 0}>Lägg till</button>
                         </div>
                     </div>
                     

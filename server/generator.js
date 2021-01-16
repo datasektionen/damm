@@ -1,3 +1,12 @@
+/*
+	This file generates data to the timeline. It does so for every adapter inserted into it.
+
+	Examples of adapters are dfunk, database and sm/dm which gather data from different sources.
+	This function then compile them to the timeline.
+
+	Written by Jonas Dahl.
+*/
+
 const moment = require('moment')
 
 const generator = (adapters) => {

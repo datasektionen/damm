@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import moment from 'moment'
 import './Dropdown.css'
-import Add from '../../../components/add.png'
+import Input from '../../../components/Input/Input'
 import Placeholder from './300x300.png'
 
 /**
@@ -35,29 +34,20 @@ const Dropdown = ({items, search = "", onChange, clearSearch, searchPlaceholder 
         return patches.filter(p => matchesSearch(p))
     }
 
+    // If we don't make it invisible before, there is a moment where you see all patches
+    const clear = _ => {
+        setVisible(false)
+        clearSearch()
+    }
+
     return (
         <div className="Dropdown" >
-            <div className="sök">
-                <input id="search" type="text" value={search} onChange={onChange} autoComplete="off" placeholder={searchPlaceholder} />
-                <img
-                        id="search"
-                        alt="Kryss"
-                        className="clearImg"
-                        src={Add}
-                        onClick={clearSearch}
-                        draggable="false"
-                />
-            </div>
+            <Input id="search" value={search} onChange={onChange} autoComplete="off" placeholder={searchPlaceholder} clear={clear} />
             <div className="results" style={!visible ? {display: "none"} : {}}>
                 {filterPatches(items).map(i =>
                     <Item
                         key={"item-"+i._id}
-                        image={i.image}
-                        title={i.name}
-                        date={i.date}
-                        price={i.price}
-                        inStock={i.inStock}
-                        produced={i.produced}
+                        data={i}
                         onClick={e => {
                             itemClick(i)
                             setVisible(false)
@@ -69,42 +59,20 @@ const Dropdown = ({items, search = "", onChange, clearSearch, searchPlaceholder 
     )
 }
 
-import { PRICE_TYPES } from '../../../config/constants'
+import PatchMeta from '../../PatchDetailed/components/PatchMeta'
 
-const Item = ({image, title, date, price, inStock, produced, onClick}) => {
-
-    const priceDisplay = _ => {
-        if (price.type === PRICE_TYPES.SET_PRICE) {
-            return price.value + " SEK"
-        } else return price.type
-    }
+const Item = ({data, onClick}) => {
 
     return (
         <div className="item" onClick={onClick}>
             <div className="col image">
-                <img src={image} onError={e => e.target.src=Placeholder} draggable="false" />
+                <img src={data.image} onError={e => e.target.src=Placeholder} draggable="false" />
             </div>
             <div className="col content">
                 <div>
-                    <h3>{title}</h3>
+                    <h3>{data.name}</h3>
                 </div>
-                <div className="meta">
-                    <span title="Första försäljningsdatum">
-                        <i className="far fa-clock"></i> {date ? moment(date).format("DD MMM YYYY") : "Okänt"}
-                    </span>
-                    <i className="fas fa-circle"></i>
-                    <span title="Pris">
-                        <i className="fas fa-dollar-sign"></i> {priceDisplay()}
-                    </span>
-                    <i className="fas fa-circle"></i>
-                    <span title="Lagerstatus">
-                        <i className="fas fa-box-open"></i> {inStock === true ? "I lager" : "Ej i lager"}
-                    </span>
-                    <i className="fas fa-circle"></i>
-                    <span title="Antal producerade">
-                        <i className="fas fa-hashtag"></i> {produced ? produced : 0} st
-                    </span>
-                </div>
+                <PatchMeta data={data}/>
             </div>
         </div>
     )

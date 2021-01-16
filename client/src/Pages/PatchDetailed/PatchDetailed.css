@@ -86,26 +86,6 @@
     width: 100%;
 }
 
-.MarkeInfo .patch .patchcontent .meta {
-    color: rgba(0, 0, 0, 0.6);
-}
-
-.MarkeInfo .patch .patchcontent .meta i.fa-circle {
-    font-size: 0.5em;
-    position: relative;
-    top: -2px;
-    padding: 0 5px 0 5px;
-    color: rgba(0, 0, 0, 0.3);
-}
-
-.MarkeInfo .patch .patchcontent .meta #cName:not(:last-child)::after {
-    content: ", ";
-}
-
-.MarkeInfo .patch .patchcontent .meta #cName:first-child::before {
-    content: " ";
-}
-
 .MarkeInfo .patch .patchcontent .description {
     margin: 25px 0 25px 0;
     white-space: pre-wrap;

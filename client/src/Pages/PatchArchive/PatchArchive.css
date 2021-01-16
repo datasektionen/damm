@@ -70,17 +70,20 @@
 .märke .head .date {
     background: #e83d84;
     color: #fff;
-    min-width: 40%;
+    /* min-width: 40%; */
+    width: 100%;
 }
 
 .märke .head .stock {
     background: #E5C100;
-    min-width: 30%;
+    /* min-width: 30%; */
+    width: 100%;
 }
 
 .märke .head .price {
     background: #8BC34A;
-    min-width: 30%;
+    /* min-width: 30%; */
+    width: 100%;
 }
 
 .märke .title {
@@ -153,12 +156,17 @@
 
 .settings .tagQueryResult {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    padding: 30px 100px 30px 100px;
+}
+
+.settings .tagQueryResult > div{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     align-items: center;
     justify-content: center;
     width: 100%;
-    flex-wrap: wrap;
-    padding: 30px 100px 30px 100px;
 }
 
 .settings .tagQueryResult .tagClickable {
@@ -201,7 +209,6 @@
 }
 
 .settings button {
-    background-color: #E5C100;
     margin: 10px;
 }
 
@@ -217,9 +224,9 @@
     }
 
     .märke {
-        width: 47%;
+        width: 45%;
         height: 280px;
-        margin: 5px;
+        margin: 3px;
     }
 
     .märke .head {

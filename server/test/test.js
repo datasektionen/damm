@@ -43,7 +43,6 @@ describe("Patches", _ => {
                 createdBy: "",
                 orders: [],
                 files: [],
-                produced: 0,
             })
             .then(_ => {
                 chai.request(app)

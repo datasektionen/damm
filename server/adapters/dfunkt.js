@@ -1,3 +1,8 @@
+/*
+	Adapter that gather data from dfunkt.datasektionen.se. Specifically it gathers information about elections.
+
+	Written by Jonas Dahl.
+*/
 const moment = require('moment')
 const fetch = require('node-fetch')
 

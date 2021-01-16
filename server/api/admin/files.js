@@ -1,3 +1,7 @@
+/*
+    This file contains admin endpoints for getting some information about the files in
+    the database.
+*/
 var express = require('express')
 var router = express.Router()
 const dAuth = require('../../dauth')

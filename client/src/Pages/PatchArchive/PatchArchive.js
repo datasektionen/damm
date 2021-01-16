@@ -46,8 +46,11 @@ class PatchArchive extends React.Component {
             sortOptions: sortOptions,
             stockFilter: stockFilterOptions[0].value,
             stockFilterOptions: stockFilterOptions,
-            fetching: true,
+            fetchingPatches: true,
+            fetchingTags: true,
         }
+
+        this.updateState = this.updateState.bind(this)
     }
 
     componentDidMount() {
@@ -55,11 +58,11 @@ class PatchArchive extends React.Component {
             fetch(ROUTES.API_GET_TAGS)
             .then(res => res.json())
             .then(res => {
-                console.log(res)
-                this.setState({tags: res})
+                this.setState({tags: res, fetchingTags: false})
             })
             .catch(err => {
                 console.log(err)
+                this.setState({fetchingTags: false})
             })
         }
 
@@ -67,11 +70,10 @@ class PatchArchive extends React.Component {
             fetch(ROUTES.API_GET_MÄRKEN)
             .then(res => res.json())
             .then(res => {
-                console.log(res)
-                this.setState({märken: res, numPatches: res.length, fetching: false})
+                this.setState({märken: res, numPatches: res.length, fetchingPatches: false})
             })
             .catch(err => {
-                this.setState({fetching: false})
+                this.setState({fetchingPatches: false})
                 console.log(err)
             })
         }
@@ -80,20 +82,15 @@ class PatchArchive extends React.Component {
         fetchMärken()
     }
 
+    // Used in TagSelector
+    updateState(next) {
+        this.setState({...next})
+    }
+
     render() {
 
         const selectedTagsIncludesTag = (tagName) => {
             return this.state.selectedTags.filter(x => x.text === tagName).length > 0
-        }
-
-        //Function called when clicking on a tag in the filter section. Adds and removes a tag from the selected tags list.
-        const toggleTag = (tag) => {
-            //Remove from list
-            if (selectedTagsIncludesTag(tag.text)) {
-                this.setState({selectedTags: this.state.selectedTags.filter(x => x.text !== tag.text)})
-            } else { //Add
-                this.setState({selectedTags: this.state.selectedTags.concat(tag)})
-            }
         }
 
         //Function which checks if a patch's tags matches any we have selected.
@@ -124,8 +121,15 @@ class PatchArchive extends React.Component {
 
         //Function which checks if a patch matches the search query
         const matchesSearch = (märke) => {
+            // If search query is 0 length, match everything
             if (this.state.search.length === 0) return true
+            // If match regex, matches the patch
             if (märke.name.toLowerCase().match(new RegExp(this.state.search.toLowerCase(), "g"))) return true
+            // If match any creator on the patch, matches the patch
+            if (märke.creators
+                .map(c => c.name.toLowerCase().match(new RegExp(this.state.search.toLowerCase(), "g"))  !== null)
+                .reduce((acc, curr) => acc + curr, 0) > 0
+               ) return true
             else return false
         }
 
@@ -140,7 +144,7 @@ class PatchArchive extends React.Component {
 
         //Clears both selected tags and search query
         const clearAll = () => {
-            this.setState({search: "", filterTagsQuery: "", selectedTags: [], sortRule: this.state.sortOptions[0].value})
+            this.setState({search: "", filterTagsQuery: "", selectedTags: [], sortRule: this.state.sortOptions[0].value, stockFilter: this.state.stockFilterOptions[0].value})
         }
         
         //Shows/hides tags and saves the state to localstorage
@@ -241,12 +245,13 @@ class PatchArchive extends React.Component {
                 filterTagsQuery={this.state.filterTagsQuery}
                 sortRule={this.state.sortRule}
                 toggleShowTags={toggleShowTags}
-                toggleTag={toggleTag}
+                updateState={this.updateState}
                 sortResults={sortResults}
                 patchTagsMatchesSelected={patchTagsMatchesSelected}
                 matchesSearch={matchesSearch}
-                handleSearch={e => this.setState({[e.target.id]: e.target.value})}
-                clearSearch={e => {this.setState({[e.target.id]: ""})}}
+                handleChange={e => this.setState({[e.target.id]: e.target.value})}
+                clearSearch={e => this.setState({search: ""})}
+                clearTagSearch={e => this.setState({filterTagsQuery: ""})}
                 handleSort={e => this.setState({sortRule: e.target.value})}
                 clearAll={clearAll}
                 clearSelectedTags={_ => this.setState({selectedTags: []})}
@@ -255,7 +260,9 @@ class PatchArchive extends React.Component {
                 stockFilterOptions={this.state.stockFilterOptions}
                 matchesStockFilter={matchesStockFilter}
                 handleStockFilter={e => this.setState({stockFilter: e.target.value})}
-                fetching={this.state.fetching}
+                fetchingPatches={this.state.fetchingPatches}
+                fetchingTags={this.state.fetchingTags}
+                moveSelectedTagsUp={this.moveSelectedTagsUp}
             />
         )
     }

@@ -6,7 +6,7 @@ import './TagClickable.css'
 
 const TagClickable = ({color = "#fff", backgroundColor = "#e83d84", text = "", hoverText = "", selectedTags=[], onClick}) => {
 
-    const clicked = selectedTags.filter(x => x.text === text).length > 0 ? true : false
+    const clicked = selectedTags.filter(x => x !== undefined).filter(x => x.text === text).length > 0 ? true : false
     // const clicked = selectedTags.includes(text)
 
     return (

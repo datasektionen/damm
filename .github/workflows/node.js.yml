@@ -33,4 +33,3 @@ jobs:
     - run: cd server && npm ci
     - run: cd server && npm test
     - run: cd client && npm ci
-    - run: cd client && npm run build

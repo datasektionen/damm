@@ -63,7 +63,13 @@ router.post('/update', idMiddleware, checkName, doesExist, validColors, async (r
 router.post('/create', checkName, doesExist, validColors, async (req, res) => {
     const {text, hoverText, color, backgroundColor, parent} = req.body
 
-    console.log(req.body)
+    if (parent) {
+        if (!mongoose.isValidObjectId(parent)) return error(res, 403, "Ogiltigt id på parent.")
+        const parentExists = await Tag.findOne({_id: parent}).lean()
+        if (!parentExists) return error(res, 404, "Föräldern finns ej.")
+        if (parentExists.main === false) return error(res, 403, "Angiven parent är inte en huvudtagg. Bara huvudtaggar kan ha subtaggar.")
+    }
+    
     try {
         const created = await Tag.create({text, hoverText, color, backgroundColor, children: [], main: (parent ? false : true)})
         if (parent) {

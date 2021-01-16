@@ -30,13 +30,7 @@
     text-align: center;
 }
 
-.AdminTags .tags .main {
-    justify-content: center;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-}
-
+.AdminTags .tags .main,
 .AdminTags .tags .sub {
     display: flex;
     flex-direction: column;

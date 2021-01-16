@@ -104,8 +104,8 @@ class AdminTags extends React.Component {
                                         {this.state.tags.map(tag =>
                                             <TagClickable {...tag} key={"head-"+tag._id} onClick={_ => this.clickTag(tag)} selectedTags={this.state.selectedTags} />
                                         )}
-                                        <div><button className="green" onClick={_ => this.setState({ head: INIT_TAG(), selectedTags: []}, _ => this.clickTag({}, true))}>Skapa ny</button></div>
                                     </div>
+                                    <div><button className="green" onClick={_ => this.setState({ head: INIT_TAG(), selectedTags: []}, _ => this.clickTag({}, true))}>Skapa ny</button></div>
                                 </div>
                                 <div className="sub">
                                     <div><h1>Undertaggar</h1></div>
@@ -277,21 +277,22 @@ class TagForm extends React.Component {
             this.setState({...this.state.original})
         }
 
+        const text = this.state.text === "" ? "taggnamn" : this.state.text
+
         return (
             <div className="edit">
                 <i title="Stäng" className="fas fa-times" onClick={this.props.close} />
                 {this.state.success && <Alert type="success">{this.state.success}</Alert>}
                 {this.state.error && <Alert type="error">{this.state.error}</Alert>}
-                {/* {edit ? <h1>Redigera "{tag.text}"</h1> : <h1>Skapa ny tagg</h1>} */}
                 {edit ? <h1>Redigera "{tag.text}"</h1> : (head.text !== "" ? <h1>Skapa undertagg till "{head.text}"</h1> : <h1>Skapa ny huvudtagg</h1>)}
                 <form onSubmit={e => e.preventDefault()}>
                     <div className="name">
                         <span>Namn</span>
-                        <input maxLength={18} name="text" autoComplete="off" id="text" type="text" value={this.state.text} onChange={e => handleChange(e)} />
+                        <input placeholder="Taggnamn" maxLength={18} name="text" autoComplete="off" id="text" type="text" value={this.state.text} onChange={e => handleChange(e)} />
                     </div>
                     <div className="hover">
                         <span>Svävartext</span>
-                        <input name="hoverText" autoComplete="off" id="hoverText" type="text" value={this.state.hoverText} onChange={e => handleChange(e)} />
+                        <input placeholder="Text som syns när musen är över taggen" name="hoverText" autoComplete="off" id="hoverText" type="text" value={this.state.hoverText} onChange={e => handleChange(e)} />
                     </div>
                     <div className="color">
                         <span>Textfärg</span>
@@ -305,7 +306,14 @@ class TagForm extends React.Component {
                     </div>
                     <div className="preview">
                         <span>Förhandsgranskning</span>
-                        <TagClickable {...this.state} selectedTags={[{text: this.state.text}]} onClick={() => {}} />
+                        <TagClickable
+                            text={text}
+                            hoverText={this.state.hoverText}
+                            color={this.state.color}
+                            backgroundColor={this.state.backgroundColor}
+                            selectedTags={[{text}]}
+                            onClick={() => {}}
+                        />
                     </div>
                     <div className="buttons">
                         <button onClick={e => reset(e)}>Ångra ändringar</button>

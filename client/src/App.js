@@ -29,7 +29,7 @@ class App extends Component {
     const links = [
       {to: ROUTES.HOME, text: "Hem"},
       {to: ROUTES.TIDSLINJE, text: "Tidslinje"},
-      {to: ROUTES.MUSEUM, text: "Historiska artefakter"},
+      {to: ROUTES.MUSEUM, text: "Museum"},
       {to: ROUTES.MÄRKESARKIV, text: "Märkesarkiv"},
       {to: ROUTES.SKAPA_HÄNDELSE, text: "Skapa händelse"},
     ]

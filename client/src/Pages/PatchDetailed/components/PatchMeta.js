@@ -26,7 +26,7 @@ const PatchMeta = ({data}) => {
                 </span>
                 <i className="fas fa-circle"></i>
                 <span title={data.inStock ? "Till salu" : "Säljs ej"}>
-                    <i className={data.inStock ? "fas fa-check" : "fas fa-times"}></i> {data.inStock === true ? "Säljs ej" : "Ej till salu"}
+                    <i className={data.inStock ? "fas fa-check" : "fas fa-times"}></i> {data.inStock === true ? "Till salu" : "Säljs ej"}
                 </span>
                 <i className="fas fa-circle"></i>
                 <span title="Antal producerade (stämmer ej för märken äldre än Damm)">

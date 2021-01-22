@@ -53,7 +53,6 @@ class AdminOrder extends React.Component {
             orders = orders.concat({order: this.state[k], id: k.split("patch-")[1]})
         })
         
-        console.log(orders)
         const body = {orders}
 
         fetch(`${ROUTES.API_REGISTER_ORDERS}?token=${localStorage.getItem("token")}`, {

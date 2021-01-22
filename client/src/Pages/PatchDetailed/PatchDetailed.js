@@ -20,7 +20,6 @@ class PatchDetailed extends React.Component {
     }
 
     render() {
-        console.log(this.props)
         const data = this.props.data[0]
         const priceDisplay = _ => {
             const price = data.price
@@ -42,7 +41,6 @@ class PatchDetailed extends React.Component {
                 })
                 .catch(json => {
                     this.setState({error: json.error, success: ""})
-                    console.log(json)
                 })
             }
         }

@@ -92,7 +92,6 @@ class AdminPatchEdit extends React.Component {
             comment,
             creators,
         }
-        console.log(body)
         const formData = new FormData()
         Object.keys(body).forEach(key => {
             formData.append(key, JSON.stringify(body[key]))
@@ -111,7 +110,6 @@ class AdminPatchEdit extends React.Component {
             return res.json()
         })
         .then(json => {
-            console.log(json)
             this.setState({fetching: false})
             window.scrollTo(0, 0)
             if (!json.error) {

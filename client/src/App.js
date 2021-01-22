@@ -46,7 +46,6 @@ class App extends Component {
       fetch(`${ROUTES.API_IS_ADMIN}?token=${localStorage.getItem('token')}`)
       .then(res => res.json())
       .then(json => {
-        console.log(json)
         if (json.error) {
           localStorage.removeItem('token')
           window.location=ROUTES.HOME

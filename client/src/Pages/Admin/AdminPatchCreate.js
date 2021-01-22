@@ -43,6 +43,7 @@ class AdminPatchCreate extends React.Component {
     }
 
     componentDidMount() {
+        window.scrollTo(0, 0)
         const fetchTags = () => {
             fetch(ROUTES.API_GET_TAGS)
             .then(res => res.json())
@@ -95,11 +96,15 @@ class AdminPatchCreate extends React.Component {
             formData.append('files', file)
         })
 
+        let status = 0
         fetch(`${window.location.origin}${ROUTES.API_CREATE_PATCH}?token=${localStorage.getItem('token')}`, {
             method: "POST",
             body: formData
         })
-        .then(res => res.json())
+        .then(res => {
+            status = res.status
+            return res.json()
+        })
         .then(json => {
             this.setState({submitting: false})
             if (!json.error) {
@@ -109,14 +114,17 @@ class AdminPatchCreate extends React.Component {
                 window.scrollTo(0, 0)
             } else {
                 this.setState({submitting: false})
-                //TODO: Visa "något gick fel, försök igen"
                 this.setState({error: json.error})
                 window.scrollTo(0, 0)
             }
         })
         .catch(err => {
             window.scroll(0,0)
-            this.setState({error: err.toString(), submitting: false})
+            let error = err.toString()
+            if (status == 413) {
+                error = "413 Payload Too Large. Filen är större än vad servern tillåter."
+            }
+            this.setState({error: error, submitting: false})
         })
         console.log("SUBMIT")
     }

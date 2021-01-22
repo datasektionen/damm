@@ -111,7 +111,7 @@ const AdminPatchView = ({
                         <h3>Filer</h3>
                         <h4>Tillhörande filer till märket. Kan exempelvis vara vektorkällfilen. Går endast att lägga upp en fil i taget.</h4>
                         <FileUploader
-                            text="Ladda upp tillhörande filer till märket"
+                            text="Ladda upp en tillhörande fil till märket"
                             setFileCallback={setFileCallback}
                             imageOnly={false}
                         />

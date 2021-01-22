@@ -85,6 +85,7 @@ const FileUploader = ({text = "Ladda upp en bild på märket", imageOnly = true,
                 <div>
                     <i className="fas fa-upload"></i>
                     <div><b>{text}</b></div>
+                    <div style={{color: "#757575"}}><b>Maximal filstorlek: 10 MB</b></div>
                     <div style={{color: "#757575"}}><b>Du kan dra och släppa en fil här</b></div>
                     {error && <div style={{color: "red"}}>{error}</div>}
                 </div>

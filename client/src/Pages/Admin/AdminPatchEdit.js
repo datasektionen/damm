@@ -65,6 +65,7 @@ class AdminPatchEdit extends React.Component {
 
     componentDidMount() {
         this.updateState()
+        window.scrollTo(0,0)
     }
 
     componentDidUpdate(prev) {
@@ -100,11 +101,15 @@ class AdminPatchEdit extends React.Component {
         if (this.state.imageFile) formData.append("image", this.state.imageFile)
         if (this.state.files.length > 0) this.state.files.forEach(file => formData.append("files", file))
 
+        let status = 0
         fetch(`${ROUTES.API_EDIT_PATCH.replace(/\:id/, this.state.original._id)}?token=${localStorage.getItem("token")}`, {
             method: "POST",
             body: formData
         })
-        .then(res => res.json())
+        .then(res => {
+            status = res.status
+            return res.json()
+        })
         .then(json => {
             console.log(json)
             this.setState({fetching: false})
@@ -119,8 +124,12 @@ class AdminPatchEdit extends React.Component {
             }
         })
         .catch(err => {
+            window.scrollTo(0,0)
             this.setState({fetching: false})
-            this.setState({error: err.error, success: ""})
+            let error = err.toString()
+            if (status == 413) error = "413 Payload Too Large. Filen är större än vad servern tillåter."
+
+            this.setState({error: error, success: ""})
         })
     }
 

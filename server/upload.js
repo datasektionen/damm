@@ -26,8 +26,10 @@ let storage = GridFsStorage({
 let upload = multer({
     storage,
     limits: {
-        // Max file size of 20 MB
-        fileSize: 1024*1024*20
+        // Max file size of 10 MB
+        // https://serverfault.com/questions/814767/413-request-entity-too-large-in-nginx-with-client-max-body-size-set
+        // Is also set in nginx.conf at sips. If file is bigger than this value, a HTTP 413 is generated.
+        fileSize: 1024*1024*10
     },
     fileFilter: (req, file, callback) => {
         // TODO: VERY IMPORTANT: Check mimebytes of file to see if it really is an image

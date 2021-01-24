@@ -88,7 +88,6 @@ router.post('/update', (req, res) => {
 
     Event.findByIdAndUpdate(id, {$set: updated}, (err, result) => {
         console.log(err)
-        console.log(result)
         if (err) return res.status(500).json({"error":err})
         if (result === null) return error(res, 404, "Kunde inte hitta händelsen.")
         else return res.status(200).json({"status":"Händelsen uppdaterad."})

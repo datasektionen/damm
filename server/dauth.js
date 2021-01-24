@@ -26,7 +26,6 @@ exports.adminAuth = (req, res, next) => {
         fetch(`${process.env.LOGIN2_URL}/verify/${token}.json?api_key=${process.env.LOGIN2_API_KEY}`)
         .then(x => x.json())
         .then(json => {
-            console.log(json)
 
             //Check pls if user has admin access
             fetch(`${process.env.PLS_API_URL}/user/${json.user}/damm`)
@@ -112,7 +111,6 @@ exports.getPls = (token) => {
         fetch(`${process.env.LOGIN2_URL}/verify/${token}.json?api_key=${process.env.LOGIN2_API_KEY}`)
         .then(res => res.json())
         .then(json => {
-            console.log(json)
             const { first_name, last_name, user, ugkthid, emails } = json
 
             User.createFromLogin({first_name, last_name, user, ugkthid, emails}, (user) => {

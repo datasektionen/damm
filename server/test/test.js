@@ -106,7 +106,6 @@ describe("Patches", _ => {
                 .get(`/api/marke/id/${patch._id}`)
                 .end((err, res) => {
                     if (res.body.files !== undefined) {
-                        console.log(res.body)
                         return done(new Error("File field exists"))
                     }
                     done()
@@ -122,7 +121,6 @@ describe("Patches", _ => {
                 .get(`/api/marke/id/${patch._id}?token=admintoken`)
                 .end((err, res) => {
                     if (res.body.files === undefined) {
-                        console.log(res.body)
                         return done(new Error("File field doesn't exists"))
                     }
                     done()

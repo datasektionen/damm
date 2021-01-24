@@ -100,7 +100,6 @@ const bulkOrderValidatorHelper = async ({id, order}) => {
 
 const orderValidator = async (req, res, next) => {
     const orders = req.body.orders
-    console.log(req.body.orders)
     try {
         if (orders) {
 
@@ -179,7 +178,6 @@ router.post('/create', patchFiles, hasImage, nameValidator, priceValidator, orde
 
 // Route to edit a patch
 router.post('/edit/id/:id', patchFiles, nameValidatorEdit, priceValidatorEdit, orderValidator, async (req, res) => {
-    console.log(req.body)
     const { id } = req.params
     if (!mongoose.isValidObjectId(id)) return error(res, 404, "Märket finns ej.")
     if ((await Märke.findById(id)) === null) return error(res, 404, "Märket finns ej.")
@@ -216,7 +214,6 @@ router.post('/replace-image/id/:id', upload.single('image'), hasImage, async (re
     const patch = await Märke.findById(id)
     if (!patch) return error(res, 404, "Märket hittades ej")
     if (req.body.image) return error(res, 403, "Ingen bild medskickad.")
-    console.log(patch)
     try {
         await replaceImageAndUpdatePatch(patch, req.file.filename)
     } catch (err) {
@@ -233,7 +230,6 @@ const replaceImageAndUpdatePatch = async (patch, filename) => {
     return new Promise(async (resolve, reject) => {
         try {
             await deleteFileAndChunks(constants.URLToFilename(patch.image))
-            console.log(constants.URLToFilename(patch.image))
             await Märke.findByIdAndUpdate(patch._id, {$set: {image: constants.createFileURL(filename)}})
             resolve()
         } catch (err) {

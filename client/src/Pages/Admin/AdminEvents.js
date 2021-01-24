@@ -34,7 +34,6 @@ class AdminEvents extends React.Component {
             fetch(`${ROUTES.API_GET_ALL_EVENTS}?token=${localStorage.getItem("token")}`)
             .then(res => res.json())
             .then(json => {
-                console.log(json.events)
                 this.setState({events: json.events, fetching: false})
                 resolve()
             })

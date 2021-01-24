@@ -9,8 +9,6 @@ import * as ROUTES from '../../routes'
 
 const EventDetailed = ({data, ...rest}) => {
     data = data[0]
-    console.log(data)
-    console.log(rest)
     const [localTitle, setLocalTitle] = useState(data.title)
     const [localContent, setLocalContent] = useState(data.content)
     const [localDate, setLocalDate] = useState(data.date)
@@ -188,7 +186,6 @@ const RenderButtons = ({data, local, onFetch, history}) => {
         .then(json => {
             setFetching(false)
             onFetch(json)
-            console.log(json)
         })
         .catch(err => {
             setFetching(false)
@@ -207,7 +204,6 @@ const RenderButtons = ({data, local, onFetch, history}) => {
         .then(res => res.json())
         .then(json => {
             setFetching(false)
-            console.log(json)
             history.push(ROUTES.ADMIN, json)
         })
         .catch(err => {

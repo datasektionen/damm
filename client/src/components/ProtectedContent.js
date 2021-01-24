@@ -32,7 +32,6 @@ const ProtectedContent = ({contentURL = [], allowNoLogin = false, ...rest}) => {
         } catch(err) {
             rest.history.push(ROUTES.LOGIN)
         }
-        console.log("FETCHING")
     }
 
     useEffect(_ => {
@@ -54,7 +53,6 @@ const ProtectedContent = ({contentURL = [], allowNoLogin = false, ...rest}) => {
 
     // Event can not be found.
     if (data[0].httpStatus === 404) {
-        console.log(data)
         return <NotFound />
     }
 

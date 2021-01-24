@@ -16,7 +16,6 @@ router.get('/isAdmin', (req, res) => {
 
     dAuth.getPls(req.query.token)
     .then(x => {
-        console.log(x)
         res.json({"pls": x})
     })
     .catch(err => {

@@ -48,7 +48,6 @@ class AdminPatchCreate extends React.Component {
             fetch(ROUTES.API_GET_TAGS)
             .then(res => res.json())
             .then(res => {
-                console.log(res)
                 this.setState({tags: res})
             })
             .catch(err => {
@@ -90,7 +89,6 @@ class AdminPatchCreate extends React.Component {
         Object.keys(body).forEach(key => {
             formData.append(key, JSON.stringify(body[key]))
         })
-        console.log(formData)
         formData.append('image', image)
         files.forEach(file => {
             formData.append('files', file)
@@ -126,7 +124,6 @@ class AdminPatchCreate extends React.Component {
             }
             this.setState({error: error, submitting: false})
         })
-        console.log("SUBMIT")
     }
 
     handleChange(e) {

@@ -66,7 +66,6 @@ class Admin extends React.Component {
                     fetch(`/api/admin/refresh?token=${localStorage.getItem('token')}`)
                     .then(res => res.json())
                     .then(json => {
-                        console.log(json)
                         if (json.error) {
                             this.setState({error: json.error})
                         } else {

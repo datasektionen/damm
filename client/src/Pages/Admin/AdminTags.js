@@ -5,6 +5,7 @@ import SubmitButton from '../../components/SubmitButton/SubmitButton'
 import TagClickable from '../../components/TagClickable'
 import * as ROUTES from '../../routes'
 import './AdminTags.css'
+import ColorRandomizer from './components/ColorRandomizer/ColorRandomizer'
 
 const INIT_TAG = _ => {
     let bg = randomizeBackgroundColor()
@@ -296,12 +297,12 @@ class TagForm extends React.Component {
                     <div className="color">
                         <span>Textfärg</span>
                         <input name="color" type="color" value={this.state.color} onChange={e => handleChange(e)} />
-                        <i title="Slumpa färg" className="fas fa-random" onClick={_ => this.setState({color: randomizeColor()})}></i>
+                        <ColorRandomizer title="Slumpa färg" color={this.state.backgroundColor} bgColor={this.state.color} onClick={_ => this.setState({color: randomizeColor()})}/>
                     </div>
                     <div className="bgcolor">
                         <span>Bakgrundsfärg</span>
                         <input name="backgroundColor" type="color" value={this.state.backgroundColor} onChange={e => handleChange(e)} />
-                        <i title="Slumpa färg (justerar textfärg om kontrasten för låg)" className="fas fa-random" onClick={_ => this.setState({...randomizeBackgroundColor()})}></i>
+                        <ColorRandomizer title="Slumpa färg (justerar textfärg om kontrasten för låg)" color={this.state.color} bgColor={this.state.backgroundColor} onClick={_ => this.setState({...randomizeBackgroundColor()})}/>
                     </div>
                     <div className="preview">
                         <span>Förhandsgranskning</span>

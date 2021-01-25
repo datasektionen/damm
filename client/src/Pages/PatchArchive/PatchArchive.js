@@ -48,6 +48,7 @@ class PatchArchive extends React.Component {
             stockFilterOptions: stockFilterOptions,
             fetchingPatches: true,
             fetchingTags: true,
+            sorting: false,
         }
 
         this.updateState = this.updateState.bind(this)
@@ -84,10 +85,15 @@ class PatchArchive extends React.Component {
 
     // Used in TagSelector
     updateState(next) {
-        this.setState({...next})
+        this.setState({...next, sorting: true})
+        setTimeout(_ => this.setState({sorting: false}), 100)
     }
 
     render() {
+
+        const setSorting = _ => {
+            this.setState({sorting: true})
+        }
 
         const selectedTagsIncludesTag = (tagName) => {
             return this.state.selectedTags.filter(x => x.text === tagName).length > 0
@@ -263,6 +269,7 @@ class PatchArchive extends React.Component {
                 fetchingPatches={this.state.fetchingPatches}
                 fetchingTags={this.state.fetchingTags}
                 moveSelectedTagsUp={this.moveSelectedTagsUp}
+                sorting={this.state.sorting}
             />
         )
     }

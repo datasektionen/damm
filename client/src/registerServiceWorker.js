@@ -8,6 +8,11 @@
 // To learn more about the benefits of this model, read https://goo.gl/KwvDNy.
 // This link also includes instructions on opting out of this behavior.
 
+import {precacheAndRoute} from 'workbox-precaching';
+// Your other import statements go here.
+
+precacheAndRoute(self.__WB_MANIFEST);
+
 const isLocalhost = Boolean(
   window.location.hostname === 'localhost' ||
     // [::1] is the IPv6 localhost address.
@@ -73,7 +78,7 @@ function registerValidSW(swUrl) {
     });
 }
 
-export function checkValidServiceWorker(swUrl) {
+function checkValidServiceWorker(swUrl) {
   // Check if the service worker can be found. If it can't reload the page.
   fetch(swUrl)
     .then(response => {
@@ -100,7 +105,7 @@ export function checkValidServiceWorker(swUrl) {
     });
 }
 
-function unregister() {
+export function unregister() {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.ready.then(registration => {
       registration.unregister();

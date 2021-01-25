@@ -2,6 +2,7 @@
   "name": "damm-client",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://damm.datasektionen.se",
   "dependencies": {
     "cors": "^2.8.4",
     "markdown-react-js": "^1.0.2",

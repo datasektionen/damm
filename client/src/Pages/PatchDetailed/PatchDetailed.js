@@ -19,6 +19,10 @@ class PatchDetailed extends React.Component {
         }
     }
 
+    componentDidMount() {
+        window.scrollTo(0,0)
+    }
+
     render() {
         const data = this.props.data[0]
         const priceDisplay = _ => {

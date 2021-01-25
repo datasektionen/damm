@@ -22,6 +22,9 @@ const PatchArchiveView = ({numPatches = 0, tags, selectedTags, toggleShowTags, t
                     <img src={logo} alt="Datasektionens sköld" className="Logo" />
                     <h1>Konglig Datasektionens</h1>
                     <h2>Märkesarkiv</h2>
+                    <div style={{padding: "15px", fontSize: "0.8em"}}>
+                        Har du ett märke som inte finns i arkivet? Är märket inte påsytt? Donera märket till arkivet. Mejla <a style={{color: "white"}} target="_blank" rel="noopener noreferrer" href="mailto:historiker@d.kth.se">historiker@d.kth.se</a>
+                    </div>
                 </div>
             </div>
             <div className="settings">

@@ -16,7 +16,7 @@ class PatchArchive extends React.Component {
         }
 
         const sortOptions = [
-            {text: "Sortera på: Standard", value: "all"},
+            {text: "Sortera på: Slumpad", value: "all"},
             {text: "Namn (A-Ö)", value: "name-desc"},
             {text: "Namn (Ö-A)", value: "name-asc"},
             {text: "Pris (Lägst överst)", value: "price-asc"},
@@ -71,7 +71,16 @@ class PatchArchive extends React.Component {
             fetch(ROUTES.API_GET_MÄRKEN)
             .then(res => res.json())
             .then(res => {
-                this.setState({märken: res, numPatches: res.length, fetchingPatches: false})
+                // https://stackoverflow.com/a/12646864
+                function shuffleArray(array) {
+                    for (let i = array.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [array[i], array[j]] = [array[j], array[i]];
+                    }
+                    return array
+                }
+
+                this.setState({märken: shuffleArray(res), numPatches: res.length, fetchingPatches: false})
             })
             .catch(err => {
                 this.setState({fetchingPatches: false})

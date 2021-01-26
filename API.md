@@ -34,7 +34,6 @@ Senast uppdaterad 2020-12-28.
 - [Märkesrelaterat - Admin](#markesrelaterat-admin)
   * [POST /api/admin/marke/create](#post-admin-marke-create)
   * [POST /api/admin/marke/edit/id/:id](#post-admin-marke-edit-id)
-  * [POST /api/admin/marke/replace-image/id/:id](#post-admin-marke-replace-image-id)
   * [GET /api/admin/marke/remove/id/:id](#get-admin-marke-remove-id)
   * [POST /api/admin/marke/register-orders](#post-admin-marke-register-orders)
   * [GET /remove/file/:filename](#removefile)
@@ -49,7 +48,7 @@ Modell för ett märke. Hänvisas till som `Patch` i detta API.
 För att inte icke-admins ska få tillgång till "känslig" information (`files`, `comment` och `orders`) så strippas denna information i de endpoints där icke-admins kan hämta märken.
 
 ### Generell information
-- `name`, `price` och `image` är de enda fälten som är `required`.
+- `name`, `price` och `image`, `imageLowRes` är de enda fälten som är `required`.
 - Märkets bild sparas i databasen och `image` håller URL:en till denna bild. När man uppdaterar bild tas den gamla bilden bort från databasen, den nya läggs upp och nya URL:en sparas.
 - `date` har formatet YYYY-MM-DD
 - `tags` är en `array` med id:s till Tag-objekt.
@@ -68,6 +67,7 @@ För att inte icke-admins ska få tillgång till "känslig" information (`files`
     description: String,
     date: String,
     image: String,
+    imageLowRes: String,
     orders: [{
         date: String,
         amount: String,
@@ -358,7 +358,7 @@ Format: form-data
 
 Required fields:
 - name : `String`
-- image : `File`
+- image : [`File`] (index 0 är högupplöst, index 1 är lågupplöst)
 - price :
     ```js
     {type: String, value: String}
@@ -406,7 +406,7 @@ Format: form-data
 
 Optional fields:
 - name : `String`
-- image : `File`
+- image : [`File`]
 - price :
     ```json
     {"type": "String", "value": "String"}
@@ -434,31 +434,6 @@ Optional fields:
     {status: String}
     ```
 - `403` om någon slags data i requesten saknas eller är fel.
-- `404` om märket ej finns.
-- `500` om något gick fel.
----
-<a id="post-admin-marke-replace-image-id"></a>
-## POST /api/admin/marke/replace-image/id/:id
-**Beskrivning:** Byter bild för märket.
-
-### Request
-**REQUIRED**: `token`
-
-#### **Body**
-Format: form-data
-
-Required fields:
-- image : `File`
-
-### Response
-**Format:** `JSON`
-- `200` om allt gick rätt till.
-    
-    **Body format:**
-    ```js
-    {status: String}
-    ```
-- `403` om ingen bild skickades med.
 - `404` om märket ej finns.
 - `500` om något gick fel.
 ---

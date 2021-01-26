@@ -28,7 +28,9 @@ router.use(dauth.patchesAuth)
 
 // Middleware that checks if the request contains an image
 const hasImage = (req, res, next) => {
-    if (!req.files || !req.files.image) return error(res, 403, "Ingen fil medskickad.")
+    if (!req.files) return error(res, 403, "Ingen fil medskickad.")
+    if (!req.files.images || req.files.images.length === 0) return error(res, 403, "Inga bilder medskickade.")
+    if (req.files.images.length !== 2) return error(res, 403, "För få bilder medskickade, en högupplöst och en lågupplöst.")
     next()
 }
 
@@ -137,7 +139,7 @@ const bulkOrderValidator = async (req, res, next) => {
 }
 
 // Parses form data
-const patchFiles = upload.fields([{ name: "image", maxCount: 1 }, { name: "files", maxCount: 10 },])
+const patchFiles = upload.fields([{ name: "images", maxCount: 2 }, { name: "files", maxCount: 10 },])
 
 // Route for creating a patch. Takes data as formdata.
 router.post('/create', patchFiles, hasImage, nameValidator, priceValidator, orderValidator, async (req, res) => {
@@ -160,7 +162,8 @@ router.post('/create', patchFiles, hasImage, nameValidator, priceValidator, orde
             description,
             date,
             price,
-            image: constants.createFileURL(req.files.image[0].filename),
+            image: constants.createFileURL(req.files.images[0].filename),
+            imageLowRes: constants.createFileURL(req.files.images[1].filename),
             orders,
             tags,
             files: fileObjects.map(x => x._id),
@@ -193,7 +196,7 @@ router.post('/edit/id/:id', patchFiles, nameValidatorEdit, priceValidatorEdit, o
     
     try {
         const patch = await Märke.findByIdAndUpdate(id, {$set: {...body}})
-        if (req.files.image) await replaceImageAndUpdatePatch(patch, req.files.image[0].filename)
+        if (req.files.images) await replaceImageAndUpdatePatch(patch, req.files.images)
         if (req.files.files) {
             const fileObjects = await createFileLinks(req.files.files)
             await Märke.findByIdAndUpdate(id, {$push: {files: fileObjects.map(x => x._id)}})
@@ -207,30 +210,18 @@ router.post('/edit/id/:id', patchFiles, nameValidatorEdit, priceValidatorEdit, o
 
 })
 
-// Replaces the image file of a patch and removes the old one.
-router.post('/replace-image/id/:id', upload.single('image'), hasImage, async (req, res) => {
-    const { id } = req.params
+// Function that replaces the images of a patch
+// Removes the old images from the database (deletes them) and inserts new links to the new images into the patch model
+const replaceImageAndUpdatePatch = async (patch, patches) => {
+    const highResFilename = patches[0].filename
+    const lowResFilename = patches[1].filename
 
-    const patch = await Märke.findById(id)
-    if (!patch) return error(res, 404, "Märket hittades ej")
-    if (req.body.image) return error(res, 403, "Ingen bild medskickad.")
-    try {
-        await replaceImageAndUpdatePatch(patch, req.file.filename)
-    } catch (err) {
-        console.log(err)
-        return error500(res, err)
-    }
-
-    return res.status(200).json({status: "Märket uppdaterat, ny bild tillagd."})
-})
-
-// Function that replaces a file of a patch
-// Removes the old file from the database (deletes it) and inserts a new link to the file into the patch model
-const replaceImageAndUpdatePatch = async (patch, filename) => {
     return new Promise(async (resolve, reject) => {
         try {
             await deleteFileAndChunks(constants.URLToFilename(patch.image))
-            await Märke.findByIdAndUpdate(patch._id, {$set: {image: constants.createFileURL(filename)}})
+            await Märke.findByIdAndUpdate(patch._id, {$set: {image: constants.createFileURL(highResFilename)}})
+            await deleteFileAndChunks(constants.URLToFilename(patch.imageLowRes))
+            await Märke.findByIdAndUpdate(patch._id, {$set: {imageLowRes: constants.createFileURL(lowResFilename)}})
             resolve()
         } catch (err) {
             return reject(err)
@@ -281,11 +272,14 @@ router.get('/remove/id/:id', async (req, res) => {
     const patch = await Märke.findById(id)
     if (!patch) return error(res, 404, "Märket finns ej")
 
-    const filename = constants.URLToFilename(patch.image)
+    const imageHighRes = constants.URLToFilename(patch.image)
+    const imageLowRes = constants.URLToFilename(patch.imageLowRes)
 
     try {
-        await deleteFileAndChunks(filename)
-        const patch = await Märke.findOneAndDelete({ image: constants.createFileURL(filename) }).populate("files").lean()
+        await deleteFileAndChunks(imageHighRes)
+        await deleteFileAndChunks(imageLowRes)
+        const patch = await Märke.findOneAndDelete({ image: constants.createFileURL(imageHighRes) }).populate("files").lean()
+        await Märke.findOneAndDelete({ image: constants.createFileURL(imageLowRes) })
         patch.files.forEach(async (file) => {
             FileLink.deleteOne({_id: file._id})
             deleteFileAndChunks(constants.URLToFilename(file.url))

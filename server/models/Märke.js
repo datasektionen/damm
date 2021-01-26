@@ -25,6 +25,7 @@ var markeSchema = new Schema({
     //Håller strängar i formatet: "2020-08-29"
     date: String,
     image: String,
+    imageLowRes: String,
     orders: [{
         company: {
             type: String,
@@ -83,6 +84,7 @@ markeSchema.statics.create = function(x) {
             description: x.description ?  x.description : "",
             date: x.date,
             image: x.image,
+            imageLowRes: x.imageLowRes,
             price: x.price,
             tags: x.tags ? x.tags : [],
             creators: x.creators ? x.creators : [],

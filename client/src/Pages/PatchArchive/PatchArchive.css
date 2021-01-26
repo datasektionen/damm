@@ -4,8 +4,8 @@
     border-radius: 2px;
     display: flex;
     flex-direction: column;
-    width: 300px;
-    height: 450px;
+    width: 240px;
+    height: 350px;
     margin: 10px;
     user-select: none;
 }
@@ -100,7 +100,8 @@
 }
 
 .märke .title h2 {
-    font-size: 1.2em;
+    font-size: 1.1em;
+    font-weight: bold;
     text-align: center;
     margin: 0;
 }

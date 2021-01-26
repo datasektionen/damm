@@ -2,6 +2,7 @@ import React from 'react'
 import Alert from '../../components/Alert'
 import * as ROUTES from '../../routes'
 import { PRICE_TYPES } from '../../config/constants'
+import compress from '../../util/compress'
 
 import './Admin.css'
 import AdminPatchView from './views/AdminPatchView'
@@ -74,7 +75,7 @@ class AdminPatchEdit extends React.Component {
         }
     }
 
-    submit(e) {
+    async submit(e) {
         e.preventDefault()
         const {name, description, date, selectedTags, orders, price, inStock, comment, creators} = this.state
         this.setState({fetching: true})
@@ -97,7 +98,11 @@ class AdminPatchEdit extends React.Component {
             formData.append(key, JSON.stringify(body[key]))
         })
 
-        if (this.state.imageFile) formData.append("image", this.state.imageFile)
+        if (this.state.imageFile) {
+            formData.append("images", this.state.imageFile)
+            const compressed = await compress(this.state.imageFile)
+            if (compressed != null) formData.append("images", compressed)
+        }
         if (this.state.files.length > 0) this.state.files.forEach(file => formData.append("files", file))
 
         let status = 0

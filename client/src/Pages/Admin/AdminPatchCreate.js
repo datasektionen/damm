@@ -2,7 +2,7 @@ import React from 'react'
 import * as ROUTES from '../../routes'
 import AdminPatchView from './views/AdminPatchView'
 import Alert from '../../components/Alert'
-import e from 'cors'
+import compress from '../../util/compress'
 
 const INITIAL_STATE = {
     image: undefined,
@@ -62,7 +62,7 @@ class AdminPatchCreate extends React.Component {
         this.setState({...next})
     }
 
-    submit(e) {
+    async submit(e) {
         e.preventDefault()
 
         this.setState({success: false, submitting: true})
@@ -89,7 +89,11 @@ class AdminPatchCreate extends React.Component {
         Object.keys(body).forEach(key => {
             formData.append(key, JSON.stringify(body[key]))
         })
-        formData.append('image', image)
+        formData.append('images', image)
+        
+        const compressed = await compress(image)
+        if (compressed != null) formData.append("images", compressed)
+        
         files.forEach(file => {
             formData.append('files', file)
         })

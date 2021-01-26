@@ -152,8 +152,6 @@ router.post('/create', patchFiles, hasImage, nameValidator, priceValidator, orde
         }
     })
 
-    console.log(req.files)
-
     const { name, description, date, price, orders, tags, inStock, comment, creators } = body
 
     try {

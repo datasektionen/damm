@@ -180,7 +180,8 @@ describe("Patches", _ => {
                 
                 chai.request(app)
                 .post(`/api/admin/marke/create?token=admintoken`)
-                .attach("image", image, "PUNG.jpg")
+                .attach("images", image, "PUNG.jpg")
+                .attach("images", image, "PUNG.jpg")
                 .field("name", name)
                 .field("price", price)
                 .end((err, res) => {
@@ -193,7 +194,8 @@ describe("Patches", _ => {
                 
                 chai.request(app)
                 .post(`/api/admin/marke/create?token=prylistoken`)
-                .attach("image", image, "PUNG.jpg")
+                .attach("images", image, "PUNG.jpg")
+                .attach("images", image, "PUNG.jpg")
                 .field("name", name)
                 .field("price", price)
                 .end((err, res) => {
@@ -207,7 +209,8 @@ describe("Patches", _ => {
                 
                     chai.request(app)
                     .post(`/api/admin/marke/create?token=admintoken`)
-                    .attach("image", image, "PUNG.jpg")
+                    .attach("images", image, "PUNG.jpg")
+                    .attach("images", image, "PUNG.jpg")
                     .field("price", price)
                     .end((err, res) => {
                         res.should.not.have.status(200)
@@ -219,7 +222,8 @@ describe("Patches", _ => {
                     
                     chai.request(app)
                     .post(`/api/admin/marke/create?token=admintoken`)
-                    .attach("image", image, "PUNG.jpg")
+                    .attach("images", image, "PUNG.jpg")
+                    .attach("images", image, "PUNG.jpg")
                     .field("name", JSON.stringify(""))
                     .field("price", price)
                     .end((err, res) => {
@@ -232,7 +236,8 @@ describe("Patches", _ => {
                     
                     chai.request(app)
                     .post(`/api/admin/marke/create?token=admintoken`)
-                    .attach("image", image, "PUNG.jpg")
+                    .attach("images", image, "PUNG.jpg")
+                    .attach("images", image, "PUNG.jpg")
                     .field("name", JSON.stringify("              \n          "))
                     .field("price", price)
                     .end((err, res) => {
@@ -245,7 +250,8 @@ describe("Patches", _ => {
                     
                     chai.request(app)
                     .post(`/api/admin/marke/create?token=admintoken`)
-                    .attach("image", image, "PUNG.jpg")
+                    .attach("images", image, "PUNG.jpg")
+                    .attach("images", image, "PUNG.jpg")
                     .field("name", JSON.stringify("    a           \n        "))
                     .field("price", price)
                     .end((err, res) => {
@@ -261,7 +267,8 @@ describe("Patches", _ => {
                     
                     chai.request(app)
                     .post(`/api/admin/marke/create?token=admintoken`)
-                    .attach("image", image, "PUNG.jpg")
+                    .attach("images", image, "PUNG.jpg")
+                    .attach("images", image, "PUNG.jpg")
                     .field("name", name)
                     .end((err, res) => {
                         res.should.not.have.status(200)
@@ -273,7 +280,8 @@ describe("Patches", _ => {
                     
                     chai.request(app)
                     .post(`/api/admin/marke/create?token=admintoken`)
-                    .attach("image", image, "PUNG.jpg")
+                    .attach("images", image, "PUNG.jpg")
+                    .attach("images", image, "PUNG.jpg")
                     .field("name", name)
                     .field("price", JSON.stringify({type: "Ange pris", value: "hej"}))
                     .end((err, res) => {
@@ -286,7 +294,8 @@ describe("Patches", _ => {
                     
                     chai.request(app)
                     .post(`/api/admin/marke/create?token=admintoken`)
-                    .attach("image", image, "PUNG.jpg")
+                    .attach("images", image, "PUNG.jpg")
+                    .attach("images", image, "PUNG.jpg")
                     .field("name", name)
                     .field("price", JSON.stringify({value: "hej"}))
                     .end((err, res) => {
@@ -299,7 +308,8 @@ describe("Patches", _ => {
                     
                     chai.request(app)
                     .post(`/api/admin/marke/create?token=admintoken`)
-                    .attach("image", image, "PUNG.jpg")
+                    .attach("images", image, "PUNG.jpg")
+                    .attach("images", image, "PUNG.jpg")
                     .field("name", name)
                     .field("price", JSON.stringify({type: "Ange pris"}))
                     .end((err, res) => {
@@ -312,7 +322,8 @@ describe("Patches", _ => {
                     
                     chai.request(app)
                     .post(`/api/admin/marke/create?token=admintoken`)
-                    .attach("image", image, "PUNG.jpg")
+                    .attach("images", image, "PUNG.jpg")
+                    .attach("images", image, "PUNG.jpg")
                     .field("name", name)
                     .field("price", JSON.stringify({type: "fjh40etj4rf3sr3s", value: ""}))
                     .end((err, res) => {
@@ -326,7 +337,8 @@ describe("Patches", _ => {
                 it("should default to false when not specifying if in stock", done => {
                     chai.request(app)
                     .post(`/api/admin/marke/create?token=admintoken`)
-                    .attach("image", image, "PUNG.jpg")
+                    .attach("images", image, "PUNG.jpg")
+                    .attach("images", image, "PUNG.jpg")
                     .field("name", name)
                     .field("price", price)
                     .end((err, res) => {
@@ -339,7 +351,8 @@ describe("Patches", _ => {
                 it("should be true when inStock set to true", done => {
                     chai.request(app)
                     .post(`/api/admin/marke/create?token=admintoken`)
-                    .attach("image", image, "PUNG.jpg")
+                    .attach("images", image, "PUNG.jpg")
+                    .attach("images", image, "PUNG.jpg")
                     .field("name", name)
                     .field("price", price)
                     .field("inStock", JSON.stringify(true))
@@ -353,7 +366,8 @@ describe("Patches", _ => {
                 it("should be false when inStock set to false", done => {
                     chai.request(app)
                     .post(`/api/admin/marke/create?token=admintoken`)
-                    .attach("image", image, "PUNG.jpg")
+                    .attach("images", image, "PUNG.jpg")
+                    .attach("images", image, "PUNG.jpg")
                     .field("name", name)
                     .field("price", price)
                     .field("inStock", JSON.stringify(false))
@@ -369,7 +383,8 @@ describe("Patches", _ => {
                 it("should trim comment", done => {
                     chai.request(app)
                     .post(`/api/admin/marke/create?token=admintoken`)
-                    .attach("image", image, "PUNG.jpg")
+                    .attach("images", image, "PUNG.jpg")
+                    .attach("images", image, "PUNG.jpg")
                     .field("name", name)
                     .field("price", price)
                     .field("comment", JSON.stringify("         hej då  \n\n\       "))
@@ -385,7 +400,8 @@ describe("Patches", _ => {
                 it("should add creator", done => {
                     chai.request(app)
                     .post(`/api/admin/marke/create?token=admintoken`)
-                    .attach("image", image, "PUNG.jpg")
+                    .attach("images", image, "PUNG.jpg")
+                    .attach("images", image, "PUNG.jpg")
                     .field("name", name)
                     .field("price", price)
                     .field("creators", JSON.stringify([{name: "Axel Elmarsson"}]))
@@ -400,10 +416,25 @@ describe("Patches", _ => {
                 it("should fail when adding creator", done => {
                     chai.request(app)
                     .post(`/api/admin/marke/create?token=admintoken`)
-                    .attach("image", image, "PUNG.jpg")
+                    .attach("images", image, "PUNG.jpg")
+                    .attach("images", image, "PUNG.jpg")
                     .field("name", name)
                     .field("price", price)
                     .field("creators", JSON.stringify([{adwdaw: "Axel Elmarsson"}]))
+                    .end((err, res) => {
+                        res.should.not.have.status(200)
+                        done()
+                    })
+                })
+            })
+
+            describe("image compression", _ => {
+                it("should fail with less than two images", done => {
+                    chai.request(app)
+                    .post(`/api/admin/marke/create?token=admintoken`)
+                    .attach("images", image, "PUNG.jpg")
+                    .field("name", name)
+                    .field("price", price)
                     .end((err, res) => {
                         res.should.not.have.status(200)
                         done()
